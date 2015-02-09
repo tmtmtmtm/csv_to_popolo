@@ -11,18 +11,18 @@ describe Popolo::CSV do
 
   describe "data" do
 
-    let(:aarto)  { subject.data.find { |i| i[:name] == 'Arto Aas' } }
+    let(:arto)  { subject.data.find { |i| i[:name] == 'Arto Aas' } }
 
     it "should have a record" do
-      aarto.class.must_equal Hash
+      arto.class.must_equal Hash
     end
 
     it "should have the correct id" do
-      aarto[:id].must_equal 'fe748f4d-3f50-4af8-8069-92a460978d2b'
+      arto[:id].must_equal 'fe748f4d-3f50-4af8-8069-92a460978d2b'
     end
 
     it "should have nested faction info" do
-      aarto[:memberships].first[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
+      arto[:memberships].first[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
     end
   end
 
