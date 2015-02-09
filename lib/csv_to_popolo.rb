@@ -17,22 +17,26 @@ class Popolo
 
     private 
     def popolo_for(r)
-      {
-        id: r[:id],
-        name: r[:name],
-        image: r[:img],
-        email: r[:email],
-        memberships: [
-          {
-            organization: { 
-              name: r[:faction],
-            },
-            area: { 
-              name: r[:area],
-            },
-          }
-        ],
-      }
+      as_is = [:id, :name, :image, :email]
+
+      popolo = {}
+      as_is.each do |sym|
+        popolo[sym] = r[sym] if r.has_key? sym
+      end
+
+      popolo[:memberships] = [
+        {
+          organization: { 
+            name: r[:faction],
+          },
+          area: { 
+            name: r[:area],
+          },
+        }
+      ]
+
+      return popolo
+
     end
 
   end
