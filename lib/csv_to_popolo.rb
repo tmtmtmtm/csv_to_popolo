@@ -29,16 +29,11 @@ class Popolo
         popolo[sym] = r[sym] if r.has_key? sym
       end
 
-      popolo[:memberships] = [
-        {
-          organization: { 
-            name: r[:faction],
-          },
-          area: { 
-            name: r[:area],
-          },
-        }
-      ]
+      if r.has_key?(:group)
+        membership = { organization: { name: r[:group] } }
+        membership[:area] = { name: r[:area] } if r.has_key?(:area)
+        popolo[:memberships] = [ membership ]
+      end
 
       return popolo
 

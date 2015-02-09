@@ -50,6 +50,10 @@ describe Popolo::CSV do
       ahde[:birth_date].must_equal '1954-05-20'
     end
 
+    it "shouldn't have any memberships" do
+      ahde[:memberships].must_be_nil
+    end
+
   end
 
 end 
