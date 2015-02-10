@@ -1,8 +1,6 @@
 require 'csv_to_popolo/version'
 require 'csv'
 
-VERSION = "0.0.1"
-
 class Popolo
   class CSV
     
@@ -17,6 +15,7 @@ class Popolo
 
     private 
     def popolo_for(r)
+
       as_is = [
         :id, :name, :family_name, :given_name, :additional_name, 
         :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
@@ -24,14 +23,23 @@ class Popolo
         :biography, :national_identity
       ]
 
+      remap = { 
+        first_name: :given_name,
+        last_name: :family_name,
+        organization: :group,
+        organisation: :group,
+      }
+
+      remap.each { |old, new| r[new] ||= r[old] if r.has_key? old }
+
       popolo = {}
       as_is.each do |sym|
         popolo[sym] = r[sym] if r.has_key? sym
       end
 
-      if r.has_key?(:group)
+      if r.has_key? :group
         membership = { organization: { name: r[:group] } }
-        membership[:area] = { name: r[:area] } if r.has_key?(:area)
+        membership[:area] = { name: r[:area] } if r.has_key? :area
         popolo[:memberships] = [ membership ]
       end
 

@@ -56,5 +56,27 @@ describe Popolo::CSV do
 
   end
 
+  describe "tcamp" do
+
+    subject { 
+      Popolo::CSV.new('t/data/tcamp.csv')
+    }
+
+    let(:steiny)  { subject.data.last }
+
+    it "should remap the given name" do
+      steiny[:given_name].must_equal 'Tom'
+    end
+
+    it "should remap the family name" do
+      steiny[:family_name].must_equal 'Steinberg'
+    end
+
+    it "should have rename the org name" do
+      steiny[:memberships].first[:organization][:name].must_equal 'mySociety'
+    end
+
+  end
+
 end 
 
