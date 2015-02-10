@@ -34,12 +34,12 @@ class Popolo
 
       popolo = {}
       as_is.each do |sym|
-        popolo[sym] = r[sym] if r.has_key? sym
+        popolo[sym] = r[sym] if r.has_key? sym and not r[sym].nil?
       end
 
-      if r.has_key? :group
+      if r.has_key? :group and not r[:group].nil?
         membership = { organization: { name: r[:group] } }
-        membership[:area] = { name: r[:area] } if r.has_key? :area
+        membership[:area] = { name: r[:area] } if r.has_key? :area and not r[:area].nil?
         popolo[:memberships] = [ membership ]
       end
 
