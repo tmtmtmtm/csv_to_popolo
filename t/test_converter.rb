@@ -78,6 +78,11 @@ describe Popolo::CSV do
         steiny[:memberships].first[:organization][:name].must_equal 'mySociety'
       end
 
+      it "should include the twitter handle" do
+        steiny[:contact_details].first[:type].must_equal 'twitter'
+        steiny[:contact_details].first[:value].must_equal 'steiny'
+      end
+
     end
 
     describe "orgless" do
@@ -94,6 +99,10 @@ describe Popolo::CSV do
 
       it "shouldn't have any memberships" do
         orgless[:memberships].must_be_nil
+      end
+
+      it "shouldn't have a twitter handle" do
+        orgless[:contact_details].must_be_nil
       end
 
     end

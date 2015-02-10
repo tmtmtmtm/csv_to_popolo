@@ -43,6 +43,14 @@ class Popolo
         popolo[:memberships] = [ membership ]
       end
 
+      if r.has_key? :twitter and not r[:twitter].nil?
+        twitter = { 
+          type: 'twitter',
+          value: r[:twitter],
+        }
+        popolo[:contact_details] = [ twitter ]
+      end
+
       return popolo
 
     end

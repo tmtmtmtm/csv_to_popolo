@@ -29,6 +29,7 @@ It currently handles data from the following columns:
 * `summary`
 * `biography`
 * `national_identity`
+* `twitter`
 
 (none of these are required — it will simply extra data from any
 suitably-named columns)
