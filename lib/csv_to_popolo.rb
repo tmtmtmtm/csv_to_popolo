@@ -51,6 +51,10 @@ class Popolo
         popolo[:contact_details] = [ twitter ]
       end
 
+      if r.has_key? :other_name and not r[:other_name].nil?
+        popolo[:other_names] = [ r[:other_name] ]
+      end
+
       return popolo
 
     end

@@ -9,7 +9,7 @@ It does not try to cover every possible scenario — the expected use-case
 is to quickly convert a simple table of data about legislators (e.g.
 their name, email, party, and consituency), and then fill in the more
 complex data by hand, or using a web-based system such as
-[Popit](https://popit.mysociety.org/)
+[PopIt](https://popit.mysociety.org/).
 
 It currently handles data from the following columns:
 * `id`
@@ -17,6 +17,7 @@ It currently handles data from the following columns:
 * `family_name`
 * `given_name`
 * `additional_name`
+* `other_name`
 * `honorific_prefix`
 * `honorific_suffix`
 * `patronymic_name`
