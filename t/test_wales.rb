@@ -9,7 +9,7 @@ describe "welsh assembly" do
     Popolo::CSV.new('t/data/welsh_assembly.csv')
   }
 
-  let(:asghar) { subject.data.find { |i| i[:id] == 130 } }
+  let(:asghar) { subject.data.find { |i| i[:id].end_with? '=130' } }
 
   it "should have the correct name" do
     asghar[:name].must_equal 'Mohammad Asghar'
