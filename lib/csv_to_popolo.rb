@@ -13,9 +13,40 @@ class Popolo
       ::CSV.table(@file, @csv_args).map { |r| popolo_for(r) }
     end
 
-    private 
     def popolo_for(r)
+      Record.new(r).as_popolo
+    end
 
+  end
+
+  class Record
+
+    def initialize(row)
+      @r = row
+    end
+
+    def given?(key)
+      @r.has_key? key and not @r[key].nil?
+    end
+
+    def memberships
+      return unless given? :group
+      membership = { organization: { name: @r[:group] } }
+      membership[:area] = { name: @r[:area] } if given? :area
+      return [ membership ]
+    end
+
+    def contact_details
+      return unless given? :twitter
+      twitter = { 
+        type: 'twitter',
+        value: @r[:twitter],
+      }
+      return [ twitter ]
+    end
+
+
+    def as_popolo
       as_is = [
         :id, :name, :family_name, :given_name, :additional_name, 
         :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
@@ -30,32 +61,21 @@ class Popolo
         organisation: :group,
       }
 
-      remap.each { |old, new| r[new] ||= r[old] if r.has_key? old }
+      remap.each { |old, new| @r[new] ||= @r[old] if given? old }
 
       popolo = {}
       as_is.each do |sym|
-        popolo[sym] = r[sym] if r.has_key? sym and not r[sym].nil?
+        popolo[sym] = @r[sym] if given? sym
       end
 
-      if r.has_key? :group and not r[:group].nil?
-        membership = { organization: { name: r[:group] } }
-        membership[:area] = { name: r[:area] } if r.has_key? :area and not r[:area].nil?
-        popolo[:memberships] = [ membership ]
+      popolo[:memberships] = memberships
+      popolo[:contact_details] = contact_details
+
+      if given? :other_name
+        popolo[:other_names] = [ @r[:other_name] ]
       end
 
-      if r.has_key? :twitter and not r[:twitter].nil?
-        twitter = { 
-          type: 'twitter',
-          value: r[:twitter],
-        }
-        popolo[:contact_details] = [ twitter ]
-      end
-
-      if r.has_key? :other_name and not r[:other_name].nil?
-        popolo[:other_names] = [ r[:other_name] ]
-      end
-
-      return popolo
+      return popolo.select { |_, v| !v.nil? }
 
     end
 
