@@ -29,11 +29,30 @@ class Popolo
       @r.has_key? key and not @r[key].nil?
     end
 
+
     def memberships
-      return unless given? :group
-      membership = { organization: { name: @r[:group] } }
+      (mems ||= []) << legislature 
+      (mems ||= []) << party       if given? :group
+      return mems
+    end
+
+    def legislature
+      membership = { 
+        # TODO way to provide name of legislature
+        organization_id:  'legislature',
+        role:             'representative',
+      }
       membership[:area] = { name: @r[:area] } if given? :area
-      return [ membership ]
+      return membership
+    end
+
+    def party
+      return unless given? :group
+      membership = { 
+        role:          'party representative',
+        organization:  { name: @r[:group] } 
+      }
+      return membership
     end
 
     def contact_details

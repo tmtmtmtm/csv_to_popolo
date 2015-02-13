@@ -20,7 +20,9 @@ describe "riigikogu" do
   end
 
   it "should have nested faction info" do
-    arto[:memberships].first[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
+    arto[:memberships].count.must_equal 2
+    party = arto[:memberships].find { |m| m[:role] == 'party representative' }
+    party[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
   end
 end
 

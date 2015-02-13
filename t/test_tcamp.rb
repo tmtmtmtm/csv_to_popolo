@@ -21,8 +21,8 @@ describe "tcamp" do
       steiny[:family_name].must_equal 'Steinberg'
     end
 
-    it "should have rename the org name" do
-      steiny[:memberships].first[:organization][:name].must_equal 'mySociety'
+    it "should rename the org name" do
+      steiny[:memberships].find { |m| m[:role] == 'party representative' }[:organization][:name].must_equal 'mySociety'
     end
 
     it "should include the twitter handle" do
@@ -44,12 +44,13 @@ describe "tcamp" do
       orgless[:family_name].must_be_nil
     end
 
-    it "shouldn't have any memberships" do
-      orgless[:memberships].must_be_nil
-    end
-
     it "shouldn't have a twitter handle" do
       orgless[:contact_details].must_be_nil
+    end
+
+    it "should only have bare legislative membership" do
+      orgless[:memberships].count.must_equal 1
+      orgless[:memberships].first[:role].must_equal 'representative'
     end
 
   end
