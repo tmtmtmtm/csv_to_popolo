@@ -3,15 +3,30 @@ require 'csv'
 
 class Popolo
   class CSV
+
+    @@opts = { 
+      headers:           true,
+      converters:        :numeric,
+      header_converters: :symbol 
+    }
     
-    def initialize(file)
-      @file = file
-      @csv_args = { :headers => true }
+    def initialize(csv)
+      raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
+      @csv = csv
+    end
+
+    def self.from_file(file)
+      new ::CSV.read(file, @@opts)
+    end
+
+    def self.from_data(data)
+      new ::CSV.parse(data, @@opts)
     end
 
     def data
-      ::CSV.table(@file, @csv_args).map { |r| popolo_for(r) }
+      @csv.map { |r| popolo_for(r) }
     end
+
 
     def popolo_for(r)
       Record.new(r).as_popolo

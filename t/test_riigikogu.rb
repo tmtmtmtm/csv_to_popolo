@@ -6,7 +6,7 @@ require 'minitest/autorun'
 describe "riigikogu" do
 
   subject { 
-    Popolo::CSV.new('t/data/riigikogu-members.csv')
+    Popolo::CSV.from_file('t/data/riigikogu-members.csv')
   }
 
   let(:arto)  { subject.data.find { |i| i[:name] == 'Arto Aas' } }

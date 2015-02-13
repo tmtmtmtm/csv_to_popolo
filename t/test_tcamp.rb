@@ -6,7 +6,7 @@ require 'minitest/autorun'
 describe "tcamp" do
 
   subject { 
-    Popolo::CSV.new('t/data/tcamp.csv')
+    Popolo::CSV.from_file('t/data/tcamp.csv')
   }
 
   describe "steiny" do

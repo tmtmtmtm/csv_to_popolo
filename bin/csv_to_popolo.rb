@@ -5,4 +5,4 @@ require 'json'
 
 file = ARGV.first or raise "Usage: #$0 <csvfile>"
 
-puts JSON.pretty_generate Popolo::CSV.new(file).data
+puts JSON.pretty_generate Popolo::CSV.from_file(file).data

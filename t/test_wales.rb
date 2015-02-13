@@ -6,7 +6,7 @@ require 'minitest/autorun'
 describe "welsh assembly" do
 
   subject { 
-    Popolo::CSV.new('t/data/welsh_assembly.csv')
+    Popolo::CSV.from_file('t/data/welsh_assembly.csv')
   }
 
   let(:asghar) { subject.data.find { |i| i[:id].end_with? '=130' } }
