@@ -65,7 +65,10 @@ class Popolo
       return unless given? :group
       membership = { 
         role:          'party representative',
-        organization:  { name: @r[:group] } 
+        organization:  { 
+          name: @r[:group],
+          classification: 'party',
+        } 
       }
       return membership
     end

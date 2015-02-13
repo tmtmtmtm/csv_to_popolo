@@ -23,6 +23,7 @@ describe "riigikogu" do
     arto[:memberships].count.must_equal 2
     party = arto[:memberships].find { |m| m[:role] == 'party representative' }
     party[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
+    party[:organization][:classification].must_equal 'party'
   end
 end
 
