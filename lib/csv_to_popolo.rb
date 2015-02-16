@@ -23,14 +23,21 @@ class Popolo
       new ::CSV.parse(data, @@opts)
     end
 
+    # http://stackoverflow.com/questions/5490952/merge-array-of-hashes-to-get-hash-of-arrays-of-values
     def data
-      { persons: @csv.map { |r| popolo_for(r) } }
+      @data ||= {}.tap { |r| uncombined_data.each { |h| h.each{ |k,v| (r[k]||=[]) << v } } }
     end
 
+    private
 
     def popolo_for(r)
       Record.new(r).as_popolo
     end
+
+    def uncombined_data 
+      @csv.map { |r| popolo_for(r) }
+    end
+
 
   end
 
@@ -112,7 +119,7 @@ class Popolo
         popolo[:other_names] = [ @r[:other_name] ]
       end
 
-      return popolo.select { |_, v| !v.nil? }
+      return { persons: popolo.select { |_, v| !v.nil? } }
 
     end
 
