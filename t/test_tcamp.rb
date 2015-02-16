@@ -11,7 +11,7 @@ describe "tcamp" do
 
   describe "steiny" do
 
-    let(:steiny)  { subject.data.first }
+    let(:steiny)  { subject.data[:persons].first }
 
     it "should remap the given name" do
       steiny[:given_name].must_equal 'Tom'
@@ -34,7 +34,7 @@ describe "tcamp" do
 
   describe "orgless" do
 
-    let(:orgless) { subject.data.last }
+    let(:orgless) { subject.data[:persons].last }
 
     it "should remap the given name" do
       orgless[:given_name].must_equal 'Orgless'

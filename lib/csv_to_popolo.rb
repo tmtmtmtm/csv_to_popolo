@@ -24,7 +24,7 @@ class Popolo
     end
 
     def data
-      @csv.map { |r| popolo_for(r) }
+      { persons: @csv.map { |r| popolo_for(r) } }
     end
 
 

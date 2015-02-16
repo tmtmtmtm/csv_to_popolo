@@ -9,7 +9,7 @@ describe "riigikogu" do
     Popolo::CSV.from_file('t/data/riigikogu-members.csv')
   }
 
-  let(:arto)  { subject.data.find { |i| i[:name] == 'Arto Aas' } }
+  let(:arto)  { subject.data[:persons].find { |i| i[:name] == 'Arto Aas' } }
 
   it "should have a record" do
     arto.class.must_equal Hash

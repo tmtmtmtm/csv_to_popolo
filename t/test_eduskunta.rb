@@ -9,7 +9,7 @@ describe "eduskunta" do
     Popolo::CSV.from_file('t/data/eduskunta.csv')
   }
 
-  let(:ahde)  { subject.data.find { |i| i[:id] == 104 } }
+  let(:ahde)  { subject.data[:persons].find { |i| i[:id] == 104 } }
 
   it "should have the correct name" do
     ahde[:name].must_equal 'Aho Esko'

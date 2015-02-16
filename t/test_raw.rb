@@ -12,7 +12,7 @@ Fred,Bloggs
 eos
   )}
 
-  let(:fred)  { subject.data.first }
+  let(:fred)  { subject.data[:persons].first }
 
   it "should have the given name" do
     fred[:given_name].must_equal 'Fred'
