@@ -43,6 +43,8 @@ class Popolo
 
   class Record
 
+    @@pid = 0
+
     def initialize(row)
       @r = row
     end
@@ -104,6 +106,10 @@ class Popolo
         organization: :group,
         organisation: :group,
       }
+
+      unless given? :id
+        @r[:id] = "person/#{@@pid+=1}" 
+      end
 
       remap.each { |old, new| @r[new] ||= @r[old] if given? old }
 

@@ -15,6 +15,10 @@ describe "eduskunta" do
     ahde[:name].must_equal 'Aho Esko'
   end
 
+  it "should have the correct id" do
+    ahde[:id].must_equal 104
+  end
+
   it "should have the correct family name" do
     ahde[:family_name].must_equal 'Aho'
   end

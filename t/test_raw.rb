@@ -3,7 +3,7 @@
 require 'csv_to_popolo'
 require 'minitest/autorun'
 
-describe "tcamp" do
+describe "rawdata" do
 
   subject { 
     Popolo::CSV.from_data(<<-eos
@@ -20,6 +20,10 @@ eos
 
   it "should have the family name" do
     fred[:family_name].must_equal 'Bloggs'
+  end
+
+  it "should be given an id" do
+    fred[:id].must_match /person\/\d/
   end
 
 end

@@ -55,5 +55,20 @@ describe "tcamp" do
 
   end
 
+  describe "combo" do
+
+    let(:ids) { subject.data[:persons].map { |p| p[:id] } }
+
+    it "should give everyone unique ids" do
+      ids.length.must_equal 3
+      ids.uniq.length.must_equal 3
+    end
+
+    it "should give everyone ids of form /person/<ID>" do
+      ids.sample.must_match /^person\/\d+$/
+    end
+
+  end
+
 end
 
