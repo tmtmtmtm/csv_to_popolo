@@ -10,6 +10,7 @@ describe "eduskunta" do
   }
 
   let(:ahde)  { subject.data[:persons].find { |i| i[:id] == 104 } }
+  let(:mems)  { subject.data[:memberships].find_all { |i| i[:person_id] == 104 } }
 
   it "should have the correct name" do
     ahde[:name].must_equal 'Aho Esko'
@@ -32,9 +33,9 @@ describe "eduskunta" do
   end
 
   it "should only have bare legislative membership" do
-    ahde[:memberships].count.must_equal 1
-    ahde[:memberships].first[:role].must_equal 'representative'
-    ahde[:memberships].first[:person_id].must_equal ahde[:id]
+    mems.count.must_equal 1
+    mems.first[:role].must_equal 'representative'
+    mems.first[:person_id].must_equal ahde[:id]
   end
 
 end

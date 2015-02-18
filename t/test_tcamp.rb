@@ -12,6 +12,7 @@ describe "tcamp" do
   describe "steiny" do
 
     let(:steiny)  { subject.data[:persons].first }
+    let(:mems)    { subject.data[:memberships].find_all { |m| m[:person_id] == steiny[:id] } }
 
     it "should remap the given name" do
       steiny[:given_name].must_equal 'Tom'
@@ -22,7 +23,7 @@ describe "tcamp" do
     end
 
     it "should rename the org name" do
-      steiny[:memberships].find { |m| m[:role] == 'party representative' }[:organization][:name].must_equal 'mySociety'
+      mems.find { |m| m[:role] == 'party representative' }[:organization][:name].must_equal 'mySociety'
     end
 
     it "should include the twitter handle" do
@@ -35,6 +36,7 @@ describe "tcamp" do
   describe "orgless" do
 
     let(:orgless) { subject.data[:persons].last }
+    let(:mems)    { subject.data[:memberships].find_all { |m| m[:person_id] == orgless[:id] } }
 
     it "should remap the given name" do
       orgless[:given_name].must_equal 'Orgless'
@@ -49,8 +51,8 @@ describe "tcamp" do
     end
 
     it "should only have bare legislative membership" do
-      orgless[:memberships].count.must_equal 1
-      orgless[:memberships].first[:role].must_equal 'representative'
+      mems.count.must_equal 1
+      mems.first[:role].must_equal 'representative'
     end
 
   end

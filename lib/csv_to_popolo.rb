@@ -55,9 +55,7 @@ class Popolo
 
 
     def memberships
-      (mems ||= []) << legislature 
-      (mems ||= []) << party       if given? :group
-      return mems
+      [legislature, party].compact
     end
 
     def legislature
@@ -75,8 +73,8 @@ class Popolo
       return unless given? :group
       membership = { 
         role:          'party representative',
+        person_id: @r[:id],
         organization:  { 
-          person_id: @r[:id],
           name: @r[:group],
           classification: 'party',
         } 
@@ -120,14 +118,16 @@ class Popolo
         popolo[sym] = @r[sym] if given? sym
       end
 
-      popolo[:memberships] = memberships
       popolo[:contact_details] = contact_details
 
       if given? :other_name
         popolo[:other_names] = [ @r[:other_name] ]
       end
 
-      return { persons: [ popolo.select { |_, v| !v.nil? } ] }
+      return { 
+        persons: [ popolo.select { |_, v| !v.nil? } ],
+        memberships: memberships,
+      }
 
     end
 

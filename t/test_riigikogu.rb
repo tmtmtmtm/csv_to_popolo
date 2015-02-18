@@ -10,6 +10,7 @@ describe "riigikogu" do
   }
 
   let(:arto)  { subject.data[:persons].find { |i| i[:name] == 'Arto Aas' } }
+  let(:mems)  { subject.data[:memberships].find_all { |i| i[:person_id] == arto[:id] } }
 
   it "should have a record" do
     arto.class.must_equal Hash
@@ -20,8 +21,8 @@ describe "riigikogu" do
   end
 
   it "should have nested faction info" do
-    arto[:memberships].count.must_equal 2
-    party = arto[:memberships].find { |m| m[:role] == 'party representative' }
+    mems.count.must_equal 2
+    party = mems.find { |m| m[:role] == 'party representative' }
     party[:organization][:name].must_equal 'Eesti Reformierakonna fraktsioon'
     party[:organization][:classification].must_equal 'party'
   end
