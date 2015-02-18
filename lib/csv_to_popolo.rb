@@ -55,7 +55,14 @@ class Popolo
 
 
     def memberships
-      [legislature, party].compact
+      mems = []
+      mems << legislature
+      mems << party_membership if party
+      mems
+    end
+
+    def organizations
+      [party].compact
     end
 
     def legislature
@@ -71,15 +78,20 @@ class Popolo
 
     def party
       return unless given? :group
-      membership = { 
-        role:          'party representative',
-        person_id: @r[:id],
-        organization:  { 
-          name: @r[:group],
-          classification: 'party',
-        } 
+      @party ||= { 
+        id: "party/#{SecureRandom.uuid}",
+        name: @r[:group],
+        classification: 'party',
       }
-      return membership
+    end
+
+    def party_membership
+      org = party or return
+      @party_membership ||= { 
+        role:  'party representative',
+        person_id: @r[:id],
+        organization_id: org[:id],
+      }
     end
 
     def contact_details
@@ -126,6 +138,7 @@ class Popolo
     def as_popolo
       return {
         persons: [ person ],
+        organizations: organizations,
         memberships: memberships,
       }
     end

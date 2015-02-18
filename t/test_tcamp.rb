@@ -12,8 +12,8 @@ describe "tcamp" do
   describe "steiny" do
 
     let(:steiny)  { subject.data[:persons].first }
-    let(:orgs)    { subject.data[:organizations].find_all { |m| m[:person_id] == steiny[:id] } }
-    let(:mems)    { subject.data[:memberships].find_all   { |m| m[:person_id] == steiny[:id] } }
+    let(:orgs)    { subject.data[:organizations] }
+    let(:mems)    { subject.data[:memberships].find_all { |m| m[:person_id] == steiny[:id] } }
 
     it "should remap the given name" do
       steiny[:given_name].must_equal 'Tom'
@@ -24,7 +24,10 @@ describe "tcamp" do
     end
 
     it "should rename the org name" do
-      mems.find { |m| m[:role] == 'party representative' }[:organization][:name].must_equal 'mySociety'
+      pmem = mems.find { |m| m[:role] == 'party representative' }
+      oids = orgs.map { |o| o[:id] }
+      party = orgs.find { |o| o[:id] == pmem[:organization_id] }
+      party[:name].must_equal 'mySociety'
     end
 
     it "should include the twitter handle" do
