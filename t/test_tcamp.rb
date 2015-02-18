@@ -12,7 +12,8 @@ describe "tcamp" do
   describe "steiny" do
 
     let(:steiny)  { subject.data[:persons].first }
-    let(:mems)    { subject.data[:memberships].find_all { |m| m[:person_id] == steiny[:id] } }
+    let(:orgs)    { subject.data[:organizations].find_all { |m| m[:person_id] == steiny[:id] } }
+    let(:mems)    { subject.data[:memberships].find_all   { |m| m[:person_id] == steiny[:id] } }
 
     it "should remap the given name" do
       steiny[:given_name].must_equal 'Tom'
@@ -66,8 +67,8 @@ describe "tcamp" do
       ids.uniq.length.must_equal 3
     end
 
-    it "should give everyone ids of form /person/<ID>" do
-      ids.sample.must_match /^person\/\d+$/
+    it "should give everyone ids of form /person/<hexstring>" do
+      ids.sample.must_match /^person\/[[:xdigit:]]+/
     end
 
   end

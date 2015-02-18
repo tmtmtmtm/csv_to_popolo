@@ -1,5 +1,6 @@
 require 'csv_to_popolo/version'
 require 'csv'
+require 'securerandom'
 
 class Popolo
   class CSV
@@ -43,10 +44,9 @@ class Popolo
 
   class Record
 
-    @@pid = 0
-
     def initialize(row)
       @r = row
+      @r[:id] = "person/#{SecureRandom.uuid}" unless given? :id
     end
 
     def given?(key)
@@ -105,10 +105,6 @@ class Popolo
         organization: :group,
         organisation: :group,
       }
-
-      unless given? :id
-        @r[:id] = "person/#{@@pid+=1}" 
-      end
 
       remap.each { |old, new| @r[new] ||= @r[old] if given? old }
 

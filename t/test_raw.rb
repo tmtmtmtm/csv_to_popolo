@@ -23,7 +23,7 @@ eos
   end
 
   it "should be given an id" do
-    fred[:id].must_match /person\/\d/
+    fred[:id].must_match /person\/[[:xdigit:]]+/
   end
 
 end
