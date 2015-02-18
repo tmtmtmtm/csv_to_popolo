@@ -34,6 +34,7 @@ describe "eduskunta" do
   it "should only have bare legislative membership" do
     ahde[:memberships].count.must_equal 1
     ahde[:memberships].first[:role].must_equal 'representative'
+    ahde[:memberships].first[:person_id].must_equal ahde[:id]
   end
 
 end

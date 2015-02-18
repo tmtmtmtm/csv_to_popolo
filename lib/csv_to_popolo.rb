@@ -63,6 +63,7 @@ class Popolo
     def legislature
       membership = { 
         # TODO way to provide name of legislature
+        person_id:        @r[:id],
         organization_id:  'legislature',
         role:             'representative',
       }
@@ -75,6 +76,7 @@ class Popolo
       membership = { 
         role:          'party representative',
         organization:  { 
+          person_id: @r[:id],
           name: @r[:group],
           classification: 'party',
         } 
