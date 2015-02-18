@@ -91,8 +91,7 @@ class Popolo
       return [ twitter ]
     end
 
-
-    def as_popolo
+    def person
       as_is = [
         :id, :name, :family_name, :given_name, :additional_name, 
         :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
@@ -124,11 +123,15 @@ class Popolo
         popolo[:other_names] = [ @r[:other_name] ]
       end
 
-      return { 
-        persons: [ popolo.select { |_, v| !v.nil? } ],
+      return popolo.select { |_, v| !v.nil? } 
+
+    end
+
+    def as_popolo
+      return {
+        persons: [ person ],
         memberships: memberships,
       }
-
     end
 
   end
