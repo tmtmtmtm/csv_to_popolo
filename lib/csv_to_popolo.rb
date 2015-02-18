@@ -25,7 +25,7 @@ class Popolo
 
     # http://stackoverflow.com/questions/5490952/merge-array-of-hashes-to-get-hash-of-arrays-of-values
     def data
-      @data ||= {}.tap { |r| uncombined_data.each { |h| h.each{ |k,v| (r[k]||=[]) << v } } }
+      @data ||= {}.tap { |r| uncombined_data.each { |h| h.each{ |k,v| (r[k]||=[]).concat v } } }
     end
 
     private
@@ -125,7 +125,7 @@ class Popolo
         popolo[:other_names] = [ @r[:other_name] ]
       end
 
-      return { persons: popolo.select { |_, v| !v.nil? } }
+      return { persons: [ popolo.select { |_, v| !v.nil? } ] }
 
     end
 
