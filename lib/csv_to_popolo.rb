@@ -24,9 +24,12 @@ class Popolo
       new ::CSV.parse(data, @@opts)
     end
 
-    # http://stackoverflow.com/questions/5490952/merge-array-of-hashes-to-get-hash-of-arrays-of-values
     def data
-      @data ||= {}.tap { |r| uncombined_data.each { |h| h.each{ |k,v| (r[k]||=[]).concat v } } }
+      @data ||= {
+        persons:       uncombined_data.flat_map { |r| r[:persons]       }.uniq,
+        organizations: uncombined_data.flat_map { |r| r[:organizations] }.uniq,
+        memberships:   uncombined_data.flat_map { |r| r[:memberships]   }.uniq,
+      }
     end
 
     private
@@ -36,13 +39,15 @@ class Popolo
     end
 
     def uncombined_data 
-      @csv.map { |r| popolo_for(r) }
+      @uc ||= @csv.map { |r| popolo_for(r) }
     end
 
 
   end
 
   class Record
+
+    @@orgs = {}
 
     def initialize(row)
       @r = row
@@ -76,13 +81,17 @@ class Popolo
       return membership
     end
 
-    def party
-      return unless given? :group
-      @party ||= { 
+    def find_or_create_party(name)
+      @@orgs[name] ||= {
         id: "party/#{SecureRandom.uuid}",
         name: @r[:group],
         classification: 'party',
       }
+    end
+
+    def party
+      return unless given? :group
+      @party ||= find_or_create_party(@r[:group])
     end
 
     def party_membership
