@@ -24,7 +24,7 @@ describe "riigikogu" do
   it "should have nested faction info" do
     mems.count.must_equal 2
     party_mem = mems.find { |m| m[:role] == 'party representative' }
-    party = orgs.find { |o| o[:organization_id] == party_mem[:id] }
+    party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
     party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
     party[:classification].must_equal 'party'
   end

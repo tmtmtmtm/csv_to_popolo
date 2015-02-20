@@ -28,10 +28,24 @@ describe "welsh assembly" do
   describe "Parties" do
 
     let(:parties) { subject.data[:organizations].find_all { |o| o[:classification] == 'party' } }
-    
+
     it "should have unique parties" do
       names = parties.map { |p| p[:name] }
       names.count.must_equal names.uniq.count
+    end
+
+  end
+
+  describe "Legislature" do
+
+    let(:assembly) { subject.data[:organizations].find_all { |o| o[:classification] == 'legislature' } }
+
+    it "should have one legislature" do
+      assembly.count.must_equal 1
+    end
+
+    it "should have a correctly named legislature" do
+      assembly.first[:name].must_equal 'Legislature'
     end
 
   end

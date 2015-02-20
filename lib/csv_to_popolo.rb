@@ -61,18 +61,26 @@ class Popolo
 
     def memberships
       mems = []
-      mems << legislature
+      mems << legislature_membership
       mems << party_membership if party
       mems
     end
 
     def organizations
-      [party].compact
+      [legislature, party].compact
     end
 
     def legislature
+      # TODO way to provide name of legislature
+      @@orgs['legislature'] ||= {
+        id: 'legislature',
+        name: 'Legislature',
+        classification: 'legislature',
+      }
+    end
+
+    def legislature_membership
       membership = { 
-        # TODO way to provide name of legislature
         person_id:        @r[:id],
         organization_id:  'legislature',
         role:             'representative',
