@@ -99,11 +99,11 @@ class Popolo
     end
 
     def executive_memberships 
-      @_emems ||= @csv.find_all { |r| r.has_key? :post and !r[:post].nil? }.map do |r|
+      @_emems ||= @csv.find_all { |r| r.has_key? :executive and !r[:executive].nil? }.map do |r|
         { 
           person_id:        r[:id],
           organization_id:  'executive',
-          role:             r[:post],
+          role:             r[:executive],
         }
       end
     end
