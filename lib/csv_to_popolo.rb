@@ -13,7 +13,7 @@ class Popolo
     
     def initialize(csv)
       raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
-      # Make sure every row has an ID
+      # Make sure every row has an ID. NB: CSV::Table has no map! method
       @csv = csv.map do |r| 
         r[:id] ||= "person/#{SecureRandom.uuid}" 
         r
@@ -36,8 +36,16 @@ class Popolo
       }
     end
 
+    def persons
+      @csv.map { |r| Person.new(r).as_popolo }
+    end
+
     def organizations
       parties + legislatures
+    end
+
+    def memberships 
+      party_memberships + legislative_memberships
     end
 
     def parties 
@@ -60,10 +68,6 @@ class Popolo
       }]
     end
 
-    def memberships 
-      party_memberships + legislative_memberships
-    end
-
     def party_memberships 
       @_pmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         { 
@@ -84,11 +88,6 @@ class Popolo
       end
     end
 
-    def persons
-      @csv.map { |r| Person.new(r).as_popolo }
-    end
-
-
 
     private
 
@@ -103,7 +102,6 @@ class Popolo
 
     def initialize(row)
       @r = row
-      @r[:id] = "person/#{SecureRandom.uuid}" unless given? :id
     end
 
     def given?(key)
