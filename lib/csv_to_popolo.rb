@@ -30,18 +30,18 @@ class Popolo
 
     def data
       @data ||= {
-        persons:       uncombined_data.flat_map { |r| r[:persons]       }.uniq,
+        persons:       uncombined_data.flat_map { |r| r[:persons] }.uniq,
         organizations: organizations,
-        memberships:   uncombined_data.flat_map { |r| r[:memberships]   }.uniq,
+        memberships:   memberships,
       }
     end
 
     def organizations
-      parties + legislature
+      parties + legislatures
     end
 
     def parties 
-      @csv.find_all { |r| r.has_key? :group }.uniq { |r| r[:group] }.map do |r| 
+      @_parties ||= @csv.find_all { |r| r.has_key? :group }.uniq { |r| r[:group] }.map do |r| 
         {
           id: r[:group_id] || "party/#{SecureRandom.uuid}",
           name: r[:group],
@@ -52,7 +52,7 @@ class Popolo
 
     # For now, assume that we always have a legislature
     # TODO cope with a file that *only* lists executive posts
-    def legislature
+    def legislatures
       [{
         id: 'legislature',
         name: 'Legislature', 
@@ -60,9 +60,38 @@ class Popolo
       }]
     end
 
+    def memberships 
+      party_memberships + legislative_memberships
+    end
+
+    def party_memberships 
+      @_pmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
+        { 
+          person_id: r[:id],
+          organization_id: r[:group_id] || find_party_id(r[:group]),
+          role: 'party representative',
+        }
+      end
+    end
+
+    def legislative_memberships 
+      @_lmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
+        { 
+          person_id:        r[:id],
+          organization_id:  'legislature',
+          role:             'representative',
+        }
+      end
+    end
+
+
 
 
     private
+
+    def find_party_id(name)
+      (parties.find { |p| p[:name] == name } or return)[:id]
+    end
 
     def popolo_for(r)
       Record.new(r).as_popolo
