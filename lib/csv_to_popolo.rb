@@ -117,59 +117,6 @@ class Popolo
       @r.has_key? key and not @r[key].nil?
     end
 
-
-    def memberships
-      mems = []
-      mems << legislature_membership
-      mems << party_membership if party
-      mems
-    end
-
-    def organizations
-      [legislature, party].compact
-    end
-
-    def legislature
-      # TODO way to provide name of legislature
-      @@orgs['legislature'] ||= {
-        id: 'legislature',
-        name: 'Legislature',
-        classification: 'legislature',
-      }
-    end
-
-    def legislature_membership
-      membership = { 
-        person_id:        @r[:id],
-        organization_id:  'legislature',
-        role:             'representative',
-      }
-      membership[:area] = { name: @r[:area] } if given? :area
-      return membership
-    end
-
-    def find_or_create_party(name)
-      @@orgs[name] ||= {
-        id: @r[:group_id] || "party/#{SecureRandom.uuid}",
-        name: @r[:group],
-        classification: 'party',
-      }
-    end
-
-    def party
-      return unless given? :group
-      @party ||= find_or_create_party(@r[:group])
-    end
-
-    def party_membership
-      org = party or return
-      @party_membership ||= { 
-        role:  'party representative',
-        person_id: @r[:id],
-        organization_id: org[:id],
-      }
-    end
-
     def contact_details
       return unless given? :twitter
       twitter = { 
@@ -214,8 +161,6 @@ class Popolo
     def as_popolo
       return {
         persons: [ person ],
-        organizations: organizations,
-        memberships: memberships,
       }
     end
 
