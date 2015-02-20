@@ -32,10 +32,8 @@ describe "eduskunta" do
     ahde[:birth_date].must_equal '1954-05-20'
   end
 
-  it "should only have bare legislative membership" do
-    mems.count.must_equal 1
-    mems.first[:role].must_equal 'representative'
-    mems.first[:person_id].must_equal ahde[:id]
+  it "should have no legislative membership" do
+    mems.count.must_equal 0
   end
 
 end
