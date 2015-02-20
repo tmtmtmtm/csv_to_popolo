@@ -6,7 +6,7 @@ require 'minitest/autorun'
 describe "eduskunta" do
 
   subject { 
-    Popolo::CSV.from_file('t/data/eduskunta.csv')
+    Popolo::CSV.from_file('t/data/eduskunta_mini.csv')
   }
 
   let(:ahde)  { subject.data[:persons].find { |i| i[:id] == 104 } }
