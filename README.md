@@ -45,6 +45,9 @@ a given region/constituency.
 Basic Membership records will therefore be generated from the following
 optional columns:
 
-* `group` 
 * `area` 
+* `group` 
+
+An optional `group_id` can also be given, if you wish to use predefined
+identifiers, otherwise a unique ID will be allocated.
 

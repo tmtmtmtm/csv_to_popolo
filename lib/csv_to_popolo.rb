@@ -91,7 +91,7 @@ class Popolo
 
     def find_or_create_party(name)
       @@orgs[name] ||= {
-        id: "party/#{SecureRandom.uuid}",
+        id: @r[:group_id] || "party/#{SecureRandom.uuid}",
         name: @r[:group],
         classification: 'party',
       }
