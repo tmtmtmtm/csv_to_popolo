@@ -27,10 +27,36 @@ class Popolo
     def data
       @data ||= {
         persons:       uncombined_data.flat_map { |r| r[:persons]       }.uniq,
-        organizations: uncombined_data.flat_map { |r| r[:organizations] }.uniq,
+        organizations: organizations,
         memberships:   uncombined_data.flat_map { |r| r[:memberships]   }.uniq,
       }
     end
+
+    def organizations
+      parties + legislature
+    end
+
+    def parties 
+      @csv.find_all { |r| r.has_key? :group }.uniq { |r| r[:group] }.map do |r| 
+        {
+          id: r[:group_id] || "party/#{SecureRandom.uuid}",
+          name: r[:group],
+          classification: 'party',
+        }
+      end
+    end
+
+    # For now, assume that we always have a legislature
+    # TODO cope with a file that *only* lists executive posts
+    def legislature
+      [{
+        id: 'legislature',
+        name: 'Legislature', 
+        classification: 'legislature',
+      }]
+    end
+
+
 
     private
 
