@@ -30,7 +30,7 @@ class Popolo
 
     def data
       @data ||= {
-        persons:       uncombined_data.flat_map { |r| r[:persons] }.uniq,
+        persons:       persons,
         organizations: organizations,
         memberships:   memberships,
       }
@@ -84,6 +84,9 @@ class Popolo
       end
     end
 
+    def persons
+      @csv.map { |r| Person.new(r).as_popolo }
+    end
 
 
 
@@ -93,20 +96,10 @@ class Popolo
       (parties.find { |p| p[:name] == name } or return)[:id]
     end
 
-    def popolo_for(r)
-      Record.new(r).as_popolo
-    end
-
-    def uncombined_data 
-      @uc ||= @csv.map { |r| popolo_for(r) }
-    end
-
 
   end
 
-  class Record
-
-    @@orgs = {}
+  class Person
 
     def initialize(row)
       @r = row
@@ -126,7 +119,7 @@ class Popolo
       return [ twitter ]
     end
 
-    def person
+    def as_popolo
       as_is = [
         :id, :name, :family_name, :given_name, :additional_name, 
         :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
@@ -156,12 +149,6 @@ class Popolo
 
       return popolo.select { |_, v| !v.nil? } 
 
-    end
-
-    def as_popolo
-      return {
-        persons: [ person ],
-      }
     end
 
   end
