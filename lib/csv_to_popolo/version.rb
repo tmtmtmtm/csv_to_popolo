@@ -1,3 +1,3 @@
 module Popolo_CSV
-  VERSION = "0.4.3"
+  VERSION = "0.5"
 end

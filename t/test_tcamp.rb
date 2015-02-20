@@ -54,9 +54,8 @@ describe "tcamp" do
       orgless[:contact_details].must_be_nil
     end
 
-    it "should only have bare legislative membership" do
-      mems.count.must_equal 1
-      mems.first[:role].must_equal 'representative'
+    it "should only have no legislative membership" do
+      mems.count.must_equal 0
     end
 
   end
