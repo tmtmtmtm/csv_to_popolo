@@ -50,5 +50,31 @@ describe "welsh assembly" do
 
   end
 
+  describe "First Minister" do
+    
+    let(:executive) { subject.data[:organizations].find { |o| o[:id] == 'executive' } }
+    let(:fmin) { subject.data[:persons].find         { |p| p[:id].end_with? '=102' } }
+    let(:mems) { subject.data[:memberships].find_all { |m| m[:person_id] == fmin[:id] } }
+
+    it "should have three memberships" do
+      mems.count.must_equal 3
+    end
+
+    it "should have Assembly membership" do
+      mems.find { |m| m[:role] == 'representative' }[:area][:name].must_equal 'Bridgend'
+    end
+
+    it "should have Party membership" do
+      mems.find { |m| m[:role] == 'party representative' }[:organization_id].must_match /^party/
+    end
+
+    it "should have Executive membership" do
+      execm = mems.find_all { |m| m[:organization_id] == executive[:id] }
+      execm.count.must_equal 1
+      execm.first[:role].must_equal 'The First Minister'
+    end
+
+  end
 
 end
+
