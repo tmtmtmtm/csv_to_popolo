@@ -13,7 +13,11 @@ class Popolo
     
     def initialize(csv)
       raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
-      @csv = csv
+      # Make sure every row has an ID
+      @csv = csv.map do |r| 
+        r[:id] ||= "person/#{SecureRandom.uuid}" 
+        r
+      end
     end
 
     def self.from_file(file)
