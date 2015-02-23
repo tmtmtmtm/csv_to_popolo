@@ -2,6 +2,8 @@
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
+require 'json'
+require 'json-schema'
 
 describe "welsh assembly" do
 
@@ -75,6 +77,15 @@ describe "welsh assembly" do
       execm.first[:role].must_equal 'The First Minister'
     end
 
+  end
+
+  describe "validation" do
+    it "should validate" do
+      json = JSON.parse(subject.data.to_json)
+      %w(person organization membership).each do |type|
+        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+      end
+    end
   end
 
 end

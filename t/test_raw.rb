@@ -2,6 +2,8 @@
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
+require 'json'
+require 'json-schema'
 
 describe "rawdata" do
 
@@ -24,6 +26,13 @@ eos
 
   it "should be given an id" do
     fred[:id].must_match /person\/[[:xdigit:]]+/
+  end
+
+  it "should validate" do
+    json = JSON.parse(subject.data.to_json)
+    %w(person organization membership).each do |type|
+      JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+    end
   end
 
 end

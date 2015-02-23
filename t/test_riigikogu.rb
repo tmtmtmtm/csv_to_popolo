@@ -2,6 +2,8 @@
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
+require 'json'
+require 'json-schema'
 
 describe "riigikogu" do
 
@@ -27,6 +29,13 @@ describe "riigikogu" do
     party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
     party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
     party[:classification].must_equal 'party'
+  end
+
+  it "should validate" do
+    json = JSON.parse(subject.data.to_json)
+    %w(person organization membership).each do |type|
+      JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+    end
   end
 end
 

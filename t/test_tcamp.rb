@@ -2,6 +2,8 @@
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
+require 'json'
+require 'json-schema'
 
 describe "tcamp" do
 
@@ -71,6 +73,17 @@ describe "tcamp" do
 
     it "should give everyone ids of form /person/<hexstring>" do
       ids.sample.must_match /^person\/[[:xdigit:]]+/
+    end
+
+  end
+
+  describe "validation" do
+
+    it "should validate" do
+      json = JSON.parse(subject.data.to_json)
+      %w(person organization membership).each do |type|
+        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+      end
     end
 
   end
