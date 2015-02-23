@@ -2,6 +2,8 @@
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
+require 'json'
+require 'json-schema'
 
 describe "eduskunta" do
 
@@ -34,6 +36,13 @@ describe "eduskunta" do
 
   it "should have no legislative membership" do
     mems.count.must_equal 0
+  end
+
+  it "should validate" do
+    json = JSON.parse(subject.data.to_json)
+    %w(person organization membership).each do |type|
+      JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+    end
   end
 
 end
