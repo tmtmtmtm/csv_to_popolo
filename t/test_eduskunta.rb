@@ -9,8 +9,8 @@ describe "eduskunta" do
     Popolo::CSV.from_file('t/data/eduskunta.csv')
   }
 
-  let(:ahde)  { subject.data[:persons].find           { |p| p[:id] == 104 } }
-  let(:mems)  { subject.data[:memberships].find_all   { |m| m[:person_id] == 104 } }
+  let(:ahde)  { subject.data[:persons].find           { |p| p[:id] == '104' } }
+  let(:mems)  { subject.data[:memberships].find_all   { |m| m[:person_id] == '104' } }
   let(:kesk)  { subject.data[:organizations].find     { |o| o[:name] == 'Finnish Centre Party' } }
 
   it "should set party name correctly" do
