@@ -162,7 +162,7 @@ class Popolo
       popolo[:contact_details] = contact_details
 
       if given? :other_name
-        popolo[:other_names] = [ @r[:other_name] ]
+        popolo[:other_names] = [{ name: @r[:other_name] }]
       end
 
       return popolo.select { |_, v| !v.nil? } 

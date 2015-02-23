@@ -20,7 +20,8 @@ describe "welsh assembly" do
     it "should have other_names" do
       asghar[:other_names].class.must_equal Array
       asghar[:other_names].count.must_equal 1
-      asghar[:other_names].first.must_equal 'Oscar'
+      asghar[:other_names].first.class.must_equal Hash
+      asghar[:other_names].first[:name].must_equal 'Oscar'
     end
 
   end
