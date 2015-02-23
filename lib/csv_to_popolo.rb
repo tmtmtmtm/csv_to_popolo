@@ -7,7 +7,6 @@ class Popolo
 
     @@opts = { 
       headers:           true,
-      converters:        :numeric,
       header_converters: :symbol 
     }
     
