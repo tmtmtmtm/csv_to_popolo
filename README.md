@@ -51,6 +51,8 @@ optional columns:
 An optional `group_id` can also be given, if you wish to use predefined
 identifiers, otherwise a unique ID will be allocated.
 
+An optional `start_date` can also given for the membership.
+
 ## Executive Posts
 
 If members of the legislature can also hold executive positions (e.g.

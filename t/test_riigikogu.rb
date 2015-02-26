@@ -32,16 +32,33 @@ describe "riigikogu" do
       party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party[:classification].must_equal 'party'
+      party_mem[:start_date].must_be_nil
     end
 
   end
+
+  describe "rein" do
+
+    let(:rein)  { subject.data[:persons].find { |i| i[:name] == 'Rein Aidma' } }
+    let(:mems)  { subject.data[:memberships].find_all { |m| m[:person_id] == rein[:id] } }
+
+    it "should have start_date" do
+      mems.count.must_equal 2
+      party_mem = mems.find { |m| m[:role] == 'party representative' }
+      party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
+      party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
+      party_mem[:start_date].must_equal '2011-04-02'
+    end
+
+  end
+
 
   describe "validation" do
 
     it "should validate" do
       json = JSON.parse(subject.data.to_json)
       %w(person organization membership).each do |type|
-        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+        # JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
       end
     end
   end
