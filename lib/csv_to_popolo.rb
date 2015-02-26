@@ -82,6 +82,7 @@ class Popolo
           organization_id: r[:group_id] || find_party_id(r[:group]),
           role: 'party representative',
           start_date: r[:start_date],
+          end_date: r[:end_date],
         }.select { |_, v| !v.nil? } 
       end
     end
