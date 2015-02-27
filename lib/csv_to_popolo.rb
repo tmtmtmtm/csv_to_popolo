@@ -22,10 +22,6 @@ class Popolo
       new SmarterCSV.process(file, @@opts)
     end
 
-    def self.from_data(data)
-      new SmarterCSV.process(data, @@opts)
-    end
-
     def data
       @data ||= {
         persons:       persons,

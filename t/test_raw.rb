@@ -8,7 +8,7 @@ require 'json-schema'
 describe "rawdata" do
 
   subject { 
-    Popolo::CSV.from_data(<<-eos
+    Popolo::CSV.from_file(StringIO.new <<-eos
 given_name,family_name
 Fred,Bloggs
 eos
