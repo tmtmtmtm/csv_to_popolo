@@ -7,6 +7,12 @@ class Popolo
 
     @@opts = { 
       convert_values_to_numeric: false,
+      key_mapping: {
+        first_name: :given_name,
+        last_name: :family_name,
+        organization: :group,
+        organisation: :group,
+      },
     }
     
     def initialize(csv)
@@ -140,15 +146,6 @@ class Popolo
         :email, :gender, :birth_date, :death_date, :image, :summary,
         :biography, :national_identity
       ]
-
-      remap = { 
-        first_name: :given_name,
-        last_name: :family_name,
-        organization: :group,
-        organisation: :group,
-      }
-
-      remap.each { |old, new| @r[new] ||= @r[old] if given? old }
 
       popolo = {}
       as_is.each do |sym|
