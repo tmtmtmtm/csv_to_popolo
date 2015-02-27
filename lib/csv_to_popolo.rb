@@ -15,17 +15,9 @@ class Popolo
       },
     }
     
-    def initialize(csv)
-      # raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
-      # Make sure every row has an ID. NB: CSV::Table has no map! method
-      @csv = csv.map do |r| 
-        r[:id] ||= "person/#{SecureRandom.uuid}" 
-        r
-      end
-    end
-
-    def self.from_file(file)
-      new SmarterCSV.process(file, @@opts)
+    def initialize(file)
+      @csv = SmarterCSV.process(file, @@opts)
+      @csv.each { |r| r[:id] ||= "person/#{SecureRandom.uuid}" }
     end
 
     def data

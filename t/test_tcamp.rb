@@ -8,7 +8,7 @@ require 'json-schema'
 describe "tcamp" do
 
   subject { 
-    Popolo::CSV.from_file('t/data/tcamp.csv')
+    Popolo::CSV.new('t/data/tcamp.csv')
   }
 
   describe "steiny" do
