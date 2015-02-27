@@ -69,6 +69,16 @@ describe "riigikogu" do
 
   end
 
+  describe "tõnis" do
+
+    let(:tõnis) { subject.data[:persons].find { |i| i[:name] == 'Tõnis Kõiv' } }
+
+    it "should handle unicode names" do
+      tõnis[:name].must_equal 'Tõnis Kõiv'
+    end
+
+  end
+
 
   describe "validation" do
 

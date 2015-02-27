@@ -1,17 +1,16 @@
 require 'csv_to_popolo/version'
-require 'csv'
+require 'smarter_csv'
 require 'securerandom'
 
 class Popolo
   class CSV
 
     @@opts = { 
-      headers:           true,
-      header_converters: :symbol 
+      convert_values_to_numeric: false,
     }
     
     def initialize(csv)
-      raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
+      # raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
       # Make sure every row has an ID. NB: CSV::Table has no map! method
       @csv = csv.map do |r| 
         r[:id] ||= "person/#{SecureRandom.uuid}" 
@@ -20,11 +19,7 @@ class Popolo
     end
 
     def self.from_file(file)
-      new ::CSV.read(file, @@opts)
-    end
-
-    def self.from_data(data)
-      new ::CSV.parse(data, @@opts)
+      new SmarterCSV.process(file, @@opts)
     end
 
     def data
