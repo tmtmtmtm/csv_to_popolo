@@ -12,6 +12,14 @@ class Popolo
         last_name: :family_name,
         organization: :group,
         organisation: :group,
+        organization_id: :group_id,
+        organisation_id: :group_id,
+        faction: :group,
+        faction_id: :group_id,
+        party: :group,
+        party_id: :group_id,
+        bloc: :group,
+        bloc_id: :group_id,
       },
     }
     
