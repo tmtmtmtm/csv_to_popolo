@@ -8,7 +8,7 @@ require 'json-schema'
 describe "welsh assembly" do
 
   subject { 
-    Popolo::CSV.from_file('t/data/welsh_assembly.csv')
+    Popolo::CSV.new('t/data/welsh_assembly.csv')
   }
 
   describe "Asghar" do

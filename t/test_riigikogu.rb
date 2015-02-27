@@ -8,7 +8,7 @@ require 'json-schema'
 describe "riigikogu" do
 
   subject { 
-    Popolo::CSV.from_file('t/data/riigikogu-members.csv')
+    Popolo::CSV.new('t/data/riigikogu-members.csv')
   }
 
   let(:orgs)  { subject.data[:organizations] }

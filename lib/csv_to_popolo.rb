@@ -7,19 +7,25 @@ class Popolo
 
     @@opts = { 
       convert_values_to_numeric: false,
+      key_mapping: {
+        first_name: :given_name,
+        last_name: :family_name,
+        organization: :group,
+        organisation: :group,
+        organization_id: :group_id,
+        organisation_id: :group_id,
+        faction: :group,
+        faction_id: :group_id,
+        party: :group,
+        party_id: :group_id,
+        bloc: :group,
+        bloc_id: :group_id,
+      },
     }
     
-    def initialize(csv)
-      # raise "Need a CSV table, not a #{csv.class}" unless csv.class.name == 'CSV::Table'
-      # Make sure every row has an ID. NB: CSV::Table has no map! method
-      @csv = csv.map do |r| 
-        r[:id] ||= "person/#{SecureRandom.uuid}" 
-        r
-      end
-    end
-
-    def self.from_file(file)
-      new SmarterCSV.process(file, @@opts)
+    def initialize(file)
+      @csv = SmarterCSV.process(file, @@opts)
+      @csv.each { |r| r[:id] ||= "person/#{SecureRandom.uuid}" }
     end
 
     def data
@@ -140,15 +146,6 @@ class Popolo
         :email, :gender, :birth_date, :death_date, :image, :summary,
         :biography, :national_identity
       ]
-
-      remap = { 
-        first_name: :given_name,
-        last_name: :family_name,
-        organization: :group,
-        organisation: :group,
-      }
-
-      remap.each { |old, new| @r[new] ||= @r[old] if given? old }
 
       popolo = {}
       as_is.each do |sym|

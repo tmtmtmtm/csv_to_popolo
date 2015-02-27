@@ -8,7 +8,7 @@ require 'json-schema'
 describe "eduskunta" do
 
   subject { 
-    Popolo::CSV.from_file('t/data/eduskunta.csv')
+    Popolo::CSV.new('t/data/eduskunta.csv')
   }
 
   let(:ahde)  { subject.data[:persons].find           { |p| p[:id] == '104' } }
