@@ -24,7 +24,10 @@ class Popolo
     }
     
     def initialize(file)
-      @csv = SmarterCSV.process(file, @@opts)
+      # Ugh.
+      f = File.open(file, "r:bom|utf-8"); 
+      @csv = SmarterCSV.process(f, @@opts); 
+      f.close
       @csv.each { |r| r[:id] ||= "person/#{SecureRandom.uuid}" }
     end
 
