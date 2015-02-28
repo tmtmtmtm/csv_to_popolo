@@ -26,6 +26,14 @@ describe "welsh assembly" do
       asghar[:other_names].first[:name].must_equal 'Oscar'
     end
 
+    it "should have a phone number" do
+      asghar[:contact_details].class.must_equal Array
+      asghar[:contact_details].count.must_equal 1
+      asghar[:contact_details].first.class.must_equal Hash
+      asghar[:contact_details].first[:type].must_equal 'phone'
+      asghar[:contact_details].first[:value].must_equal '01633 220022'
+    end
+
   end
 
   describe "Parties" do

@@ -20,6 +20,7 @@ class Popolo
         party_id: :group_id,
         bloc: :group,
         bloc_id: :group_id,
+        mobile: :cell,
       },
     }
     
@@ -133,13 +134,41 @@ class Popolo
       @r.has_key? key and not @r[key].nil?
     end
 
-    def contact_details
+    def contact_twitter
       return unless given? :twitter
-      twitter = { 
+      return { 
         type: 'twitter',
         value: @r[:twitter],
       }
-      return [ twitter ]
+    end
+
+    def contact_phone
+      return unless given? :phone
+      return { 
+        type: 'phone',
+        value: @r[:phone],
+      }
+    end
+
+    def contact_cell
+      return unless given? :cell
+      return { 
+        type: 'cell',
+        value: @r[:cell],
+      }
+    end
+
+    def contact_fax
+      return unless given? :fax
+      return { 
+        type: 'fax',
+        value: @r[:fax],
+      }
+    end
+
+    def contact_details
+      contacts = [ contact_twitter, contact_phone, contact_cell, contact_fax ].compact
+      return contacts.length.zero? ? nil : contacts
     end
 
     def as_popolo
