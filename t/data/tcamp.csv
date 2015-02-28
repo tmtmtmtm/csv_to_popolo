@@ -1,4 +1,4 @@
-organization,first_name,last_name,twitter
-mySociety,Tom,Steinberg,steiny
-Sunlight Foundation,Ellen,Miller,EllnMllr
-,Orgless,,
+org,first_name,last_name,twitter,mobile,fax
+mySociety,Tom,Steinberg,steiny,tomsphone,
+Sunlight Foundation,Ellen,Miller,EllnMllr,ellensphone,ellensfax
+,Orgless,,,,,

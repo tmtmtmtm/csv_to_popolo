@@ -10,6 +10,8 @@ class Popolo
       key_mapping: {
         first_name: :given_name,
         last_name: :family_name,
+        org: :group,
+        org_id: :group,
         organization: :group,
         organisation: :group,
         organization_id: :group_id,
