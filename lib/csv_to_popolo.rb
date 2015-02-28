@@ -10,6 +10,8 @@ class Popolo
       key_mapping: {
         first_name: :given_name,
         last_name: :family_name,
+        org: :group,
+        org_id: :group,
         organization: :group,
         organisation: :group,
         organization_id: :group_id,
@@ -20,6 +22,7 @@ class Popolo
         party_id: :group_id,
         bloc: :group,
         bloc_id: :group_id,
+        mobile: :cell,
       },
     }
     
@@ -134,12 +137,15 @@ class Popolo
     end
 
     def contact_details
-      return unless given? :twitter
-      twitter = { 
-        type: 'twitter',
-        value: @r[:twitter],
-      }
-      return [ twitter ]
+      contacts = %w(phone cell fax twitter).map { |type|
+        if given? type.to_sym
+          {
+            type: type,
+            value: @r[type.to_sym],
+          }
+        end
+      }.compact
+      return contacts.length.zero? ? nil : contacts
     end
 
     def as_popolo

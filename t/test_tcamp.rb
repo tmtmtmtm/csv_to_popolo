@@ -7,15 +7,13 @@ require 'json-schema'
 
 describe "tcamp" do
 
-  subject { 
-    Popolo::CSV.new('t/data/tcamp.csv')
-  }
+  subject     { Popolo::CSV.new('t/data/tcamp.csv') }
+  let(:orgs)  { subject.data[:organizations] }
 
   describe "steiny" do
 
-    let(:steiny)  { subject.data[:persons].first }
-    let(:orgs)    { subject.data[:organizations] }
-    let(:mems)    { subject.data[:memberships].find_all { |m| m[:person_id] == steiny[:id] } }
+    let(:steiny) { subject.data[:persons].first }
+    let(:mems)   { subject.data[:memberships].find_all { |m| m[:person_id] == steiny[:id] } }
 
     it "should remap the given name" do
       steiny[:given_name].must_equal 'Tom'
@@ -32,9 +30,34 @@ describe "tcamp" do
       party[:name].must_equal 'mySociety'
     end
 
-    it "should include the twitter handle" do
-      steiny[:contact_details].first[:type].must_equal 'twitter'
-      steiny[:contact_details].first[:value].must_equal 'steiny'
+    it "should have a twitter handle" do
+      steiny[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'steiny'
+    end
+
+    it "should have a phone number" do
+      steiny[:contact_details].find { |c| c[:type] == 'cell' }[:value].must_equal 'tomsphone'
+    end
+
+    it "should have no fax" do
+      steiny[:contact_details].find { |c| c[:type] == 'fax' }.must_be_nil
+    end
+
+  end
+
+  describe "ellen" do
+
+    let(:ellen)  { subject.data[:persons][1] }
+
+    it "should have a twitter handle" do
+      ellen[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'EllnMllr'
+    end
+
+    it "should have a phone number" do
+      ellen[:contact_details].find { |c| c[:type] == 'cell' }[:value].must_equal 'ellensphone'
+    end
+
+    it "should have no fax" do
+      ellen[:contact_details].find { |c| c[:type] == 'fax' }[:value].must_equal 'ellensfax'
     end
 
   end

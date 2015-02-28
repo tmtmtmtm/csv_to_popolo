@@ -23,6 +23,9 @@ It currently handles data from the following columns:
 * `patronymic_name`
 * `sort_name`
 * `email`
+* `phone`
+* `fax`
+* `cell`
 * `gender`
 * `birth_date`
 * `death_date`
