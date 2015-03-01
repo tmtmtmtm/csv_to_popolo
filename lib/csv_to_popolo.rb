@@ -88,12 +88,10 @@ class Popolo
     def party_memberships 
       @_pmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         { 
-          person_id: r[:id],
+          person_id:       r[:id],
           organization_id: r[:group_id] || find_party_id(r[:group]),
-          role: 'representative',
-          start_date: r[:start_date],
-          end_date: r[:end_date],
-        }.select { |_, v| !v.nil? } 
+          role:            'representative',
+        }
       end
     end
 
@@ -103,7 +101,9 @@ class Popolo
           person_id:        r[:id],
           organization_id:  'legislature',
           role:             'member',
-        }
+          start_date:       r[:start_date],
+          end_date:         r[:end_date],
+        }.select { |_, v| !v.nil? } 
         mem[:area] = { name: r[:area] } if r.has_key? :area and !r[:area].nil?
         mem
       end

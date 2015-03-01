@@ -41,6 +41,12 @@ describe "riigikogu" do
       mem[:area][:name].must_include 'Tallinna Kesklinna'
     end
 
+    it "should have no start and end dates" do
+      mem = mems.find { |m| m[:role] == 'representative' }
+      mem[:start_date].must_be_nil
+      mem[:end_date].must_be_nil
+    end
+
   end
 
   describe "rein" do
@@ -50,11 +56,9 @@ describe "riigikogu" do
 
     it "should have start_date" do
       mems.count.must_equal 2
-      party_mem = mems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
-      party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
-      party_mem[:start_date].must_equal '2011-04-02'
-      party_mem[:end_date].must_be_nil
+      mem = mems.find { |m| m[:role] == 'member' }
+      mem[:start_date].must_equal '2011-04-02'
+      mem[:end_date].must_be_nil
     end
 
   end
@@ -65,11 +69,9 @@ describe "riigikogu" do
     let(:mems)   { subject.data[:memberships].find_all { |m| m[:person_id] == andres[:id] } }
 
     it "should have start_date and end_date" do
-      party_mem = mems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
-      party[:name].must_equal 'Isamaa ja Res Publica Liidu fraktsioon'
-      party_mem[:start_date].must_equal '2011-12-06'
-      party_mem[:end_date].must_equal '2014-03-26'
+      mem = mems.find { |m| m[:role] == 'member' }
+      mem[:start_date].must_equal '2011-12-06'
+      mem[:end_date].must_equal '2014-03-26'
     end
 
   end
