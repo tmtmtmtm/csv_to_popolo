@@ -28,7 +28,7 @@ describe "riigikogu" do
 
     it "should have nested faction info" do
       mems.count.must_equal 2
-      party_mem = mems.find { |m| m[:role] == 'party representative' }
+      party_mem = mems.find { |m| m[:role] == 'representative' }
       party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party[:classification].must_equal 'party'
@@ -45,7 +45,7 @@ describe "riigikogu" do
 
     it "should have start_date" do
       mems.count.must_equal 2
-      party_mem = mems.find { |m| m[:role] == 'party representative' }
+      party_mem = mems.find { |m| m[:role] == 'representative' }
       party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party_mem[:start_date].must_equal '2011-04-02'
@@ -60,7 +60,7 @@ describe "riigikogu" do
     let(:mems)   { subject.data[:memberships].find_all { |m| m[:person_id] == andres[:id] } }
 
     it "should have start_date and end_date" do
-      party_mem = mems.find { |m| m[:role] == 'party representative' }
+      party_mem = mems.find { |m| m[:role] == 'representative' }
       party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
       party[:name].must_equal 'Isamaa ja Res Publica Liidu fraktsioon'
       party_mem[:start_date].must_equal '2011-12-06'

@@ -72,11 +72,11 @@ describe "welsh assembly" do
     end
 
     it "should have Assembly membership" do
-      mems.find { |m| m[:role] == 'representative' }[:area][:name].must_equal 'Bridgend'
+      mems.find { |m| m[:role] == 'member' }[:area][:name].must_equal 'Bridgend'
     end
 
     it "should have Party membership" do
-      mems.find { |m| m[:role] == 'party representative' }[:organization_id].must_match /^party/
+      mems.find { |m| m[:role] == 'representative' }[:organization_id].must_match /^party/
     end
 
     it "should have Executive membership" do

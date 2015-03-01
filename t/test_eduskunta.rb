@@ -24,7 +24,7 @@ describe "eduskunta" do
   end
 
   it "should only have correct party membership" do
-    pm = mems.find_all { |m| m[:role] == 'party representative' }
+    pm = mems.find_all { |m| m[:role] == 'representative' }
     pm.count.must_equal 1
     pm.first[:organization_id].must_equal 'kesk'
   end
