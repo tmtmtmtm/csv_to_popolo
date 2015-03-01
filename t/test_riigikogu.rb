@@ -26,7 +26,7 @@ describe "riigikogu" do
       arto[:id].must_equal 'fe748f4d-3f50-4af8-8069-92a460978d2b'
     end
 
-    it "should have nested faction info" do
+    it "should have correct faction info" do
       mems.count.must_equal 2
       party_mem = mems.find { |m| m[:role] == 'representative' }
       party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
@@ -34,6 +34,11 @@ describe "riigikogu" do
       party[:classification].must_equal 'party'
       party_mem[:start_date].must_be_nil
       party_mem[:end_date].must_be_nil
+    end
+
+    it "should represent correct region" do
+      mem = mems.find { |m| m[:role] == 'member' }
+      mem[:area][:name].must_include 'Tallinna Kesklinna'
     end
 
   end

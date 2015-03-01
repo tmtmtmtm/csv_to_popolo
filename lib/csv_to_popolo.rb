@@ -24,6 +24,8 @@ class Popolo
         bloc_id: :group_id,
         mobile: :cell,
         post: :executive,
+        constituency: :area,
+        region: :area,
       },
     }
     
