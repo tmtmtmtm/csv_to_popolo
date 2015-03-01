@@ -23,6 +23,7 @@ class Popolo
         bloc: :group,
         bloc_id: :group_id,
         mobile: :cell,
+        post: :executive,
       },
     }
     
