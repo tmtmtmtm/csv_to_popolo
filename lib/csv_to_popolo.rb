@@ -27,6 +27,7 @@ class Popolo
         post: :executive,
         constituency: :area,
         region: :area,
+        dob: :birth_date,
       },
     }
     
