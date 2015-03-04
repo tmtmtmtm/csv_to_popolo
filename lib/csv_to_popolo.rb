@@ -7,6 +7,7 @@ class Popolo
 
     @@opts = { 
       convert_values_to_numeric: false,
+      row_sep: :auto,
       key_mapping: {
         first_name: :given_name,
         last_name: :family_name,
