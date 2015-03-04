@@ -72,7 +72,7 @@ class Popolo
     # For now, assume that we always have a legislature
     # TODO cope with a file that *only* lists executive posts
     def legislatures
-      [{
+      legislative_memberships.count.zero? ? [] : [{
         id: 'legislature',
         name: 'Legislature', 
         classification: 'legislature',
@@ -80,7 +80,7 @@ class Popolo
     end
 
     def executive
-      [{
+      executive_memberships.count.zero? ? [] : [{
         id: 'executive',
         name: 'Executive', 
         classification: 'executive',

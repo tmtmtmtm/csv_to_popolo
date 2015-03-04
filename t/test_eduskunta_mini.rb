@@ -38,6 +38,14 @@ describe "eduskunta" do
     mems.count.must_equal 0
   end
 
+  it "should have no legislative Organization" do
+    subject.data[:organizations].find_all { |o| o[:classification] == 'legislature' }.count.must_equal 0
+  end
+
+  it "should have no executive Organization" do
+    subject.data[:organizations].find_all { |o| o[:classification] == 'executive' }.count.must_equal 0
+  end
+
   it "should validate" do
     json = JSON.parse(subject.data.to_json)
     %w(person organization membership).each do |type|
