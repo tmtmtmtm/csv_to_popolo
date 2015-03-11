@@ -170,7 +170,10 @@ class Popolo
       end
 
       popolo[:contact_details] = contact_details
-      popolo[:images] = [{ url: @r[:image] }] if @r[:image]
+      popolo[:images] = [{ 
+        url: @r[:image],
+        mime_type: 'image/jpeg',
+      }] if @r[:image]
 
       if given? :other_name
         popolo[:other_names] = [{ name: @r[:other_name] }]
