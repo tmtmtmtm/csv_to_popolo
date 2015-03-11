@@ -28,6 +28,9 @@ class Popolo
         constituency: :area,
         region: :area,
         dob: :birth_date,
+        img: :image,
+        picture: :image,
+        photo: :image,
       },
     }
     
