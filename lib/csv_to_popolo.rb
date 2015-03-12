@@ -5,35 +5,23 @@ require 'csv'
 class Popolo
   class CSV
 
-    @@key_map = { 
-      first_name: :given_name,
-      last_name: :family_name,
-      org: :group,
-      org_id: :group,
-      organization: :group,
-      organisation: :group,
-      organization_id: :group_id,
-      organisation_id: :group_id,
-      faction: :group,
-      faction_id: :group_id,
-      party: :group,
-      party_id: :group_id,
-      bloc: :group,
-      bloc_id: :group_id,
-      mobile: :cell,
-      post: :executive,
-      constituency: :area,
-      region: :area,
-      dob: :birth_date,
-      img: :image,
-      picture: :image,
-      photo: :image,
+    @@remappings = { 
+      given_name: %w(first_name),
+      family_name: %w(last_name),
+      group: %w(party faction faktion bloc block org organization organisation),
+      group_id: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id),
+      cell: %w(mobile), 
+      executive: %w(post),
+      area: %w(constituency region),
+      birth_date: %w(dob),
+      image: %w(img picture photo portrait),
     }
+    @@key_map = @@remappings.map { |k, vs| vs.map { |v| { v => k } } }.flatten.reduce({}, :update)
 
     @@opts = {
       headers: true,
       header_converters: lambda { |h| 
-        (@@key_map[h.to_sym] || h).to_sym
+        (@@key_map[h] || h).to_sym
       }
     }
 
