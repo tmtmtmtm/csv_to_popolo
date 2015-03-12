@@ -6,14 +6,14 @@ class Popolo
   class CSV
 
     @@remappings = { 
-      given_name:  { aliases: %w(first_name) },
-      family_name: { aliases: %w(last_name) },
-      group:       { aliases: %w(party faction faktion bloc block org organization organisation) },
-      group_id:    { aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id) },
-      cell:        { aliases: %w(mobile) }, 
-      executive:   { aliases: %w(post) },
       area:        { aliases: %w(constituency region) },
       birth_date:  { aliases: %w(dob) },
+      cell:        { aliases: %w(mobile) }, 
+      executive:   { aliases: %w(post) },
+      family_name: { aliases: %w(last_name) },
+      given_name:  { aliases: %w(first_name) },
+      group:       { aliases: %w(party faction faktion bloc block org organization organisation) },
+      group_id:    { aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id) },
       image:       { aliases: %w(img picture photo portrait) },
     }
 
