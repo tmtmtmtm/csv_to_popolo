@@ -6,17 +6,22 @@ class Popolo
   class CSV
 
     @@remappings = { 
-      given_name: %w(first_name),
-      family_name: %w(last_name),
-      group: %w(party faction faktion bloc block org organization organisation),
-      group_id: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id),
-      cell: %w(mobile), 
-      executive: %w(post),
-      area: %w(constituency region),
-      birth_date: %w(dob),
-      image: %w(img picture photo portrait),
+      given_name:  { aliases: %w(first_name) },
+      family_name: { aliases: %w(last_name) },
+      group:       { aliases: %w(party faction faktion bloc block org organization organisation) },
+      group_id:    { aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id) },
+      cell:        { aliases: %w(mobile) }, 
+      executive:   { aliases: %w(post) },
+      area:        { aliases: %w(constituency region) },
+      birth_date:  { aliases: %w(dob) },
+      image:       { aliases: %w(img picture photo portrait) },
     }
-    @@key_map = @@remappings.map { |k, vs| vs.map { |v| { v => k } } }.flatten.reduce({}, :update)
+
+    @@key_map = @@remappings.map { |k, v| 
+      v[:aliases].map { 
+        |v| { v => k } 
+      } 
+    }.flatten.reduce({}, :update)
 
     @@opts = {
       headers: true,
