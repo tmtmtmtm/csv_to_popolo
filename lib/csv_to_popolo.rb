@@ -1,45 +1,47 @@
 require 'csv_to_popolo/version'
-require 'smarter_csv'
 require 'securerandom'
+require 'csv'
 
 class Popolo
   class CSV
 
-    @@opts = { 
-      convert_values_to_numeric: false,
-      row_sep: :auto,
-      key_mapping: {
-        first_name: :given_name,
-        last_name: :family_name,
-        org: :group,
-        org_id: :group,
-        organization: :group,
-        organisation: :group,
-        organization_id: :group_id,
-        organisation_id: :group_id,
-        faction: :group,
-        faction_id: :group_id,
-        party: :group,
-        party_id: :group_id,
-        bloc: :group,
-        bloc_id: :group_id,
-        mobile: :cell,
-        post: :executive,
-        constituency: :area,
-        region: :area,
-        dob: :birth_date,
-        img: :image,
-        picture: :image,
-        photo: :image,
-      },
+    @@key_map = { 
+      first_name: :given_name,
+      last_name: :family_name,
+      org: :group,
+      org_id: :group,
+      organization: :group,
+      organisation: :group,
+      organization_id: :group_id,
+      organisation_id: :group_id,
+      faction: :group,
+      faction_id: :group_id,
+      party: :group,
+      party_id: :group_id,
+      bloc: :group,
+      bloc_id: :group_id,
+      mobile: :cell,
+      post: :executive,
+      constituency: :area,
+      region: :area,
+      dob: :birth_date,
+      img: :image,
+      picture: :image,
+      photo: :image,
     }
-    
+
+    @@opts = {
+      headers: true,
+      header_converters: lambda { |h| 
+        (@@key_map[h.to_sym] || h).to_sym
+      }
+    }
+
     def initialize(file)
-      # Ugh.
-      f = File.open(file, "r:bom|utf-8"); 
-      @csv = SmarterCSV.process(f, @@opts); 
-      f.close
-      @csv.each { |r| r[:id] ||= "person/#{SecureRandom.uuid}" }
+      @csv = ::CSV.read(file, @@opts).map { |r|
+        r[:id] ||= "person/#{SecureRandom.uuid}"
+        r.to_hash.select { |_, v| !v.nil? }
+      }
     end
 
     def data
