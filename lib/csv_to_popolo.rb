@@ -20,6 +20,7 @@ class Popolo
     },
     cell: { 
       aliases: %w(mobile),
+      type: 'contact',
     }, 
     death_date: { 
       type: 'asis',
@@ -34,6 +35,10 @@ class Popolo
       aliases: %w(last_name),
       type: 'asis',
     },
+    fax: { 
+      aliases: %w(facsimile),
+      type: 'contact',
+    }, 
     gender: { 
       type: 'asis',
     },
@@ -69,12 +74,19 @@ class Popolo
     patronymic_name: { 
       type: 'asis',
     },
+    phone: { 
+      aliases: %w(tel telephone),
+      type: 'contact',
+    }, 
     sort_name: { 
       type: 'asis',
     },
     summary: { 
       type: 'asis',
     },
+    twitter: { 
+      type: 'contact',
+    }, 
   }
 
   def self.model 
@@ -206,11 +218,12 @@ class Popolo
     end
 
     def contact_details
-      contacts = %w(phone cell fax twitter).map { |type|
-        if given? type.to_sym
+      contact_types = Popolo.model.find_all { |k, v| v[:type] == 'contact' }.map { |k,v| k }
+      contacts = contact_types.map { |type|
+        if given? type
           {
-            type: type,
-            value: @r[type.to_sym],
+            type: type.to_s,
+            value: @r[type],
           }
         end
       }.compact
