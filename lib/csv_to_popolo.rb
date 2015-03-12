@@ -3,21 +3,87 @@ require 'securerandom'
 require 'csv'
 
 class Popolo
+
+  @@model = {
+    additional_name: { 
+      type: 'asis',
+    },
+    area: { 
+      aliases: %w(constituency region),
+    },
+    biography: { 
+      type: 'asis',
+    },
+    birth_date: { 
+      aliases: %w(dob),
+      type: 'asis',
+    },
+    cell: { 
+      aliases: %w(mobile),
+    }, 
+    death_date: { 
+      type: 'asis',
+    },
+    email: { 
+      type: 'asis',
+    },
+    executive: { 
+      aliases: %w(post),
+    },
+    family_name: { 
+      aliases: %w(last_name),
+      type: 'asis',
+    },
+    gender: { 
+      type: 'asis',
+    },
+    given_name: { 
+      aliases: %w(first_name),
+      type: 'asis',
+    },
+    group: { 
+      aliases: %w(party faction faktion bloc block org organization organisation),
+    },
+    group_id: { 
+      aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id),
+    },
+    honorific_prefix: { 
+      type: 'asis',
+    },
+    honorific_suffix: { 
+      type: 'asis',
+    },
+    id: { 
+      type: 'asis',
+    },
+    image: { 
+      aliases: %w(img picture photo portrait),
+      type: 'asis',
+    },
+    name: { 
+      type: 'asis',
+    },
+    national_identity: { 
+      type: 'asis',
+    },
+    patronymic_name: { 
+      type: 'asis',
+    },
+    sort_name: { 
+      type: 'asis',
+    },
+    summary: { 
+      type: 'asis',
+    },
+  }
+
+  def self.model 
+    @@model 
+  end
+
   class CSV
 
-    @@remappings = { 
-      area:        { aliases: %w(constituency region) },
-      birth_date:  { aliases: %w(dob) },
-      cell:        { aliases: %w(mobile) }, 
-      executive:   { aliases: %w(post) },
-      family_name: { aliases: %w(last_name) },
-      given_name:  { aliases: %w(first_name) },
-      group:       { aliases: %w(party faction faktion bloc block org organization organisation) },
-      group_id:    { aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id) },
-      image:       { aliases: %w(img picture photo portrait) },
-    }
-
-    @@key_map = @@remappings.map { |k, v| 
+    @@key_map = Popolo.model.find_all { |k, v| v.has_key? :aliases }.map { |k, v| 
       v[:aliases].map { 
         |v| { v => k } 
       } 
@@ -152,14 +218,9 @@ class Popolo
     end
 
     def as_popolo
-      as_is = [
-        :id, :name, :family_name, :given_name, :additional_name, 
-        :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
-        :email, :gender, :birth_date, :death_date, :image, :summary,
-        :biography, :national_identity
-      ]
 
       popolo = {}
+      as_is = Popolo.model.find_all { |k, v| v[:type] == 'asis' }.map { |k,v| k }
       as_is.each do |sym|
         popolo[sym] = @r[sym] if given? sym
       end
