@@ -28,6 +28,9 @@ class Popolo
     email: { 
       type: 'asis',
     },
+    end_date: { 
+      aliases: %w(end ended until to),
+    },
     executive: { 
       aliases: %w(post),
     },
@@ -50,6 +53,7 @@ class Popolo
       aliases: %w(party faction faktion bloc block org organization organisation),
     },
     group_id: { 
+      # TODO: default
       aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id),
     },
     honorific_prefix: { 
@@ -59,6 +63,7 @@ class Popolo
       type: 'asis',
     },
     id: { 
+      # TODO: default
       type: 'asis',
     },
     image: { 
@@ -81,12 +86,17 @@ class Popolo
     sort_name: { 
       type: 'asis',
     },
+    start_date: { 
+      aliases: %w(start started from since),
+    },
     summary: { 
       type: 'asis',
     },
     twitter: { 
       type: 'contact',
     }, 
+    
+    other_name: { },
   }
 
   def self.model 
