@@ -114,7 +114,7 @@ class Popolo
     @@opts = {
       headers: true,
       header_converters: lambda { |h| 
-        (@@key_map[h] || h).to_sym
+        (@@key_map[h.downcase] || h.downcase).to_sym
       }
     }
 
