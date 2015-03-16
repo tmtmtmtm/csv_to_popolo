@@ -18,6 +18,9 @@ class Popolo
       aliases: %w(dob date_of_birth),
       type: 'asis',
     },
+    blog: { 
+      type: 'link',
+    },
     cell: { 
       aliases: %w(mobile),
       type: 'contact',
@@ -34,6 +37,9 @@ class Popolo
     executive: { 
       aliases: %w(post),
     },
+    facebook: { 
+      type: 'link',
+    },
     family_name: { 
       aliases: %w(last_name),
       type: 'asis',
@@ -42,6 +48,9 @@ class Popolo
       aliases: %w(facsimile),
       type: 'contact',
     }, 
+    flickr: { 
+      type: 'link',
+    },
     gender: { 
       type: 'asis',
     },
@@ -70,6 +79,12 @@ class Popolo
       aliases: %w(img picture photo portrait),
       type: 'asis',
     },
+    instagram: { 
+      type: 'link',
+    },
+    linkedin: { 
+      type: 'link',
+    },
     name: { 
       type: 'asis',
     },
@@ -95,6 +110,16 @@ class Popolo
     twitter: { 
       type: 'contact',
     }, 
+    website: { 
+      type: 'link',
+      aliases: %w(homepage href url),
+    },
+    wikipedia: { 
+      type: 'link',
+    },
+    youtube: { 
+      type: 'link',
+    },
     
     other_name: { },
   }
@@ -252,8 +277,20 @@ class Popolo
       return contacts.length.zero? ? nil : contacts
     end
 
-    def as_popolo
+    def links
+      link_types = Popolo.model.find_all { |k, v| v[:type] == 'link' }.map { |k,v| k }
+      links = link_types.map { |type|
+        if given? type
+          {
+            url: @r[type],
+            note: type.to_s,
+          }
+        end
+      }.compact
+      return links.length.zero? ? nil : links
+    end
 
+    def as_popolo
       popolo = {}
       as_is = Popolo.model.find_all { |k, v| v[:type] == 'asis' }.map { |k,v| k }
       as_is.each do |sym|
@@ -261,6 +298,7 @@ class Popolo
       end
 
       popolo[:contact_details] = contact_details
+      popolo[:links] = links
       popolo[:images] = [{ 
         url: @r[:image],
       }] if @r[:image]

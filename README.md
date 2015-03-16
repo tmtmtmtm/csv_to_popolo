@@ -26,6 +26,7 @@ It currently handles data from the following columns:
 * `phone`
 * `fax`
 * `cell`
+* `twitter`
 * `gender`
 * `birth_date`
 * `death_date`
@@ -33,7 +34,6 @@ It currently handles data from the following columns:
 * `summary`
 * `biography`
 * `national_identity`
-* `twitter`
 
 (none of these are required — it will simply extra data from any
 suitably-named columns)
@@ -62,4 +62,17 @@ membership.
 If members of the legislature can also hold executive positions (e.g.
 Prime Minister; Minister of Education; etc) these can be specified in an
 `executive` column. 
+
+## Other Links
+
+Any of the following columns will be turned into suitable "External
+Links" data:
+
+* `website`
+* `blog`
+* `facebook`
+* `flickr`
+* `instagram`
+* `wikipedia`
+* `youtube`
 
