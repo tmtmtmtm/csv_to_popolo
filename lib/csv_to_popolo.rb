@@ -15,7 +15,7 @@ class Popolo
       type: 'asis',
     },
     birth_date: { 
-      aliases: %w(dob),
+      aliases: %w(dob date_of_birth),
       type: 'asis',
     },
     cell: { 
@@ -114,7 +114,9 @@ class Popolo
     @@opts = {
       headers: true,
       header_converters: lambda { |h| 
-        (@@key_map[h.downcase] || h.downcase).to_sym
+        # = HeaderConverters.symbol + remapping
+        hc = h.encode(::CSV::ConverterEncoding).downcase.gsub(/\s+/, "_").gsub(/\W+/, "")
+        (@@key_map[hc] || hc).to_sym
       }
     }
 
