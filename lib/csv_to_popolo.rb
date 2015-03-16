@@ -119,7 +119,8 @@ class Popolo
     }
 
     def initialize(file)
-      @csv = ::CSV.read(file, @@opts).map { |r|
+      @raw_csv = ::CSV.read(file, @@opts)
+      @csv = @raw_csv.map { |r|
         r[:id] ||= "person/#{SecureRandom.uuid}"
         r.to_hash.select { |_, v| !v.nil? }
       }
@@ -130,7 +131,8 @@ class Popolo
         persons:       persons,
         organizations: organizations,
         memberships:   memberships,
-      }
+        warnings:      warnings,
+      }.select { |_,v| !v.nil? }
     end
 
     def persons
@@ -207,6 +209,14 @@ class Popolo
       end
     end
 
+
+    def warnings
+      handled = @raw_csv.headers.partition { |got| Popolo.model.has_key? got }
+      return if handled.last.count.zero?
+      {
+        skipped: handled.last,
+      }
+    end
 
     private
 
