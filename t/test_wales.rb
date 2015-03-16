@@ -88,12 +88,18 @@ describe "welsh assembly" do
   end
 
   describe "validation" do
+
+    it "should have skipped unknown columns" do
+      subject.data[:warnings][:skipped].must_include :href
+    end
+
     it "should validate" do
       json = JSON.parse(subject.data.to_json)
       %w(person organization membership).each do |type|
         JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
       end
     end
+
   end
 
 end

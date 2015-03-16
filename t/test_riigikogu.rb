@@ -89,6 +89,10 @@ describe "riigikogu" do
 
   describe "validation" do
 
+    it "should have no warnings" do
+      subject.data[:warnings].must_be_nil
+    end
+
     it "should validate" do
       json = JSON.parse(subject.data.to_json)
       %w(person organization membership).each do |type|

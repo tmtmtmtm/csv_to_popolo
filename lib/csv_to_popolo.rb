@@ -3,42 +3,124 @@ require 'securerandom'
 require 'csv'
 
 class Popolo
+
+  @@model = {
+    additional_name: { 
+      type: 'asis',
+    },
+    area: { 
+      aliases: %w(constituency region),
+    },
+    biography: { 
+      type: 'asis',
+    },
+    birth_date: { 
+      aliases: %w(dob),
+      type: 'asis',
+    },
+    cell: { 
+      aliases: %w(mobile),
+      type: 'contact',
+    }, 
+    death_date: { 
+      type: 'asis',
+    },
+    email: { 
+      type: 'asis',
+    },
+    end_date: { 
+      aliases: %w(end ended until to),
+    },
+    executive: { 
+      aliases: %w(post),
+    },
+    family_name: { 
+      aliases: %w(last_name),
+      type: 'asis',
+    },
+    fax: { 
+      aliases: %w(facsimile),
+      type: 'contact',
+    }, 
+    gender: { 
+      type: 'asis',
+    },
+    given_name: { 
+      aliases: %w(first_name),
+      type: 'asis',
+    },
+    group: { 
+      aliases: %w(party faction faktion bloc block org organization organisation),
+    },
+    group_id: { 
+      # TODO: default
+      aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id),
+    },
+    honorific_prefix: { 
+      type: 'asis',
+    },
+    honorific_suffix: { 
+      type: 'asis',
+    },
+    id: { 
+      # TODO: default
+      type: 'asis',
+    },
+    image: { 
+      aliases: %w(img picture photo portrait),
+      type: 'asis',
+    },
+    name: { 
+      type: 'asis',
+    },
+    national_identity: { 
+      type: 'asis',
+    },
+    patronymic_name: { 
+      type: 'asis',
+    },
+    phone: { 
+      aliases: %w(tel telephone),
+      type: 'contact',
+    }, 
+    sort_name: { 
+      type: 'asis',
+    },
+    start_date: { 
+      aliases: %w(start started from since),
+    },
+    summary: { 
+      type: 'asis',
+    },
+    twitter: { 
+      type: 'contact',
+    }, 
+    
+    other_name: { },
+  }
+
+  def self.model 
+    @@model 
+  end
+
   class CSV
 
-    @@key_map = { 
-      first_name: :given_name,
-      last_name: :family_name,
-      org: :group,
-      org_id: :group,
-      organization: :group,
-      organisation: :group,
-      organization_id: :group_id,
-      organisation_id: :group_id,
-      faction: :group,
-      faction_id: :group_id,
-      party: :group,
-      party_id: :group_id,
-      bloc: :group,
-      bloc_id: :group_id,
-      mobile: :cell,
-      post: :executive,
-      constituency: :area,
-      region: :area,
-      dob: :birth_date,
-      img: :image,
-      picture: :image,
-      photo: :image,
-    }
+    @@key_map = Popolo.model.find_all { |k, v| v.has_key? :aliases }.map { |k, v| 
+      v[:aliases].map { 
+        |v| { v => k } 
+      } 
+    }.flatten.reduce({}, :update)
 
     @@opts = {
       headers: true,
       header_converters: lambda { |h| 
-        (@@key_map[h.to_sym] || h).to_sym
+        (@@key_map[h] || h).to_sym
       }
     }
 
     def initialize(file)
-      @csv = ::CSV.read(file, @@opts).map { |r|
+      @raw_csv = ::CSV.read(file, @@opts)
+      @csv = @raw_csv.map { |r|
         r[:id] ||= "person/#{SecureRandom.uuid}"
         r.to_hash.select { |_, v| !v.nil? }
       }
@@ -49,7 +131,8 @@ class Popolo
         persons:       persons,
         organizations: organizations,
         memberships:   memberships,
-      }
+        warnings:      warnings,
+      }.select { |_,v| !v.nil? }
     end
 
     def persons
@@ -127,6 +210,14 @@ class Popolo
     end
 
 
+    def warnings
+      handled = @raw_csv.headers.partition { |got| Popolo.model.has_key? got }
+      return if handled.last.count.zero?
+      {
+        skipped: handled.last,
+      }
+    end
+
     private
 
     def find_party_id(name)
@@ -147,11 +238,12 @@ class Popolo
     end
 
     def contact_details
-      contacts = %w(phone cell fax twitter).map { |type|
-        if given? type.to_sym
+      contact_types = Popolo.model.find_all { |k, v| v[:type] == 'contact' }.map { |k,v| k }
+      contacts = contact_types.map { |type|
+        if given? type
           {
-            type: type,
-            value: @r[type.to_sym],
+            type: type.to_s,
+            value: @r[type],
           }
         end
       }.compact
@@ -159,14 +251,9 @@ class Popolo
     end
 
     def as_popolo
-      as_is = [
-        :id, :name, :family_name, :given_name, :additional_name, 
-        :honorific_prefix, :honorific_suffix, :patronymic_name, :sort_name,
-        :email, :gender, :birth_date, :death_date, :image, :summary,
-        :biography, :national_identity
-      ]
 
       popolo = {}
+      as_is = Popolo.model.find_all { |k, v| v[:type] == 'asis' }.map { |k,v| k }
       as_is.each do |sym|
         popolo[sym] = @r[sym] if given? sym
       end
