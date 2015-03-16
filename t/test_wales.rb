@@ -34,6 +34,14 @@ describe "welsh assembly" do
       asghar[:contact_details].first[:value].must_equal '01633 220022'
     end
 
+    it "should have a website" do
+      asghar[:links].class.must_equal Array
+      asghar[:links].count.must_equal 1
+      asghar[:links].first.class.must_equal Hash
+      asghar[:links].first[:url].must_equal 'http://www.senedd.assemblywales.org/mgUserInfo.aspx?UID=130'
+      asghar[:links].first[:note].must_equal 'website'
+    end
+
   end
 
   describe "Parties" do
@@ -90,7 +98,7 @@ describe "welsh assembly" do
   describe "validation" do
 
     it "should have skipped unknown columns" do
-      subject.data[:warnings][:skipped].must_include :href
+      subject.data[:warnings][:skipped].must_include :en_title
     end
 
     it "should validate" do

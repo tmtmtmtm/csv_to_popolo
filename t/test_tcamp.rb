@@ -42,6 +42,10 @@ describe "tcamp" do
       steiny[:contact_details].find { |c| c[:type] == 'fax' }.must_be_nil
     end
 
+    it "should have a wikipedia page" do
+      steiny[:links].find { |l| l[:note] == 'wikipedia' }[:url].must_equal 'http://en.wikipedia.org/wiki/Tom_Steinberg'
+    end
+
   end
 
   describe "ellen" do
