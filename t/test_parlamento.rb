@@ -18,7 +18,7 @@ describe "parlamento" do
 
   # 687024,Grasso Pietro,Grasso,Partito Democratico,Lazio,Senate
 
-  describe "grasso" do
+  describe "Grasso" do
 
     let(:member) { ppl.find { |i| i[:id] == '687024' } }
     let(:pmems)  { mems.find_all { |m| m[:person_id] == member[:id] } }
@@ -47,6 +47,41 @@ describe "parlamento" do
       leg_mem = pmems.find { |m| m[:role] == 'member' }
       chamber = orgs.find { |o| o[:id] == leg_mem[:organization_id] }
       chamber[:name].must_equal 'Senate'
+    end
+
+  end
+
+  # 686427,Boldrini Laura,Boldrini,Sinistra ecologia e libertà,Sicilia 2,Chamber of Deputies
+  
+  describe "Boldrini" do
+
+    let(:member) { ppl.find { |i| i[:id] == '686427' } }
+    let(:pmems)  { mems.find_all { |m| m[:person_id] == member[:id] } }
+
+    it "should have the correct name" do
+      member[:name].must_include 'Laura'
+    end
+
+    it "should have the correct family_name" do
+      member[:family_name].must_equal 'Boldrini'
+    end
+
+    it "should have correct party info" do
+      party_mem = pmems.find { |m| m[:role] == 'representative' }
+      party = orgs.find { |o| o[:id] == party_mem[:organization_id] }
+      party[:name].must_equal 'Sinistra ecologia e libertà'
+      party[:classification].must_equal 'party'
+    end
+
+    it "should represent correct region" do
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      leg_mem[:area][:name].must_equal 'Sicilia 2'
+    end
+
+    it "should be in correct chamber" do
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      chamber = orgs.find { |o| o[:id] == leg_mem[:organization_id] }
+      chamber[:name].must_equal 'Chamber of Deputies'
     end
 
   end
