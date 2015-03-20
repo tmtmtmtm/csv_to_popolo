@@ -25,6 +25,9 @@ class Popolo
       aliases: %w(mobile),
       type: 'contact',
     }, 
+    chamber: { 
+      aliases: %w(house),
+    },
     death_date: { 
       type: 'asis',
     },
@@ -41,7 +44,7 @@ class Popolo
       type: 'link',
     },
     family_name: { 
-      aliases: %w(last_name),
+      aliases: %w(last_name surname),
       type: 'asis',
     },
     fax: { 
@@ -55,7 +58,7 @@ class Popolo
       type: 'asis',
     },
     given_name: { 
-      aliases: %w(first_name),
+      aliases: %w(first_name forename),
       type: 'asis',
     },
     group: { 
@@ -167,7 +170,7 @@ class Popolo
     end
 
     def organizations
-      parties + legislatures + executive
+      parties + chambers + legislatures + executive
     end
 
     def memberships 
@@ -184,8 +187,17 @@ class Popolo
       end
     end
 
-    # For now, assume that we always have a legislature
-    # TODO cope with a file that *only* lists executive posts
+    def chambers 
+      # TODO the chambers should be members of the Legislature
+      @_chambers ||= @csv.find_all { |r| r.has_key? :chamber }.uniq { |r| r[:chamber] }.map do |r| 
+        {
+          id: r[:chamber_id] || "chamber/#{r[:chamber].downcase.gsub(/\s+/,'_')}",
+          name: r[:chamber],
+          classification: 'chamber',
+        }
+      end
+    end
+
     def legislatures
       legislative_memberships.count.zero? ? [] : [{
         id: 'legislature',
@@ -216,7 +228,7 @@ class Popolo
       @_lmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         mem = { 
           person_id:        r[:id],
-          organization_id:  'legislature',
+          organization_id:  find_chamber_id(r[:chamber]),
           role:             'member',
           start_date:       r[:start_date],
           end_date:         r[:end_date],
@@ -249,6 +261,10 @@ class Popolo
 
     def find_party_id(name)
       (parties.find { |p| p[:name] == name } or return)[:id]
+    end
+
+    def find_chamber_id(name='Legislature')
+      (chambers.find { |p| p[:name] == name } or return)[:id]
     end
 
 
