@@ -41,7 +41,7 @@ class Popolo
       type: 'link',
     },
     family_name: { 
-      aliases: %w(last_name),
+      aliases: %w(last_name surname),
       type: 'asis',
     },
     fax: { 
@@ -55,7 +55,7 @@ class Popolo
       type: 'asis',
     },
     given_name: { 
-      aliases: %w(first_name),
+      aliases: %w(first_name forename),
       type: 'asis',
     },
     group: { 
