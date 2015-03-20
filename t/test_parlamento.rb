@@ -33,14 +33,20 @@ describe "parlamento" do
 
     it "should have correct party info" do
       party_mem = pmems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
+      party = orgs.find { |o| o[:id] == party_mem[:organization_id] }
       party[:name].must_equal 'Partito Democratico'
       party[:classification].must_equal 'party'
     end
 
     it "should represent correct region" do
-      mem = pmems.find { |m| m[:role] == 'member' }
-      mem[:area][:name].must_equal 'Lazio'
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      leg_mem[:area][:name].must_equal 'Lazio'
+    end
+
+    it "should be in correct chamber" do
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      chamber = orgs.find { |o| o[:id] == leg_mem[:organization_id] }
+      chamber[:name].must_equal 'Senate'
     end
 
   end
