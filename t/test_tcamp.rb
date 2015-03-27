@@ -24,9 +24,8 @@ describe "tcamp" do
     end
 
     it "should rename the org name" do
-      pmem = mems.find { |m| m[:role] == 'representative' }
-      oids = orgs.map { |o| o[:id] }
-      party = orgs.find { |o| o[:id] == pmem[:organization_id] }
+      leg_mem = mems.find { |m| m[:role] == 'member' }
+      party = orgs.find { |o| o[:id] == leg_mem[:on_behalf_of_id] }
       party[:name].must_equal 'mySociety'
     end
 

@@ -174,7 +174,7 @@ class Popolo
     end
 
     def memberships 
-      party_memberships + legislative_memberships + executive_memberships
+      legislative_memberships + executive_memberships
     end
 
     def parties 
@@ -214,22 +214,13 @@ class Popolo
       }]
     end
 
-    def party_memberships 
-      @_pmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
-        { 
-          person_id:       r[:id],
-          organization_id: r[:group_id] || find_party_id(r[:group]),
-          role:            'representative',
-        }
-      end
-    end
-
     def legislative_memberships 
       @_lmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         mem = { 
           person_id:        r[:id],
-          organization_id:  find_chamber_id(r[:chamber]),
+          organization_id:  find_chamber_id(r[:chamber]) || "legislature",
           role:             'member',
+          on_behalf_of_id:  r[:group_id] || find_party_id(r[:group]),
           start_date:       r[:start_date],
           end_date:         r[:end_date],
         }.select { |_, v| !v.nil? } 
@@ -263,7 +254,7 @@ class Popolo
       (parties.find { |p| p[:name] == name } or return)[:id]
     end
 
-    def find_chamber_id(name='Legislature')
+    def find_chamber_id(name)
       (chambers.find { |p| p[:name] == name } or return)[:id]
     end
 
