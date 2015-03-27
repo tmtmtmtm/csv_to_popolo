@@ -228,7 +228,7 @@ class Popolo
       @_lmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         mem = { 
           person_id:        r[:id],
-          organization_id:  find_chamber_id(r[:chamber]),
+          organization_id:  find_chamber_id(r[:chamber]) || "legislature",
           role:             'member',
           start_date:       r[:start_date],
           end_date:         r[:end_date],
