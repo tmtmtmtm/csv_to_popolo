@@ -32,8 +32,8 @@ describe "parlamento" do
     end
 
     it "should have correct party info" do
-      party_mem = pmems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| o[:id] == party_mem[:organization_id] }
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      party = orgs.find { |o| o[:id] == leg_mem[:on_behalf_of_id] }
       party[:name].must_equal 'Partito Democratico'
       party[:classification].must_equal 'party'
     end
@@ -67,8 +67,8 @@ describe "parlamento" do
     end
 
     it "should have correct party info" do
-      party_mem = pmems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| o[:id] == party_mem[:organization_id] }
+      leg_mem = pmems.find { |m| m[:role] == 'member' }
+      party = orgs.find { |o| o[:id] == leg_mem[:on_behalf_of_id] }
       party[:name].must_equal 'Sinistra ecologia e libertà'
       party[:classification].must_equal 'party'
     end
@@ -95,7 +95,7 @@ describe "parlamento" do
     it "should validate" do
       json = JSON.parse(subject.data.to_json)
       %w(person organization membership).each do |type|
-        # JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
+        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
       end
     end
   end

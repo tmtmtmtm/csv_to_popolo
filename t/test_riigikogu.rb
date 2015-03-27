@@ -27,13 +27,12 @@ describe "riigikogu" do
     end
 
     it "should have correct faction info" do
-      mems.count.must_equal 2
-      party_mem = mems.find { |m| m[:role] == 'representative' }
-      party = orgs.find { |o| party_mem[:organization_id] == o[:id] }
+      mems.count.must_equal 1
+      leg_mem = mems.find { |m| m[:role] == 'member' }
+
+      party = orgs.find { |o| o[:id] == leg_mem[:on_behalf_of_id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party[:classification].must_equal 'party'
-      party_mem[:start_date].must_be_nil
-      party_mem[:end_date].must_be_nil
     end
 
     it "should represent correct region" do
@@ -42,7 +41,7 @@ describe "riigikogu" do
     end
 
     it "should have no start and end dates" do
-      mem = mems.find { |m| m[:role] == 'representative' }
+      mem = mems.find { |m| m[:role] == 'member' }
       mem[:start_date].must_be_nil
       mem[:end_date].must_be_nil
     end
@@ -55,7 +54,7 @@ describe "riigikogu" do
     let(:mems)  { subject.data[:memberships].find_all { |m| m[:person_id] == rein[:id] } }
 
     it "should have start_date" do
-      mems.count.must_equal 2
+      mems.count.must_equal 1
       mem = mems.find { |m| m[:role] == 'member' }
       mem[:start_date].must_equal '2011-04-02'
       mem[:end_date].must_be_nil

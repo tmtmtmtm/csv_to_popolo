@@ -75,16 +75,12 @@ describe "welsh assembly" do
     let(:fmin) { subject.data[:persons].find         { |p| p[:id] == '102' } }
     let(:mems) { subject.data[:memberships].find_all { |m| m[:person_id] == fmin[:id] } }
 
-    it "should have three memberships" do
-      mems.count.must_equal 3
+    it "should have two memberships" do
+      mems.count.must_equal 2
     end
 
     it "should have Assembly membership" do
       mems.find { |m| m[:role] == 'member' }[:area][:name].must_equal 'Bridgend'
-    end
-
-    it "should have Party membership" do
-      mems.find { |m| m[:role] == 'representative' }[:organization_id].must_match /^party/
     end
 
     it "should have Executive membership" do
