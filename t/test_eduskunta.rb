@@ -23,10 +23,10 @@ describe "eduskunta" do
     kesk[:id].must_equal 'kesk'
   end
 
-  it "should have correct party membership" do
-    pm = mems.find_all { |m| m[:role] == 'member' }
+  it "should have legislative membership" do
+    pm = mems.find_all { |m| m[:organization_id] == 'legislature' }
     pm.count.must_equal 1
-    pm.first[:organization_id].must_equal 'legislature'
+    pm.first[:role].must_equal 'member'
     pm.first[:on_behalf_of_id].must_equal 'kesk'
   end
 
