@@ -26,7 +26,7 @@ class Popolo
       type: 'contact',
     }, 
     chamber: { 
-      aliases: %w(house),
+      aliases: %w(house term),
     },
     death_date: { 
       type: 'asis',
@@ -165,8 +165,13 @@ class Popolo
       }.select { |_,v| !v.nil? }
     end
 
+    # TODO merge differing personal data
+    def find_person(p)
+      return (@_people ||= {})[p[:id]] || Person.new(p)
+    end
+
     def persons
-      @csv.map { |r| Person.new(r).as_popolo }
+      @csv.map { |r| find_person(r).as_popolo }
     end
 
     def organizations
