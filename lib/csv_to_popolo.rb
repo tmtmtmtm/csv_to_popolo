@@ -110,6 +110,9 @@ class Popolo
     summary: { 
       type: 'asis',
     },
+    term: { 
+      aliases: %w(legislative_period),
+    },
     twitter: { 
       type: 'contact',
     }, 
@@ -165,8 +168,13 @@ class Popolo
       }.select { |_,v| !v.nil? }
     end
 
+    # TODO merge differing personal data
+    def find_person(p)
+      return (@_people ||= {})[p[:id]] || Person.new(p)
+    end
+
     def persons
-      @csv.map { |r| Person.new(r).as_popolo }
+      @csv.map { |r| find_person(r).as_popolo }
     end
 
     def organizations
@@ -198,12 +206,25 @@ class Popolo
       end
     end
 
+    def terms 
+      @_terms ||= @csv.find_all { |r| r.has_key? :term }.uniq { |r| r[:term] }.map do |r| 
+        {
+          id: r[:term_id] || "term/#{r[:term].downcase.gsub(/\s+/,'_')}",
+          name: r[:term],
+          classification: 'legislative period',
+        }
+      end
+    end
+
     def legislatures
-      legislative_memberships.count.zero? ? [] : [{
-        id: 'legislature',
-        name: 'Legislature', 
-        classification: 'legislature',
-      }]
+      legislative_memberships.count.zero? ? [] : [
+        {
+          id: 'legislature',
+          name: 'Legislature', 
+          classification: 'legislature',
+          legislative_periods: terms,
+        }.select { |_, v| !v.nil? } 
+      ]
     end
 
     def executive
@@ -217,25 +238,28 @@ class Popolo
     def legislative_memberships 
       @_lmems ||= @csv.find_all { |r| r.has_key? :group }.map do |r|
         mem = { 
-          person_id:        r[:id],
-          organization_id:  find_chamber_id(r[:chamber]) || "legislature",
-          role:             'member',
-          on_behalf_of_id:  r[:group_id] || find_party_id(r[:group]),
-          start_date:       r[:start_date],
-          end_date:         r[:end_date],
+          person_id:          r[:id],
+          organization_id:    find_chamber_id(r[:chamber]) || "legislature",
+          role:               'member',
+          on_behalf_of_id:    r[:group_id] || find_party_id(r[:group]),
+          start_date:         r[:start_date],
+          end_date:           r[:end_date],
         }.select { |_, v| !v.nil? } 
         mem[:area] = { name: r[:area] } if r.has_key? :area and !r[:area].nil?
+        mem[:legislative_period_id] = "term/#{r[:term].downcase.gsub(/\s+/,'_')}" if r.has_key? :term
         mem
       end
     end
 
     def executive_memberships 
       @_emems ||= @csv.find_all { |r| r.has_key? :executive and !r[:executive].nil? }.map do |r|
-        { 
-          person_id:        r[:id],
-          organization_id:  'executive',
-          role:             r[:executive],
+        mem = { 
+          person_id:          r[:id],
+          organization_id:    'executive',
+          role:               r[:executive],
         }
+        mem[:legislative_period] = "term/#{r[:term].downcase.gsub(/\s+/,'_')}" if r.has_key? :term
+        mem
       end
     end
 
