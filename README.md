@@ -63,6 +63,17 @@ If members of the legislature can also hold executive positions (e.g.
 Prime Minister; Minister of Education; etc) these can be specified in an
 `executive` column. 
 
+## Terms
+
+Data for multiple Terms (Legislative Periods) can be added by
+specifiying a `term` column. If you use this, you **must** also provide
+an `id` column, otherwise we will create a new Person each time (which
+almost certainly isn't what you want). We don't currently do anything
+smart here to combine fields: at the minute we just take the Person data
+from the first line that provides that, and combine the Membership data
+from later versions. If this doesn't do what you expect, let me know:
+it's all a little experimental at the moment.
+
 ## Other Links
 
 Any of the following columns will be turned into suitable "External
