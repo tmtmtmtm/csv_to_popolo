@@ -13,6 +13,24 @@ describe "riigikogu" do
 
   let(:orgs)  { subject.data[:organizations] }
 
+  describe "riigikogu" do
+
+    let(:riigikogu) { orgs.find { |o| o[:classification] == 'legislature' } }
+
+    it "should have two terms" do
+      riigikogu[:legislative_periods].count.must_equal 2
+    end
+
+    it "should have know them as legislative periods" do
+      riigikogu[:legislative_periods].first[:classification].must_equal 'legislative period'
+    end
+
+    it "should have the right names" do
+      riigikogu[:legislative_periods].map { |t| t[:name] }.sort.must_equal ['Riigikogu XII', 'Riigikogu XIII']
+    end
+
+  end
+
   describe "arto in XII and XIII" do
 
     let(:arto)  { subject.data[:persons].find { |i| i[:name] == 'Arto Aas' } }
@@ -27,14 +45,14 @@ describe "riigikogu" do
     end
 
     it "should have been in Riigikogu XII" do
-      mem = mems.find { |m| m[:organization_id] == 'chamber/riigikogu_xii' }
+      mem = mems.find { |m| m[:legislative_period_id] == 'term/riigikogu_xii' }
       party = orgs.find { |o| o[:id] == mem[:on_behalf_of_id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party[:classification].must_equal 'party'
     end
 
     it "should have been in Riigikogu XIII" do
-      mem = mems.find { |m| m[:organization_id] == 'chamber/riigikogu_xiii' }
+      mem = mems.find { |m| m[:legislative_period_id] == 'term/riigikogu_xiii' }
       party = orgs.find { |o| o[:id] == mem[:on_behalf_of_id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
       party[:classification].must_equal 'party'
@@ -52,11 +70,11 @@ describe "riigikogu" do
     end
 
     it "should have been in Riigikogu XII" do
-      mems.find_all { |m| m[:organization_id] == 'chamber/riigikogu_xii' }.count.must_equal 1
+      mems.find_all { |m| m[:legislative_period_id] == 'term/riigikogu_xii' }.count.must_equal 1
     end
 
     it "should not have been in Riigikogu XIII" do
-      mems.find_all { |m| m[:organization_id] == 'chamber/riigikogu_xiii' }.count.must_equal 0
+      mems.find_all { |m| m[:legislative_period_id] == 'term/riigikogu_xiii' }.count.must_equal 0
     end
 
     it "should have start_date" do
@@ -77,11 +95,11 @@ describe "riigikogu" do
     end
 
     it "should not have been in Riigikogu XII" do
-      mems.find_all { |m| m[:organization_id] == 'chamber/riigikogu_xii' }.count.must_equal 0
+      mems.find_all { |m| m[:legislative_period_id] == 'term/riigikogu_xii' }.count.must_equal 0
     end
 
     it "should have been in Riigikogu XIII" do
-      mems.find_all { |m| m[:organization_id] == 'chamber/riigikogu_xiii' }.count.must_equal 1
+      mems.find_all { |m| m[:legislative_period_id] == 'term/riigikogu_xiii' }.count.must_equal 1
     end
 
   end
