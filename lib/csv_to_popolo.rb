@@ -271,10 +271,14 @@ class Popolo
 
     def warnings
       handled = @raw_csv.headers.partition { |got| Popolo.model.has_key? got }
-      return if handled.last.count.zero?
-      {
+      dupes = @raw_csv.headers.group_by { |h| h }.find_all { |h, hs| hs.size > 1 }
+
+      warnings = {
         skipped: handled.last,
-      }
+        dupes: dupes.map { |h, hs| h }
+      }.reject { |_,v| v.nil? or v.empty? }
+      return if warnings.empty?
+      return warnings
     end
 
     private
