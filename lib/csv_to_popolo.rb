@@ -9,9 +9,10 @@ class Popolo
       type: 'asis',
     },
     area: { 
-      aliases: %w(constituency region),
+      aliases: %w(constituency region district place),
     },
     biography: { 
+      aliases: %w(bio blurb),
       type: 'asis',
     },
     birth_date: { 
@@ -19,16 +20,18 @@ class Popolo
       type: 'asis',
     },
     blog: { 
+      aliases: %w(weblog),
       type: 'link',
     },
     cell: { 
-      aliases: %w(mobile),
+      aliases: %w(mob mobile cellphone),
       type: 'contact',
     }, 
     chamber: { 
       aliases: %w(house),
     },
     death_date: { 
+      aliases: %w(dod date_of_death),
       type: 'asis',
     },
     email: { 
@@ -44,7 +47,7 @@ class Popolo
       type: 'link',
     },
     family_name: { 
-      aliases: %w(last_name surname),
+      aliases: %w(last_name surname lastname),
       type: 'asis',
     },
     fax: { 
@@ -55,6 +58,7 @@ class Popolo
       type: 'link',
     },
     gender: { 
+      aliases: %w(sex),
       type: 'asis',
     },
     given_name: { 
@@ -95,6 +99,7 @@ class Popolo
       type: 'asis',
     },
     patronymic_name: { 
+      aliases: %w(patronym patronymic),
       type: 'asis',
     },
     phone: { 
@@ -118,7 +123,7 @@ class Popolo
     }, 
     website: { 
       type: 'link',
-      aliases: %w(homepage href url),
+      aliases: %w(homepage href url site),
     },
     wikipedia: { 
       type: 'link',
