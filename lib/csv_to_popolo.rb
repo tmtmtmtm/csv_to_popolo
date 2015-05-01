@@ -151,7 +151,7 @@ class Popolo
       headers: true,
       header_converters: lambda { |h| 
         # = HeaderConverters.symbol + remapping
-        hc = h.encode(::CSV::ConverterEncoding).downcase.gsub(/\s+/, "_").gsub(/\W+/, "")
+        hc = h.to_s.encode(::CSV::ConverterEncoding).downcase.gsub(/\s+/, "_").gsub(/\W+/, "")
         (@@key_map[hc] || hc).to_sym
       }
     }
@@ -271,12 +271,14 @@ class Popolo
 
     def warnings
       handled = @raw_csv.headers.partition { |got| Popolo.model.has_key? got }
+      blank = @raw_csv.headers.find_all(&:empty?).count
       dupes = @raw_csv.headers.group_by { |h| h }.find_all { |h, hs| hs.size > 1 }
 
       warnings = {
         skipped: handled.last,
         dupes: dupes.map { |h, hs| h }
       }.reject { |_,v| v.nil? or v.empty? }
+      warnings[:blank] = blank unless blank.zero?
       return if warnings.empty?
       return warnings
     end
