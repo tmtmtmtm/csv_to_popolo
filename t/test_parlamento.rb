@@ -4,7 +4,6 @@ require 'csv_to_popolo'
 require 'minitest/autorun'
 require 'json'
 require 'json-schema'
-require 'pry'
 
 describe "parlamento" do
 
