@@ -1,13 +1,11 @@
-#!/usr/bin/ruby
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
 require 'json'
-require 'json-schema'
 
 describe "mac" do
 
-  subject     { Popolo::CSV.new('t/data/mac.csv') }
+  subject { Popolo::CSV.new('t/data/mac.csv') }
 
   describe "counts" do
 
