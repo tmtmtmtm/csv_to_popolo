@@ -3,7 +3,6 @@
 require 'csv_to_popolo'
 require 'minitest/autorun'
 require 'json'
-require 'json-schema'
 
 describe "riigikogu" do
 
@@ -102,21 +101,6 @@ describe "riigikogu" do
       mems.find_all { |m| m[:legislative_period_id] == 'term/riigikogu_xiii' }.count.must_equal 1
     end
 
-  end
-
-
-  describe "validation" do
-
-    it "should have no warnings" do
-      subject.data[:warnings].must_be_nil
-    end
-
-    it "should validate" do
-      json = JSON.parse(subject.data.to_json)
-      %w(person organization membership).each do |type|
-        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
-      end
-    end
   end
 
 end

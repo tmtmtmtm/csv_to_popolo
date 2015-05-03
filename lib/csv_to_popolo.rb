@@ -142,9 +142,7 @@ class Popolo
   class CSV
 
     @@key_map = Popolo.model.find_all { |k, v| v.has_key? :aliases }.map { |k, v| 
-      v[:aliases].map { 
-        |v| { v => k } 
-      } 
+      v[:aliases].map { |iv| { iv => k } } 
     }.flatten.reduce({}, :update)
 
     @@opts = {
