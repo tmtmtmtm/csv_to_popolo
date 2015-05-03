@@ -97,7 +97,7 @@ describe "tcamp" do
     end
 
     it "should give everyone ids of form /person/<hexstring>" do
-      ids.sample.must_match /^person\/[[:xdigit:]]+/
+      ids.sample.must_match(/^person\/[[:xdigit:]]+/)
     end
 
   end
