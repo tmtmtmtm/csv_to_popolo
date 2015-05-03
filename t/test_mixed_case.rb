@@ -3,7 +3,6 @@
 require 'csv_to_popolo'
 require 'minitest/autorun'
 require 'json'
-require 'json-schema'
 
 describe "mac" do
 

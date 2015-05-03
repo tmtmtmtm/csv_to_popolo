@@ -1,7 +1,15 @@
-require "bundler/gem_tasks"
-require "rake/testtask"
+
+require 'rake/testtask'
+Rake::TestTask.new do |t|
+  t.warning = true
+  t.verbose = true
+  t.test_files = FileList['t/*.rb']
+  puts "TEST_FILES = #{FileList['t/*.rb']}"
+end
 
 Rake::TestTask.new do |t|
-  t.pattern = "t/**/test_*.rb"
+  t.name = "test:validation"
+  t.verbose = true
+  t.test_files = FileList['t/full/*.rb']
 end
 
