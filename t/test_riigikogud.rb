@@ -35,7 +35,7 @@ describe "riigikogu" do
     let(:mems)  { subject.data[:memberships].find_all { |m| m[:person_id] == arto[:id] && m[:role] == 'member' } }
 
     it "should have the correct id" do
-      arto[:id].must_equal 'fe748f4d-3f50-4af8-8069-92a460978d2b'
+      arto[:id].must_equal 'person/fe748f4d-3f50-4af8-8069-92a460978d2b'
     end
 
     it "should have two legislative memberships" do

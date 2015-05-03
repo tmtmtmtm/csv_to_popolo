@@ -17,7 +17,7 @@ describe "parlamento" do
 
   describe "Grasso" do
 
-    let(:member) { ppl.find { |i| i[:id] == '687024' } }
+    let(:member) { ppl.find { |i| i[:id] == 'person/687024' } }
     let(:pmems)  { mems.find_all { |m| m[:person_id] == member[:id] } }
 
     it "should have the correct name" do
@@ -52,7 +52,7 @@ describe "parlamento" do
   
   describe "Boldrini" do
 
-    let(:member) { ppl.find { |i| i[:id] == '686427' } }
+    let(:member) { ppl.find { |i| i[:id] == 'person/686427' } }
     let(:pmems)  { mems.find_all { |m| m[:person_id] == member[:id] } }
 
     it "should have the correct name" do
