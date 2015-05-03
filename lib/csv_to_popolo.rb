@@ -154,10 +154,15 @@ class Popolo
       }
     }
 
+    def self.id_for (type, id)
+      id ||= SecureRandom.uuid
+      return id.include?('/') ? id : "#{type}/#{id}"
+    end
+
     def initialize(file)
       @raw_csv = ::CSV.read(file, @@opts)
       @csv = @raw_csv.map { |r|
-        r[:id] ||= "person/#{SecureRandom.uuid}"
+        r[:id] = CSV.id_for("person", r[:id])
         r.to_hash.select { |_, v| !v.nil? }
       }
     end

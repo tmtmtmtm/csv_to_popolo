@@ -9,15 +9,15 @@ describe "eduskunta" do
     Popolo::CSV.new('t/data/eduskunta_mini.csv')
   }
 
-  let(:aho)  { subject.data[:persons].find { |i| i[:id] == '104' } }
-  let(:mems) { subject.data[:memberships].find_all { |i| i[:person_id] == '104' } }
+  let(:aho)  { subject.data[:persons].find { |i| i[:id] == 'person/104' } }
+  let(:mems) { subject.data[:memberships].find_all { |i| i[:person_id] == 'person/104' } }
 
   it "should have the correct name" do
     aho[:name].must_equal 'Aho Esko'
   end
 
   it "should have the correct id" do
-    aho[:id].must_equal '104'
+    aho[:id].must_equal 'person/104'
   end
 
   it "should have the correct family name" do
