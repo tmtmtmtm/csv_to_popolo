@@ -271,7 +271,8 @@ class Popolo
 
     def warnings
       handled = @raw_csv.headers.partition { |got| Popolo.model.has_key? got }
-      blank = @raw_csv.headers.find_all(&:empty?).count
+      # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
+      blank = @raw_csv.headers.find_all { |h| h.nil? or h.empty? }.count
       dupes = @raw_csv.headers.group_by { |h| h }.find_all { |h, hs| hs.size > 1 }
 
       warnings = {
