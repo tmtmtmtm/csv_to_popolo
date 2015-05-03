@@ -1,9 +1,7 @@
-#!/usr/bin/ruby
 
 require 'csv_to_popolo'
 require 'minitest/autorun'
 require 'json'
-require 'json-schema'
 
 describe "welsh assembly" do
 
@@ -95,13 +93,6 @@ describe "welsh assembly" do
 
     it "should have skipped unknown columns" do
       subject.data[:warnings][:skipped].must_include :en_title
-    end
-
-    it "should validate" do
-      json = JSON.parse(subject.data.to_json)
-      %w(person organization membership).each do |type|
-        JSON::Validator.fully_validate("http://www.popoloproject.com/schemas/#{type}.json", json[type + 's'], :list => true).must_be :empty?
-      end
     end
 
   end
