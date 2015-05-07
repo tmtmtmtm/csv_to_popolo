@@ -94,6 +94,7 @@ class Popolo
     },
     name: { 
       type: 'asis',
+      aliases: %w(name_en),
     },
     national_identity: { 
       type: 'asis',
