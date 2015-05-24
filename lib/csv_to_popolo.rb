@@ -83,7 +83,7 @@ class Popolo
       type: 'asis',
     },
     image: { 
-      aliases: %w(img picture photo portrait),
+      aliases: %w(img picture photo photograph portrait),
       type: 'asis',
     },
     instagram: { 
