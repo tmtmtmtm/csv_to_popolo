@@ -3,6 +3,6 @@
 require 'csv_to_popolo'
 require 'json'
 
-file = ARGV.first or raise "Usage: #$0 <csvfile>"
+file = ARGV.first or fail "Usage: #{$PROGRAM_NAME} <csvfile>"
 
 puts JSON.pretty_generate Popolo::CSV.new(file).data
