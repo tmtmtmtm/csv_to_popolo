@@ -15,7 +15,7 @@ describe 'validation' do
 
       %w(person organization membership).each do |type|
         JSON::Validator.fully_validate(
-          'http://www.popoloproject.com/schemas/#{type}.json',
+          "http://www.popoloproject.com/schemas/#{type}.json",
           json[type + 's'],
           list: true
         ).must_be :empty?
