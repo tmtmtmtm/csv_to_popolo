@@ -113,7 +113,7 @@ class Popolo
       type: 'asis'
     },
     source: {
-      aliases: %w(src),
+      aliases: %w(src)
     },
     start_date: {
       aliases: %w(start started from since)

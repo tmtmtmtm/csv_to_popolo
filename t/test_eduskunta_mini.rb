@@ -10,7 +10,7 @@ describe 'eduskunta' do
   let(:mems) { subject.data[:memberships] }
 
   let(:aho)  { pers.find { |i| i[:id] == 'person/104' } }
-  let(:amms) { mems.find_all { |i| i[:person_id] == 'person/104' } }
+  let(:amms) { mems.select { |i| i[:person_id] == 'person/104' } }
 
   it 'should have the correct name' do
     aho[:name].must_equal 'Aho Esko'
@@ -37,11 +37,11 @@ describe 'eduskunta' do
   end
 
   it 'should have no legislative Organization' do
-    orgs.find_all { |o| o[:classification] == 'legislature' }.count.must_equal 0
+    orgs.count { |o| o[:classification] == 'legislature' }.must_equal 0
   end
 
   it 'should have no executive Organization' do
-    orgs.find_all { |o| o[:classification] == 'executive' }.count.must_equal 0
+    orgs.count { |o| o[:classification] == 'executive' }.must_equal 0
   end
 
   it 'should have no warnings' do
