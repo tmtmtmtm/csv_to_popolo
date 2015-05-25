@@ -112,6 +112,9 @@ class Popolo
     sort_name: {
       type: 'asis'
     },
+    source: {
+      aliases: %w(src),
+    },
     start_date: {
       aliases: %w(start started from since)
     },
@@ -337,6 +340,7 @@ class Popolo
       popolo[:links] = links
       popolo[:images] = [{ url: @r[:image] }] if @r[:image]
       popolo[:other_names] = [{ name: @r[:other_name] }] if given? :other_name
+      popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.select { |_, v| !v.nil? }
     end

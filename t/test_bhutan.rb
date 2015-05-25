@@ -18,6 +18,11 @@ describe 'Bhutan' do
     it 'should have two memberships' do
       mems.count { |m| m[:person_id] == pm[:id] }.must_equal 2
     end
+
+    it 'should have a source' do
+      pm[:sources].count.must_equal 1
+      pm[:sources].first[:url].must_include 'www.nab.gov.bt'
+    end
   end
 
   describe 'A Plain MP' do
