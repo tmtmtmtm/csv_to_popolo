@@ -65,7 +65,7 @@ class Popolo
       type: 'asis'
     },
     group: {
-      aliases: %w(party faction faktion bloc block org organization organisation)
+      aliases: %w(party party_name faction faktion bloc block org organization organisation)
     },
     group_id: {
       # TODO: default
