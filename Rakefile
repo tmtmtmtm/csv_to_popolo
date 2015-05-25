@@ -5,17 +5,16 @@ Rake::TestTask.new do |t|
   t.warning = true
   t.verbose = true
   t.test_files = FileList['t/*.rb']
-  puts "TEST_FILES = #{FileList['t/*.rb']}"
 end
 
 Rake::TestTask.new do |t|
-  t.name = "test:validation"
+  t.name = 'test:validation'
   t.verbose = true
   t.test_files = FileList['t/full/*.rb']
 end
 
 Rake::TestTask.new do |t|
-  t.name = "test:all"
+  t.name = 'test:all'
   t.verbose = true
   t.test_files = FileList['t/**/*.rb']
 end
