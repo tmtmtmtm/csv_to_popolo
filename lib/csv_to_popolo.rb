@@ -263,7 +263,7 @@ class Popolo
     end
 
     def executive_memberships
-      @_emems ||= @csv.select { |r| r.key?(:executive) && !r[:executive].nil? }.map do |r|
+      @_emems ||= @csv.select { |r| r.key?(:executive) && !r[:executive].to_s.empty? }.map do |r|
         mem = {
           person_id:          r[:id],
           organization_id:    'executive',
