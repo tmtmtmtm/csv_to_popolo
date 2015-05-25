@@ -3,7 +3,7 @@ require 'securerandom'
 require 'csv'
 
 class Popolo
-  @@model = {
+  MODEL = {
     additional_name: {
       type: 'asis'
     },
@@ -69,7 +69,10 @@ class Popolo
     },
     group_id: {
       # TODO: default
-      aliases: %w(party_id faction_id faktion_id bloc_id block_id org_id organization_id organisation_id)
+      aliases: %w(
+        party_id faction_id faktion_id bloc_id block_id org_id
+        organization_id organisation_id
+      )
     },
     honorific_prefix: {
       type: 'asis'
@@ -135,19 +138,18 @@ class Popolo
     other_name: {}
   }
 
-  def self.model
-    @@model
-  end
-
   class CSV
-    @@key_map = Popolo.model.select { |k, v| v.key? :aliases }.map { |k, v| v[:aliases].map { |iv| { iv => k } } }.flatten.reduce({}, :update)
+    KEY_MAP = MODEL
+              .select { |_, v| v.key? :aliases }
+              .map { |k, v| v[:aliases].map { |iv| { iv => k } } }
+              .flatten.reduce({}, :update)
 
-    @@opts = {
+    OPTS = {
       headers: true,
       header_converters: lambda do |h|
         # = HeaderConverters.symbol + remapping
         hc = h.to_s.encode(::CSV::ConverterEncoding).downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
-        (@@key_map[hc] || hc).to_sym
+        (KEY_MAP[hc] || hc).to_sym
       end
     }
 
@@ -157,7 +159,7 @@ class Popolo
     end
 
     def initialize(file)
-      @raw_csv = ::CSV.read(file, @@opts)
+      @raw_csv = ::CSV.read(file, OPTS)
       @csv = @raw_csv.map do |r|
         r[:id] = CSV.id_for('person', r[:id])
         r.to_hash.select { |_, v| !v.nil? }
@@ -269,7 +271,7 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |got| Popolo.model.key? got }
+      handled = @raw_csv.headers.partition { |got| MODEL.key? got }
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
       blank = @raw_csv.headers.count    { |h| h.nil? || h.empty? }
       dupes = @raw_csv.headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
@@ -303,7 +305,7 @@ class Popolo
     end
 
     def contact_details
-      contacts = Popolo.model.select { |_, v| v[:type] == 'contact' }
+      contacts = MODEL.select { |_, v| v[:type] == 'contact' }
                  .map    { |k, _| k }
                  .select { |type| given? type }
                  .map    { |type| { type: type.to_s, value: @r[type] } }
@@ -312,7 +314,7 @@ class Popolo
     end
 
     def links
-      links = Popolo.model.select { |_, v| v[:type] == 'link' }
+      links = MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }
               .map    { |type| { url: @r[type], note: type.to_s } }
@@ -322,7 +324,7 @@ class Popolo
 
     def as_popolo
       popolo = {}
-      as_is = Popolo.model.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
+      as_is = MODEL.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
       as_is.each do |sym|
         popolo[sym] = @r[sym] if given? sym
       end
