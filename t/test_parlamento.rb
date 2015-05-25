@@ -10,8 +10,6 @@ describe 'parlamento' do
   let(:orgs) { subject.data[:organizations] }
   let(:mems) { subject.data[:memberships] }
 
-  # 687024,Grasso Pietro,Grasso,Partito Democratico,Lazio,Senate
-
   describe 'Grasso' do
     let(:member) { ppl.find { |i| i[:id] == 'person/687024' } }
     let(:pmems)  { mems.select { |m| m[:person_id] == member[:id] } }
@@ -42,8 +40,6 @@ describe 'parlamento' do
       chamber[:name].must_equal 'Senate'
     end
   end
-
-  #  686427,Boldrini Laura,Boldrini,Sinistra ecologia e libertà,Sicilia 2,Chamber of Deputies
 
   describe 'Boldrini' do
     let(:member) { ppl.find { |i| i[:id] == 'person/686427' } }
