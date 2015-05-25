@@ -153,6 +153,10 @@ class Popolo
       end
     }
 
+    def _idify(str)
+      str.downcase.gsub(/\s+/, '_')
+    end
+
     def self.id_for(type, id)
       id ||= SecureRandom.uuid
       id.include?('/') ? id : "#{type}/#{id}"
@@ -206,7 +210,7 @@ class Popolo
       # TODO: the chambers should be members of the Legislature
       @_chambers ||= @csv.select { |r| r.key? :chamber }.uniq { |r| r[:chamber] }.map do |r|
         {
-          id: r[:chamber_id] || "chamber/#{r[:chamber].downcase.gsub(/\s+/, '_')}",
+          id: r[:chamber_id] || "chamber/#{_idify(r[:chamber])}",
           name: r[:chamber],
           classification: 'chamber'
         }
@@ -216,7 +220,7 @@ class Popolo
     def terms
       @_terms ||= @csv.select { |r| r.key? :term }.uniq { |r| r[:term] }.map do |r|
         {
-          id: r[:term_id] || "term/#{r[:term].downcase.gsub(/\s+/, '_')}",
+          id: r[:term_id] || "term/#{_idify(r[:term])}",
           name: r[:term],
           classification: 'legislative period'
         }
@@ -253,7 +257,7 @@ class Popolo
           end_date:           r[:end_date]
         }.select { |_, v| !v.nil? }
         mem[:area] = { name: r[:area] } if r.key?(:area) && !r[:area].nil?
-        mem[:legislative_period_id] = "term/#{r[:term].downcase.gsub(/\s+/, '_')}" if r.key? :term
+        mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
     end
@@ -265,7 +269,7 @@ class Popolo
           organization_id:    'executive',
           role:               r[:executive]
         }
-        mem[:legislative_period] = "term/#{r[:term].downcase.gsub(/\s+/, '_')}" if r.key? :term
+        mem[:legislative_period] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
     end
