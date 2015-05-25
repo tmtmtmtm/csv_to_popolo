@@ -8,8 +8,8 @@ json = JSON.parse(File.read(file))
 
 %w(person organization membership).each do |type|
   JSON::Validator.validate!(
-    "http://www.popoloproject.com/schemas/#{type}.json", 
-    json[type + 's'], 
+    "http://www.popoloproject.com/schemas/#{type}.json",
+    json[type + 's'],
     cache_schemas: true, list: true
   )
 end
