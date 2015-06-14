@@ -308,7 +308,7 @@ class Popolo
     end
 
     def given?(key)
-      @r.key?(key) && !@r[key].nil?
+      @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
     def contact_details
