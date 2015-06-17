@@ -184,11 +184,11 @@ class Popolo
 
     # TODO: merge differing personal data
     def find_person(p)
-      (@_people ||= {})[p[:id]] || Person.new(p)
+      (@_people ||= {})[p[:id]] ||= Person.new(p)
     end
 
     def persons
-      @csv.map { |r| find_person(r).as_popolo }
+      @csv.map { |r| find_person(r) }.uniq.map { |r| r.as_popolo }
     end
 
     def organizations
@@ -250,7 +250,7 @@ class Popolo
     end
 
     def legislative_memberships
-      @_lmems ||= @csv.select { |r| r.key? :group }.map do |r|
+      @_lmems ||= @csv.map do |r|
         mem = {
           person_id:          r[:id],
           organization_id:    find_chamber_id(r[:chamber]) || 'legislature',
