@@ -32,12 +32,12 @@ describe 'eduskunta' do
     aho[:birth_date].must_equal '1954-05-20'
   end
 
-  it 'should have no legislative membership' do
-    amms.count.must_equal 0
+  it 'should have one legislative membership' do
+    amms.count.must_equal 1
   end
 
-  it 'should have no legislative Organization' do
-    orgs.count { |o| o[:classification] == 'legislature' }.must_equal 0
+  it 'should have one legislative Organization' do
+    orgs.count { |o| o[:classification] == 'legislature' }.must_equal 1
   end
 
   it 'should have no executive Organization' do
