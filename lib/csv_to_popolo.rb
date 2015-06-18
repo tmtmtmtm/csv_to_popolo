@@ -1,5 +1,4 @@
 require 'csv_to_popolo/version'
-require 'securerandom'
 require 'csv'
 
 class Popolo
@@ -160,15 +159,11 @@ class Popolo
       str.downcase.gsub(/\s+/, '_')
     end
 
-    def self.id_for(type, id)
-      id ||= SecureRandom.uuid
-      id.include?('/') ? id : "#{type}/#{id}"
-    end
-
     def initialize(file)
       @raw_csv = ::CSV.read(file, OPTS)
       @csv = @raw_csv.map do |r|
-        r[:id] = CSV.id_for('person', r[:id])
+        r[:id] ||= "person/#{_idify(r[:name] || raise('creating ID without a name'))}"
+        r[:id].prepend 'person/' unless r[:id].start_with? 'person/'
         r.to_hash.select { |_, v| !v.nil? }
       end
     end
@@ -202,7 +197,7 @@ class Popolo
     def parties
       @_parties ||= @csv.select { |r| r.key? :group }.uniq { |r| r[:group] }.map do |r|
         {
-          id: r[:group_id] || "party/#{SecureRandom.uuid}",
+          id: r[:group_id] || "party/#{_idify(r[:group])}",
           name: r[:group],
           classification: 'party'
         }
