@@ -35,7 +35,7 @@ It currently handles data from the following columns:
 * `biography`
 * `national_identity`
 
-(none of these are required — it will simply extra data from any
+(none of these are required — it will simply extract data from any
 suitably-named columns)
 
 ## Party/Faction Membership
@@ -51,11 +51,14 @@ optional columns:
 * `area`  (or `region` or `constituency`)
 * `group` (or `party`, `bloc`, or `faction`)
 
-An optional `group_id` can also be given, if you wish to use predefined
-identifiers, otherwise a unique ID will be allocated.
-
 An optional `start_date` and/or `end_date` can also given for the
 membership.
+
+## ID-generation
+
+It is strongly recommended that `id` and `group_id` columns be provided.
+If not, these will be generated from the `name` (or `group`) column. If
+multiple people have the same name, this will do the wrong thing.
 
 ## Executive Posts
 

@@ -62,10 +62,6 @@ describe 'tcamp' do
     let(:orgless) { subject.data[:persons].last }
     let(:mems)    { subject.data[:memberships].select { |m| m[:person_id] == orgless[:id] } }
 
-    it 'should remap the given name' do
-      orgless[:given_name].must_equal 'Orgless'
-    end
-
     it 'should have no family name name' do
       orgless[:family_name].must_be_nil
     end
@@ -87,8 +83,8 @@ describe 'tcamp' do
       ids.uniq.length.must_equal 3
     end
 
-    it 'should give everyone ids of form /person/<hexstring>' do
-      ids.sample.must_match(%r{^person/[[:xdigit:]]+})
+    it 'should generate ids' do
+      ids.first.must_equal 'person/tom_steinberg'
     end
   end
 

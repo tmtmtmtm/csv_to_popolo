@@ -26,6 +26,7 @@ describe 'riigikogu' do
 
       party = orgs.find { |o| o[:id] == leg_mem[:on_behalf_of_id] }
       party[:name].must_equal 'Eesti Reformierakonna fraktsioon'
+      party[:id].must_equal 'party/eesti_reformierakonna_fraktsioon'
       party[:classification].must_equal 'party'
     end
 

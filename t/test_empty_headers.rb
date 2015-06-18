@@ -10,6 +10,6 @@ describe 'blank headers' do
   end
 
   it 'should parse the rest fine' do
-    subject.data[:persons].first[:given_name].must_equal 'Tom'
+    subject.data[:persons].first[:name].must_equal 'Tom Steinberg'
   end
 end
