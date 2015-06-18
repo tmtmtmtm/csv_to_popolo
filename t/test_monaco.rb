@@ -20,9 +20,9 @@ describe 'monaco' do
     pc.size.must_equal 2
   end
 
-  it 'only one membership for a party' do
+  it 'should have one membership for an unknown party' do
     pc = mems.find_all { |p| p[:person_id] == 'person/Philippe-CLERISSI' }
-    pc.find_all { |m| m[:on_behalf_of_id] }.size.must_equal 1
+    pc.find_all { |m| m[:on_behalf_of_id] == 'party/unknown' }.size.must_equal 1
   end
 
 

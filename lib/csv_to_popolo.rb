@@ -164,6 +164,7 @@ class Popolo
       @csv = @raw_csv.map do |r|
         r[:id] ||= "person/#{_idify(r[:name] || raise('creating ID without a name'))}"
         r[:id].prepend 'person/' unless r[:id].start_with? 'person/'
+        r[:group] = 'unknown' if r[:group].to_s.empty?
         r.to_hash.select { |_, v| !v.nil? }
       end
     end
