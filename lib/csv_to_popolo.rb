@@ -260,7 +260,7 @@ class Popolo
         }.select { |_, v| !v.nil? }
         if (r.key?(:area) && !r[:area].nil?) || (r.key?(:area_id) && !r[:area_id].nil?)
           mem[:area] = { 
-            id: r[:area_id] || "area/#{_idify(r[:area])}",
+            id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
             name: r[:area] || 'unknown'
           }
         end
