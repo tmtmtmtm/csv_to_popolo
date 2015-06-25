@@ -9,6 +9,9 @@ class Popolo
     area: {
       aliases: %w(constituency region district place)
     },
+    area_id: {
+      aliases: %w(constituency_id region_id district_id place_id)
+    },
     biography: {
       aliases: %w(bio blurb),
       type: 'asis'
@@ -255,7 +258,12 @@ class Popolo
           start_date:         r[:start_date],
           end_date:           r[:end_date]
         }.select { |_, v| !v.nil? }
-        mem[:area] = { name: r[:area] } if r.key?(:area) && !r[:area].nil?
+        if (r.key?(:area) && !r[:area].nil?) || (r.key?(:area_id) && !r[:area_id].nil?)
+          mem[:area] = { 
+            id: r[:area_id] || "area/#{_idify(r[:area])}",
+            name: r[:area] || 'unknown'
+          }
+        end
         mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
