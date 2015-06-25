@@ -32,6 +32,7 @@ describe 'parlamento' do
     it 'should represent correct region' do
       leg_mem = pmems.find { |m| m[:role] == 'member' }
       leg_mem[:area][:name].must_equal 'Lazio'
+      leg_mem[:area][:id].must_equal 'area/lazio'
     end
 
     it 'should be in correct chamber' do
