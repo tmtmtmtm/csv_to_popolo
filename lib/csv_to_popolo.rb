@@ -258,7 +258,7 @@ class Popolo
           start_date:         r[:start_date],
           end_date:           r[:end_date]
         }.select { |_, v| !v.nil? }
-        if (r.key?(:area) && !r[:area].nil?) || (r.key?(:area_id) && !r[:area_id].nil?)
+        if (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?)
           mem[:area] = { 
             id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
             name: r[:area] || 'unknown'
