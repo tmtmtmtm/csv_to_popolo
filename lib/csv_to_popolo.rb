@@ -282,7 +282,8 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |got| MODEL.key? got }
+      handled = @raw_csv.headers.partition { |h| MODEL.key?(h) || h.to_s.start_with?('identifier__') }
+
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
       blank = @raw_csv.headers.count    { |h| h.nil? || h.empty? }
       dupes = @raw_csv.headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
@@ -333,6 +334,18 @@ class Popolo
       links.count.zero? ? nil : links
     end
 
+    # Can't know up front what these might be; take anything in the form
+    #   identifier__xxx
+
+    def identifiers
+      @r.keys.find_all { |k| k.to_s.start_with? 'identifier__' }.map do |k|
+        {
+          scheme: k.to_s.sub('identifier__', ''),
+          identifier: @r.delete(k),
+        }
+      end
+    end
+
     def as_popolo
       popolo = {}
       as_is = MODEL.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
@@ -341,12 +354,13 @@ class Popolo
       end
 
       popolo[:contact_details] = contact_details
+      popolo[:identifiers] = identifiers
       popolo[:links] = links
       popolo[:images] = [{ url: @r[:image] }] if @r[:image]
       popolo[:other_names] = [{ name: @r[:other_name] }] if given? :other_name
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
-      popolo.select { |_, v| !v.nil? }
+      popolo.reject { |_, v| v.nil? || v.empty? }
     end
   end
 end
