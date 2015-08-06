@@ -40,6 +40,10 @@ describe 'tcamp' do
     it 'should have a wikipedia page' do
       steiny[:links].find { |l| l[:note] == 'wikipedia' }[:url].must_equal 'http://en.wikipedia.org/wiki/Tom_Steinberg'
     end
+
+    it 'should have an identifier' do
+      steiny[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '14'
+    end
   end
 
   describe 'ellen' do
@@ -55,6 +59,10 @@ describe 'tcamp' do
 
     it 'should have no fax' do
       ellen[:contact_details].find { |c| c[:type] == 'fax' }[:value].must_equal 'ellensfax'
+    end
+
+    it 'should have an identifier' do
+      ellen[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '10'
     end
   end
 
@@ -72,6 +80,10 @@ describe 'tcamp' do
 
     it 'should only have one legislative membership' do
       mems.count.must_equal 1
+    end
+
+    it 'should not have an identifier' do
+      orgless.key?(:identifiers).must_equal false
     end
   end
 
