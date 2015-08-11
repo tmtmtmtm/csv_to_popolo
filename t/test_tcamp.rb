@@ -41,8 +41,9 @@ describe 'tcamp' do
       steiny[:links].find { |l| l[:note] == 'wikipedia' }[:url].must_equal 'http://en.wikipedia.org/wiki/Tom_Steinberg'
     end
 
-    it 'should have an identifier' do
+    it 'should have identifiers' do
       steiny[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '14'
+      steiny[:identifiers].find { |l| l[:scheme] == 'efp' }[:identifier].must_equal 'a40'
     end
   end
 
@@ -63,6 +64,7 @@ describe 'tcamp' do
 
     it 'should have an identifier' do
       ellen[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '10'
+      ellen[:identifiers].find { |l| l[:scheme] == 'efp' }[:identifier].must_equal 'c49'
     end
   end
 
