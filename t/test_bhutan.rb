@@ -35,6 +35,15 @@ describe 'Bhutan' do
     end
   end
 
+  # Allow multiple parties with same name, as long as different IDs
+  describe "Same-named orgs" do
+    it "should have three parties" do
+      parties = orgs.select { |o| o[:classification] == 'party' }
+      parties.count.must_equal 3
+      parties.select { |o| o[:name] == "People's Democratic Party" }.count.must_equal 2
+    end
+  end
+
   describe 'validation' do
     it 'should have no warnings' do
       subject.data[:warnings].must_be_nil

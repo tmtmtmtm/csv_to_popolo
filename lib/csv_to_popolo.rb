@@ -199,7 +199,7 @@ class Popolo
     end
 
     def parties
-      @_parties ||= @csv.select { |r| r.key? :group }.uniq { |r| r[:group] }.map do |r|
+      @_parties ||= @csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group] }.map do |r|
         {
           id: r[:group_id] || "party/#{_idify(r[:group])}",
           name: r[:group],
