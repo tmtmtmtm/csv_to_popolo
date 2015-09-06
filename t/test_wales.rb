@@ -69,7 +69,7 @@ describe 'welsh assembly' do
     end
 
     it 'should have Assembly membership' do
-      fmem.find { |m| m[:role] == 'member' }[:area][:name].must_equal 'Bridgend'
+      fmem.find { |m| m[:role] == 'member' }[:area_id].must_equal 'area/bridgend'
     end
 
     it 'should have Executive membership' do

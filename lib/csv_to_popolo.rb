@@ -178,6 +178,7 @@ class Popolo
         organizations: organizations,
         memberships:   memberships,
         events:        terms,
+        areas:         areas,
         warnings:      warnings
       }.select { |_, v| !v.nil? }
     end
@@ -197,6 +198,15 @@ class Popolo
 
     def memberships
       legislative_memberships + executive_memberships
+    end
+
+    def areas
+      @_areas ||= @csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
+        { 
+          id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
+          name: r[:area] || 'unknown'
+        }
+      }.compact.uniq { |a| a[:id] }
     end
 
     def parties
@@ -255,15 +265,10 @@ class Popolo
           organization_id:    find_chamber_id(r[:chamber]) || 'legislature',
           role:               'member',
           on_behalf_of_id:    r[:group_id] || find_party_id(r[:group]),
+          area_id:            !r[:area_id].to_s.empty? ? r[:area_id] : !r[:area].to_s.empty? ? "area/#{_idify(r[:area])}" : nil,
           start_date:         r[:start_date],
           end_date:           r[:end_date]
         }.select { |_, v| !v.nil? }
-        if (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?)
-          mem[:area] = { 
-            id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
-            name: r[:area] || 'unknown'
-          }
-        end
         mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
