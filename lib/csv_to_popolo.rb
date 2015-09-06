@@ -177,6 +177,7 @@ class Popolo
         persons:       persons,
         organizations: organizations,
         memberships:   memberships,
+        events:        terms,
         warnings:      warnings
       }.select { |_, v| !v.nil? }
     end
@@ -235,7 +236,6 @@ class Popolo
           id: 'legislature',
           name: 'Legislature',
           classification: 'legislature',
-          legislative_periods: terms
         }.select { |_, v| !v.nil? }
       ]
     end
