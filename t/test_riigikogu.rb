@@ -32,7 +32,7 @@ describe 'riigikogu' do
 
     it 'should represent correct region' do
       mem = mems.find { |m| m[:role] == 'member' }
-      mem[:area][:name].must_include 'Tallinna Kesklinna'
+      mem[:area_id].must_include 'kesklinna'
     end
 
     it 'should have no start and end dates' do
