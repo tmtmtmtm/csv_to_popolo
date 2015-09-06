@@ -20,7 +20,9 @@ describe 'Bhutan' do
     it 'should have a source' do
       lm = legm.find { |m| m[:person_id] == 'person/shaharuddin_ismail' }
       lm[:area_id].must_equal 'P002'
-      areas.find { |a| a[:id] == lm[:area_id] }[:name].must_equal 'Kangar, Perlis'
+      area = areas.find { |a| a[:id] == lm[:area_id] }
+      area[:name].must_equal 'Kangar, Perlis'
+      area[:type].must_equal 'constituency'
     end
   end
 end

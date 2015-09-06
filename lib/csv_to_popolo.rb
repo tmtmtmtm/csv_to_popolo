@@ -204,7 +204,8 @@ class Popolo
       @_areas ||= @csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
         { 
           id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
-          name: r[:area] || 'unknown'
+          name: r[:area] || 'unknown',
+          type: 'constituency',
         }
       }.compact.uniq { |a| a[:id] }
     end
