@@ -5,15 +5,13 @@ require 'json'
 describe 'riigikogu' do
   subject { Popolo::CSV.new('t/data/riigikogu-multi.csv') }
 
-  let(:pers) { subject.data[:persons] }
-  let(:orgs) { subject.data[:organizations] }
-  let(:mems) { subject.data[:memberships] }
-  let(:legm) { mems.select { |m| m[:role] == 'member' } }
+  let(:pers)  { subject.data[:persons] }
+  let(:orgs)  { subject.data[:organizations] }
+  let(:mems)  { subject.data[:memberships] }
+  let(:legm)  { mems.select { |m| m[:role] == 'member' } }
+  let(:terms) { subject.data[:events] }
 
   describe 'riigikogu' do
-    let(:riigikogu) { orgs.find { |o| o[:classification] == 'legislature' } }
-    let(:terms) { riigikogu[:legislative_periods] }
-
     it 'should have two terms' do
       terms.count.must_equal 2
     end
