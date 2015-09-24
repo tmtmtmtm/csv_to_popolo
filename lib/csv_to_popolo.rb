@@ -288,7 +288,10 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |h| MODEL.key?(h) || h.to_s.start_with?('identifier__') }
+      handled = @raw_csv.headers.partition { |h| 
+        MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__') 
+        # || h.to_s.start_with?('wikipedia__')
+      }
 
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
       blank = @raw_csv.headers.count    { |h| h.nil? || h.empty? }
@@ -352,6 +355,16 @@ class Popolo
       end
     end
 
+    def per_language_names
+      @r.keys.find_all { |k| k.to_s.start_with? 'name__' }.map do |k|
+        {
+          name: @r.delete(k),
+          lang: k.to_s.sub('name__', '').tr('_','-'),
+          note: "multilingual",
+        }
+      end
+    end
+
     def as_popolo
       popolo = {}
       as_is = MODEL.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
@@ -359,11 +372,14 @@ class Popolo
         popolo[sym] = @r[sym] if given? sym
       end
 
-      popolo[:contact_details] = contact_details
       popolo[:identifiers] = identifiers
+
+      popolo[:other_names] = per_language_names
+      popolo[:other_names] << { name: @r[:other_name] } if given?(:other_name)
+
+      popolo[:contact_details] = contact_details
       popolo[:links] = links
       popolo[:images] = [{ url: @r[:image] }] if @r[:image]
-      popolo[:other_names] = [{ name: @r[:other_name] }] if given? :other_name
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.reject { |_, v| v.nil? || v.empty? }
