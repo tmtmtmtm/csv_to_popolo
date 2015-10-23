@@ -335,17 +335,26 @@ class Popolo
     end
 
     def links
-      links = MODEL.select { |_, v| v[:type] == 'link' }
+      require 'pry'
+      links = (MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }
-              .map    { |type| { url: @r[type], note: type.to_s } }
-              .compact
+              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links).compact
       links.count.zero? ? nil : links
+    end
+
+    def wikipedia_links
+      @r.keys.find_all { |k| k.to_s.start_with? 'wikipedia__' }.map do |k|
+        _, lang = k.to_s.split(/__/, 2)
+        {
+          url: 'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ','_')],
+          identifier: "Wikipedia (#{lang})",
+        }
+      end
     end
 
     # Can't know up front what these might be; take anything in the form
     #   identifier__xxx
-
     def identifiers
       @r.keys.find_all { |k| k.to_s.start_with? 'identifier__' }.map do |k|
         {
