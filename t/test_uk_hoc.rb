@@ -19,6 +19,11 @@ describe 'UK' do
       names['uk'].must_equal 'Іан Данкан Сміт' 
     end
 
+    it 'should also have several Wikipedia links' do
+      ids[:links].find { |l| l[:identifier] == 'Wikipedia (en)' }[:url].must_equal 'https://en.wikipedia.org/wiki/Iain_Duncan_Smith'
+      ids[:links].find { |l| l[:identifier] == 'Wikipedia (zh)' }[:url].must_equal 'https://zh.wikipedia.org/wiki/施志安'
+    end
+
     it 'should set code back correctly' do
       # comes in as 'name__de_ch'
       names['de-ch'].must_equal 'Iain Duncan Smith'
