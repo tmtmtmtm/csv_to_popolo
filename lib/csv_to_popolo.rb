@@ -348,7 +348,7 @@ class Popolo
         _, lang = k.to_s.split(/__/, 2)
         {
           url: 'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ','_')],
-          identifier: "Wikipedia (#{lang})",
+          note: "Wikipedia (#{lang})",
         }
       end
     end
