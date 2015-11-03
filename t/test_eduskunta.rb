@@ -10,8 +10,8 @@ describe 'eduskunta' do
   let(:orgs) { subject.data[:organizations] }
   let(:mems) { subject.data[:memberships] }
 
-  let(:ahde) { pers.find     { |p| p[:id] == 'person/104' } }
-  let(:amms) { mems.select { |m| m[:person_id] == 'person/104' } }
+  let(:ahde) { pers.find     { |p| p[:id] == '104' } }
+  let(:amms) { mems.select { |m| m[:person_id] == '104' } }
   let(:kesk) { orgs.find     { |o| o[:name] == 'Finnish Centre Party' } }
 
   it 'should set party name correctly' do

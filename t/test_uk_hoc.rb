@@ -8,7 +8,7 @@ describe 'UK' do
 
   describe 'Iain Duncan Smith' do
 
-    let(:ids)   { subject.data[:persons].find { |i| i[:id] == 'person/Q302486' } }
+    let(:ids)   { subject.data[:persons].find { |i| i[:id] == 'Q302486' } }
     let(:names) { Hash[ids[:other_names].select { |n| n[:note] == 'multilingual' }.map { |n| [n[:lang], n[:name]] }] }
 
     it 'should have a default name' do

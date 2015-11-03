@@ -9,15 +9,15 @@ describe 'eduskunta' do
   let(:orgs) { subject.data[:organizations] }
   let(:mems) { subject.data[:memberships] }
 
-  let(:aho)  { pers.find { |i| i[:id] == 'person/104' } }
-  let(:amms) { mems.select { |i| i[:person_id] == 'person/104' } }
+  let(:aho)  { pers.find { |i| i[:id] == '104' } }
+  let(:amms) { mems.select { |i| i[:person_id] == '104' } }
 
   it 'should have the correct name' do
     aho[:name].must_equal 'Aho Esko'
   end
 
   it 'should have the correct id' do
-    aho[:id].must_equal 'person/104'
+    aho[:id].must_equal '104'
   end
 
   it 'should have the correct family name' do

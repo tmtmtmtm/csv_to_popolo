@@ -11,8 +11,8 @@ describe 'Bhutan' do
   let(:mems) { subject.data[:memberships] }
   let(:legm) { mems.select { |m| m[:role] == 'member' } }
 
-  let(:pm) { ppl.find { |i| i[:id] == 'person/1'  } }
-  let(:mp) { ppl.find { |i| i[:id] == 'person/20' } }
+  let(:pm) { ppl.find { |i| i[:id] == '1'  } }
+  let(:mp) { ppl.find { |i| i[:id] == '20' } }
 
   describe 'The Prime Minster' do
     it 'should have two memberships' do

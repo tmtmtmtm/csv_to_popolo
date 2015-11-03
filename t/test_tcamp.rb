@@ -98,7 +98,7 @@ describe 'tcamp' do
     end
 
     it 'should generate ids' do
-      ids.first.must_equal 'person/tom_steinberg'
+      ids.first.must_equal 'tom_steinberg'
     end
   end
 
