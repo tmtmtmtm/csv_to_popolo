@@ -8,7 +8,7 @@ describe 'welsh assembly' do
   let(:mems) { subject.data[:memberships] }
 
   describe 'Asghar' do
-    let(:asghar) { pers.find { |i| i[:id] == 'person/130' } }
+    let(:asghar) { pers.find { |i| i[:id] == '130' } }
 
     it 'should have the correct name' do
       asghar[:name].must_equal 'Mohammad Asghar'
@@ -61,7 +61,7 @@ describe 'welsh assembly' do
 
   describe 'First Minister' do
     let(:executive) { orgs.find { |o| o[:id] == 'executive' } }
-    let(:fmin) { pers.find   { |p| p[:id] == 'person/102' } }
+    let(:fmin) { pers.find   { |p| p[:id] == '102' } }
     let(:fmem) { mems.select { |m| m[:person_id] == fmin[:id] } }
 
     it 'should have two memberships' do

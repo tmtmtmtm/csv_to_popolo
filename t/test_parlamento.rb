@@ -11,7 +11,7 @@ describe 'parlamento' do
   let(:mems) { subject.data[:memberships] }
 
   describe 'Grasso' do
-    let(:member) { ppl.find { |i| i[:id] == 'person/687024' } }
+    let(:member) { ppl.find { |i| i[:id] == '687024' } }
     let(:pmems)  { mems.select { |m| m[:person_id] == member[:id] } }
 
     it 'should have the correct name' do
@@ -43,7 +43,7 @@ describe 'parlamento' do
   end
 
   describe 'Boldrini' do
-    let(:member) { ppl.find { |i| i[:id] == 'person/686427' } }
+    let(:member) { ppl.find { |i| i[:id] == '686427' } }
     let(:pmems)  { mems.select { |m| m[:person_id] == member[:id] } }
 
     it 'should have the correct name' do
