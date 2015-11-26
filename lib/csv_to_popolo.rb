@@ -182,13 +182,19 @@ class Popolo
       }.select { |_, v| !v.nil? }
     end
 
-    # TODO: merge differing personal data
     def find_person(p)
-      (@_people ||= {})[p[:id]] ||= Person.new(p)
+      if (@_people ||= {}).key? p[:id]
+        # combine multiple person records additively. TODO: allow for multiple values
+        existing = @_people[ p[:id] ]
+        merged = p.merge(existing.to_hash)
+        return @_people[ p[:id] ] = Person.new(merged)
+      else
+        return @_people[ p[:id] ] = Person.new(p)
+      end
     end
 
     def persons
-      @csv.map { |r| find_person(r) }.uniq.map { |r| r.as_popolo }
+      @csv.map { |r| find_person(r) }.group_by { |r| r.to_hash[:id] }.map { |i, rs| rs.last.as_popolo }
     end
 
     def organizations
@@ -318,6 +324,10 @@ class Popolo
   class Person
     def initialize(row)
       @r = row
+    end
+
+    def to_hash
+      @r.to_hash
     end
 
     def given?(key)
