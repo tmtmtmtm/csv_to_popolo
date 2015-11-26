@@ -1,3 +1,7 @@
+0.16.0  2015-11-26
+  - combine data from multiple incoming Person records (first field
+    wins)
+
 0.15.0  2015-11-03
   - don't prepend person IDs with "person/"
 
