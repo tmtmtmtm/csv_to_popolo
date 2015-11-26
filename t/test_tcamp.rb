@@ -43,7 +43,9 @@ describe 'tcamp' do
 
     it 'should have identifiers' do
       steiny[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '14'
-      steiny[:identifiers].find { |l| l[:scheme] == 'efp' }[:identifier].must_equal 'a40'
+      steiny[:identifiers].select { |l| l[:scheme] == 'efp' and l[:identifier] == 'a40' }.count.must_equal 1
+      # TODO: later, when we combine Person records separately...
+      steiny[:identifiers].select { |l| l[:scheme] == 'efp' and l[:identifier] == 'a50' }.count.must_equal 0
     end
   end
 
