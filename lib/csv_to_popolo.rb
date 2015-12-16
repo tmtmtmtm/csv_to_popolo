@@ -6,6 +6,9 @@ class Popolo
     additional_name: {
       type: 'asis'
     },
+    alternate_names: { 
+      aliases: %w(other_names alternative_names)
+    },
     area: {
       aliases: %w(constituency region district place)
     },
@@ -383,6 +386,16 @@ class Popolo
       end
     end
 
+    def alternate_names
+      return [] unless given? :alternate_names
+      @r[:alternate_names].split(/\s?;\s?/).map do |n|
+        {
+          name: n,
+          note: "alternate",
+        }
+      end
+    end
+
     def as_popolo
       popolo = {}
       as_is = MODEL.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
@@ -392,7 +405,7 @@ class Popolo
 
       popolo[:identifiers] = identifiers
 
-      popolo[:other_names] = per_language_names
+      popolo[:other_names] = per_language_names + alternate_names
       popolo[:other_names] << { name: @r[:other_name] } if given?(:other_name)
 
       popolo[:contact_details] = contact_details

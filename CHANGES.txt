@@ -1,3 +1,6 @@
+0.17.0  2015-12-16
+  - Accept a semi-colon separated list of 'alternate_names'
+
 0.16.0  2015-11-26
   - combine data from multiple incoming Person records (first field
     wins)
