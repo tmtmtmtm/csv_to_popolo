@@ -377,7 +377,7 @@ class Popolo
     end
 
     def per_language_names
-      @r.keys.find_all { |k| k.to_s.start_with? 'name__' }.map do |k|
+      @r.keys.find_all { |k| k.to_s.start_with? 'name__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
         {
           name: @r.delete(k),
           lang: k.to_s.sub('name__', '').tr('_','-'),

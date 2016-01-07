@@ -1,3 +1,6 @@
+0.17.1  2016-01-07
+  - Skip alternate names that are blank
+
 0.17.0  2015-12-16
   - Accept a semi-colon separated list of 'alternate_names'
 
