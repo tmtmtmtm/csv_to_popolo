@@ -15,6 +15,10 @@ describe 'UK' do
       ids[:name].must_equal 'Iain Duncan Smith'
     end
 
+    it 'should have no blank names' do
+      ids[:other_names].find_all { |n| n[:name].to_s.empty? }.count.must_equal 0
+    end
+
     it 'should be set in Ukrainian' do
       names['uk'].must_equal 'Іан Данкан Сміт' 
     end
