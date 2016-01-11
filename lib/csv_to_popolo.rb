@@ -1,5 +1,6 @@
 require 'csv_to_popolo/version'
 require 'csv'
+require 'twitter_username_extractor'
 
 class Popolo
   MODEL = {
@@ -338,6 +339,9 @@ class Popolo
     end
 
     def contact_details
+      # Standardise Twitter handles
+      @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) if given? :twitter
+
       contacts = MODEL.select { |_, v| v[:type] == 'contact' }
                  .map    { |k, _| k }
                  .select { |type| given? type }
@@ -347,7 +351,6 @@ class Popolo
     end
 
     def links
-      require 'pry'
       links = (MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }

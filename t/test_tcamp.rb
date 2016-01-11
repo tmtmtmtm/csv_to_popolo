@@ -25,7 +25,7 @@ describe 'tcamp' do
       party[:name].must_equal 'mySociety'
     end
 
-    it 'should have a twitter handle' do
+    it 'should standardise the twitter handle' do
       steiny[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'steiny'
     end
 
@@ -52,7 +52,7 @@ describe 'tcamp' do
   describe 'ellen' do
     let(:ellen)  { subject.data[:persons][1] }
 
-    it 'should have a twitter handle' do
+    it 'should standardise the twitter handle' do
       ellen[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'EllnMllr'
     end
 
