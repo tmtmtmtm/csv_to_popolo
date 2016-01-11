@@ -340,7 +340,9 @@ class Popolo
 
     def contact_details
       # Standardise Twitter handles
-      @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) if given? :twitter
+      if given? :twitter
+        @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) rescue nil
+      end
 
       contacts = MODEL.select { |_, v| v[:type] == 'contact' }
                  .map    { |k, _| k }
