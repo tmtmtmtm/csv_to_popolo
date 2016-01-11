@@ -1,3 +1,7 @@
+0.18.0  2016-01-11
+  - Transform a 'twitter' column (in multiple possible formats) into a
+    standardised entry in both contact_details and links
+
 0.17.1  2016-01-07
   - Skip alternate names that are blank
 

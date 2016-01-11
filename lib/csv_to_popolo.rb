@@ -1,5 +1,6 @@
 require 'csv_to_popolo/version'
 require 'csv'
+require 'twitter_username_extractor'
 
 class Popolo
   MODEL = {
@@ -338,6 +339,9 @@ class Popolo
     end
 
     def contact_details
+      # Standardise Twitter handles
+      @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) if given? :twitter
+
       contacts = MODEL.select { |_, v| v[:type] == 'contact' }
                  .map    { |k, _| k }
                  .select { |type| given? type }
@@ -347,11 +351,10 @@ class Popolo
     end
 
     def links
-      require 'pry'
       links = (MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }
-              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links).compact
+              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_link).compact
       links.count.zero? ? nil : links
     end
 
@@ -363,6 +366,14 @@ class Popolo
           note: "Wikipedia (#{lang})",
         }
       end
+    end
+
+    def twitter_link
+      return [] unless given? :twitter
+      [{
+        url: 'https://twitter.com/' + @r[:twitter],
+        note: 'twitter'
+      }]
     end
 
     # Can't know up front what these might be; take anything in the form
