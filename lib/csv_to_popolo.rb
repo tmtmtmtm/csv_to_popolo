@@ -354,7 +354,7 @@ class Popolo
       links = (MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }
-              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links).compact
+              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_link).compact
       links.count.zero? ? nil : links
     end
 
@@ -366,6 +366,14 @@ class Popolo
           note: "Wikipedia (#{lang})",
         }
       end
+    end
+
+    def twitter_link
+      return [] unless given? :twitter
+      [{
+        url: 'https://twitter.com/' + @r[:twitter],
+        note: 'twitter'
+      }]
     end
 
     # Can't know up front what these might be; take anything in the form

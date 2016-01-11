@@ -41,6 +41,10 @@ describe 'tcamp' do
       steiny[:links].find { |l| l[:note] == 'wikipedia' }[:url].must_equal 'http://en.wikipedia.org/wiki/Tom_Steinberg'
     end
 
+    it 'should have a twitter link' do
+      steiny[:links].find { |l| l[:note] == 'twitter' }[:url].must_equal 'https://twitter.com/steiny'
+    end
+
     it 'should have identifiers' do
       steiny[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '14'
       steiny[:identifiers].select { |l| l[:scheme] == 'efp' and l[:identifier] == 'a40' }.count.must_equal 1
@@ -54,6 +58,10 @@ describe 'tcamp' do
 
     it 'should standardise the twitter handle' do
       ellen[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'EllnMllr'
+    end
+
+    it 'should have a twitter link' do
+      ellen[:links].find { |l| l[:note] == 'twitter' }[:url].must_equal 'https://twitter.com/EllnMllr'
     end
 
     it 'should have a phone number' do
@@ -80,6 +88,10 @@ describe 'tcamp' do
 
     it "shouldn't have a twitter handle" do
       orgless[:contact_details].must_be_nil
+    end
+
+    it "shouldn't have a twitter link" do
+      orgless[:links].must_be_nil
     end
 
     it 'should only have one legislative membership' do
