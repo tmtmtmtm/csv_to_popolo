@@ -28,6 +28,14 @@ describe 'UK' do
       ids[:links].find { |l| l[:note] == 'Wikipedia (zh)' }[:url].must_equal 'https://zh.wikipedia.org/wiki/施志安'
     end
 
+    it 'should not have missing Wikipedia links' do
+      ids[:links].find { |l| l[:note] == 'Wikipedia (eo)' }.must_be_nil
+    end
+
+    it 'should skip empty Wikipedia links' do
+      ids[:links].find { |l| l[:note] == 'Wikipedia (ksh)' }.must_be_nil
+    end
+
     it 'should set code back correctly' do
       # comes in as 'name__de_ch'
       names['de-ch'].must_equal 'Iain Duncan Smith'
