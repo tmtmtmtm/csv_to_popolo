@@ -361,7 +361,7 @@ class Popolo
     end
 
     def wikipedia_links
-      @r.keys.find_all { |k| k.to_s.start_with? 'wikipedia__' }.map do |k|
+      @r.keys.find_all { |k| k.to_s.start_with? 'wikipedia__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
         _, lang = k.to_s.split(/__/, 2)
         {
           url: 'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ','_')],
