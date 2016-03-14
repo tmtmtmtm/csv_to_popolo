@@ -41,5 +41,9 @@ describe 'UK' do
       names['de-ch'].must_equal 'Iain Duncan Smith'
     end
 
+    it 'should not have an image' do
+      ids[:images].must_be_nil
+    end
+
   end
 end
