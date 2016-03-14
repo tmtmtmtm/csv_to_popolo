@@ -423,7 +423,7 @@ class Popolo
 
       popolo[:contact_details] = contact_details
       popolo[:links] = links
-      popolo[:images] = [{ url: @r[:image] }] if @r[:image]
+      popolo[:images] = [{ url: @r[:image] }] unless @r[:image].to_s.empty?
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.reject { |_, v| v.nil? || v.empty? }
