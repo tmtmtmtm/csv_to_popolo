@@ -44,6 +44,14 @@ describe 'UK' do
     it 'should not have an image' do
       ids[:images].must_be_nil
     end
-
   end
+
+  describe 'Diane Abbot' do
+    let(:da)   { subject.data[:persons].find { |i| i[:id] == 'Q153454' } }
+
+    it 'should standardise facebook links' do
+      da[:links].find { |l| l[:note] == 'facebook' }[:url].must_equal 'https://facebook.com/Dianeabbott'
+    end
+  end
+
 end

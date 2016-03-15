@@ -1,6 +1,7 @@
 require 'csv_to_popolo/version'
 require 'csv'
 require 'twitter_username_extractor'
+require 'facebook_username_extractor'
 
 class Popolo
   MODEL = {
@@ -353,6 +354,11 @@ class Popolo
     end
 
     def links
+      # Standardise Facebook addresses
+      if given? :facebook
+        @r[:facebook] = "https://facebook.com/#{FacebookUsernameExtractor.extract(@r[:facebook])}" rescue nil
+      end
+
       links = (MODEL.select { |_, v| v[:type] == 'link' }
               .map    { |k, _| k }
               .select { |type| given? type }
