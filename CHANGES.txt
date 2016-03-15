@@ -1,3 +1,6 @@
+0.20.0  2016-03-15
+  - Make the 'facebook' column have a consistent format
+
 0.19.0  2016-02-19
   - Handle empty Wikipedia links and images better
 
