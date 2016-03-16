@@ -339,15 +339,19 @@ class Popolo
       @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
+    def keys_with_values_for_type(type)
+      MODEL.select { |_, v| v[:type] == type }
+           .map    { |k, _| k }
+           .select { |key| given? key }
+    end
+
     def contact_details
       # Standardise Twitter handles
       if given? :twitter
         @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) rescue nil
       end
 
-      contacts = MODEL.select { |_, v| v[:type] == 'contact' }
-                 .map    { |k, _| k }
-                 .select { |type| given? type }
+      contacts = keys_with_values_for_type('contact')
                  .map    { |type| { type: type.to_s, value: @r[type] } }
                  .compact
       contacts.count.zero? ? nil : contacts
@@ -359,9 +363,7 @@ class Popolo
         @r[:facebook] = "https://facebook.com/#{FacebookUsernameExtractor.extract(@r[:facebook])}" rescue nil
       end
 
-      links = (MODEL.select { |_, v| v[:type] == 'link' }
-              .map    { |k, _| k }
-              .select { |type| given? type }
+      links = (keys_with_values_for_type('link')
               .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_link).compact
       links.count.zero? ? nil : links
     end
