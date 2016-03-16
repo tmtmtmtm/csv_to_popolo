@@ -44,4 +44,11 @@ describe 'multivalue_separator' do
     facebook_links[2][:url].must_equal 'https://facebook.com/UnqualifiedDavidCameron'
   end
 
+  it 'should include homepage links for David Cameron' do
+    website_links = cameron[:links].select { |l| l[:note] == 'website' }
+    website_links.count.must_equal 2
+    website_links[0][:url].must_equal 'http://cameron.example.org'
+    website_links[1][:url].must_equal 'https://www.conservatives.com/OurTeam/David_Cameron'
+  end
+
 end

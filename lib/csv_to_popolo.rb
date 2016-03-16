@@ -27,7 +27,8 @@ class Popolo
     },
     blog: {
       aliases: %w(weblog),
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     cell: {
       aliases: %w(mob mobile cellphone),
@@ -66,7 +67,8 @@ class Popolo
       multivalue_separator: ';'
     },
     flickr: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     gender: {
       aliases: %w(sex),
@@ -101,10 +103,12 @@ class Popolo
       type: 'asis'
     },
     instagram: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     linkedin: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     name: {
       type: 'asis',
@@ -143,13 +147,16 @@ class Popolo
     },
     website: {
       type: 'link',
-      aliases: %w(homepage href url site)
+      aliases: %w(homepage href url site),
+      multivalue_separator: ';'
     },
     wikipedia: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     youtube: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
 
     other_name: {}
