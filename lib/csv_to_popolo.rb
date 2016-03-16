@@ -31,7 +31,8 @@ class Popolo
     },
     cell: {
       aliases: %w(mob mobile cellphone),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     chamber: {
       aliases: %w(house)
@@ -58,7 +59,8 @@ class Popolo
     },
     fax: {
       aliases: %w(facsimile),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     flickr: {
       type: 'link'
@@ -114,7 +116,8 @@ class Popolo
     },
     phone: {
       aliases: %w(tel telephone),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     sort_name: {
       type: 'asis'
@@ -339,6 +342,15 @@ class Popolo
       @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
+    def cell_values(key)
+      separator = MODEL[key][:multivalue_separator]
+      if separator
+        @r[key].split(separator)
+      else
+        [@r[key]]
+      end
+    end
+
     def keys_with_values_for_type(type)
       MODEL.select { |_, v| v[:type] == type }
            .map    { |k, _| k }
@@ -351,9 +363,13 @@ class Popolo
         @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) rescue nil
       end
 
-      contacts = keys_with_values_for_type('contact')
-                 .map    { |type| { type: type.to_s, value: @r[type] } }
-                 .compact
+      contacts = []
+      keys_with_values_for_type('contact').each do |key|
+        cell_values(key).each do |value|
+          contacts.push(type: key.to_s, value: value)
+        end
+      end
+      contacts.compact!
       contacts.count.zero? ? nil : contacts
     end
 
