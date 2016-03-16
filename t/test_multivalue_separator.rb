@@ -51,4 +51,11 @@ describe 'multivalue_separator' do
     website_links[1][:url].must_equal 'https://www.conservatives.com/OurTeam/David_Cameron'
   end
 
+  it 'should include two images for John Doe and set the top-level image field' do
+    doe[:image].must_equal 'http://example.org/a.jpg'
+    doe[:images].count.must_equal 2
+    doe[:images][0][:url].must_equal 'http://example.org/a.jpg'
+    doe[:images][1][:url].must_equal 'http://example.org/b.png'
+  end
+
 end

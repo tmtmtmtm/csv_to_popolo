@@ -100,7 +100,9 @@ class Popolo
     },
     image: {
       aliases: %w(img picture photo photograph portrait),
-      type: 'asis'
+      type: 'image',
+      multivalue_separator: ';',
+      take_first: 'asis'
     },
     instagram: {
       type: 'link',
@@ -471,7 +473,9 @@ class Popolo
 
       popolo[:contact_details] = contact_details
       popolo[:links] = links
-      popolo[:images] = [{ url: @r[:image] }] unless @r[:image].to_s.empty?
+      if given? :image
+        popolo[:images] = cell_values(:image).map { |i| {url: i} }
+      end
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.reject { |_, v| v.nil? || v.empty? }
