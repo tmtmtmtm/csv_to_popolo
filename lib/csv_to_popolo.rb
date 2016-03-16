@@ -42,7 +42,9 @@ class Popolo
       type: 'asis'
     },
     email: {
-      type: 'asis'
+      type: 'contact',
+      multivalue_separator: ';',
+      take_first: 'asis'
     },
     end_date: {
       aliases: %w(end ended until to)
@@ -438,6 +440,11 @@ class Popolo
       as_is = MODEL.select { |_, v| v[:type] == 'asis' }.map { |k, _| k }
       as_is.each do |sym|
         popolo[sym] = @r[sym] if given? sym
+      end
+
+      take_first_as_is = MODEL.select { |_, v| v[:take_first] == 'asis' }.map{ |k, _| k }
+      take_first_as_is.each do |sym|
+        popolo[sym] = cell_values(sym)[0] if given? sym
       end
 
       popolo[:identifiers] = identifiers
