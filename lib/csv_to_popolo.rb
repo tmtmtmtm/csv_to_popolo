@@ -361,7 +361,7 @@ class Popolo
         values = [@r[key]]
       end
       # Normalize some values depending on the column:
-      values.map do |v|
+      values.map(&:strip).map do |v|
         if key == :twitter
           TwitterUsernameExtractor.extract(v) rescue nil
         elsif key == :facebook
