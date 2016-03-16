@@ -137,7 +137,8 @@ class Popolo
       aliases: %w(legislative_period)
     },
     twitter: {
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     website: {
       type: 'link',
@@ -347,10 +348,18 @@ class Popolo
     def cell_values(key)
       separator = MODEL[key][:multivalue_separator]
       if separator
-        @r[key].split(separator)
+        values = @r[key].split(separator)
       else
-        [@r[key]]
+        values = [@r[key]]
       end
+      # Normalize some values depending on the column:
+      values.map do |v|
+        if key == :twitter
+          TwitterUsernameExtractor.extract(v) rescue nil
+        else
+          v
+        end
+      end.compact
     end
 
     def keys_with_values_for_type(type)
@@ -360,11 +369,6 @@ class Popolo
     end
 
     def contact_details
-      # Standardise Twitter handles
-      if given? :twitter
-        @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) rescue nil
-      end
-
       contacts = []
       keys_with_values_for_type('contact').each do |key|
         cell_values(key).each do |value|
@@ -382,7 +386,7 @@ class Popolo
       end
 
       links = (keys_with_values_for_type('link')
-              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_link).compact
+              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_links).compact
       links.count.zero? ? nil : links
     end
 
@@ -396,12 +400,14 @@ class Popolo
       end
     end
 
-    def twitter_link
+    def twitter_links
       return [] unless given? :twitter
-      [{
-        url: 'https://twitter.com/' + @r[:twitter],
-        note: 'twitter'
-      }]
+      cell_values(:twitter).map do |t|
+        {
+          url: 'https://twitter.com/' + t,
+          note: 'twitter'
+        }
+      end
     end
 
     # Can't know up front what these might be; take anything in the form
