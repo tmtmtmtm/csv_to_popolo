@@ -8,7 +8,7 @@ class Popolo
     additional_name: {
       type: 'asis'
     },
-    alternate_names: { 
+    alternate_names: {
       aliases: %w(other_names alternative_names)
     },
     area: {
@@ -218,7 +218,7 @@ class Popolo
 
     def areas
       @_areas ||= @csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
-        { 
+        {
           id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
           name: r[:area] || 'unknown',
           type: 'constituency',
@@ -304,8 +304,8 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |h| 
-        MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__') 
+      handled = @raw_csv.headers.partition { |h|
+        MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__')
         # || h.to_s.start_with?('wikipedia__')
       }
 
