@@ -53,7 +53,8 @@ class Popolo
       aliases: %w(post)
     },
     facebook: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     family_name: {
       aliases: %w(last_name surname lastname),
@@ -356,6 +357,8 @@ class Popolo
       values.map do |v|
         if key == :twitter
           TwitterUsernameExtractor.extract(v) rescue nil
+        elsif key == :facebook
+          "https://facebook.com/#{FacebookUsernameExtractor.extract(v)}" rescue nil
         else
           v
         end
@@ -380,13 +383,14 @@ class Popolo
     end
 
     def links
-      # Standardise Facebook addresses
-      if given? :facebook
-        @r[:facebook] = "https://facebook.com/#{FacebookUsernameExtractor.extract(@r[:facebook])}" rescue nil
+      links = []
+      keys_with_values_for_type('link').each do |key|
+        cell_values(key).each do |value|
+          links.push(note: key.to_s, url: value)
+        end
       end
-
-      links = (keys_with_values_for_type('link')
-              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_links).compact
+      links += wikipedia_links + twitter_links
+      links.compact!
       links.count.zero? ? nil : links
     end
 

@@ -2,7 +2,7 @@ require 'csv_to_popolo'
 require 'minitest/autorun'
 
 describe 'multivalue_separator' do
-  subject { Popolo::CSV.new('t/data/multiple_contacts_in_cells.csv') }
+  subject { Popolo::CSV.new('t/data/multiple_values_in_cells.csv') }
 
   let(:pers) { subject.data[:persons] }
   let(:cameron) { pers.find { |p| p[:name] == 'David Cameron' } }
@@ -25,16 +25,23 @@ describe 'multivalue_separator' do
 
   it 'should include multiple Twitter usernames in both contact_details and links' do
     # Check the links first...
-    cameron[:links].count.must_equal 2
-    cameron[:links][0][:url].must_equal 'https://twitter.com/David_Cameron'
-    cameron[:links][0][:note].must_equal 'twitter'
-    cameron[:links][1][:url].must_equal 'https://twitter.com/Number10gov'
-    cameron[:links][1][:note].must_equal 'twitter'
+    twitter_links = cameron[:links].select { |l| l[:note] == 'twitter' }
+    twitter_links.count.must_equal 2
+    twitter_links[0][:url].must_equal 'https://twitter.com/David_Cameron'
+    twitter_links[1][:url].must_equal 'https://twitter.com/Number10gov'
     # Then the contact_details:
     twitter_contacts = cameron[:contact_details].select { |c| c[:type] == 'twitter' }
     twitter_contacts.count.must_equal 2
     twitter_contacts[0][:value].must_equal 'David_Cameron'
     twitter_contacts[1][:value].must_equal 'Number10gov'
+  end
+
+  it 'should include both Facebook usernames for David Cameron' do
+    facebook_links = cameron[:links].select { |l| l[:note] == 'facebook' }
+    facebook_links.count.must_equal 3
+    facebook_links[0][:url].must_equal 'https://facebook.com/DavidCameronOfficial'
+    facebook_links[1][:url].must_equal 'https://facebook.com/SomeOtherDavidCameron'
+    facebook_links[2][:url].must_equal 'https://facebook.com/UnqualifiedDavidCameron'
   end
 
 end
