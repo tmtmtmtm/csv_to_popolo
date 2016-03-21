@@ -1,4 +1,4 @@
-Copyright (c) 2015 Tony Bowden
+Copyright (c) 2015-2016 Tony Bowden, mySociety
 
 MIT License
 
