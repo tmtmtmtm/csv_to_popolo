@@ -8,7 +8,7 @@ class Popolo
     additional_name: {
       type: 'asis'
     },
-    alternate_names: { 
+    alternate_names: {
       aliases: %w(other_names alternative_names)
     },
     area: {
@@ -27,11 +27,13 @@ class Popolo
     },
     blog: {
       aliases: %w(weblog),
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     cell: {
       aliases: %w(mob mobile cellphone),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     chamber: {
       aliases: %w(house)
@@ -41,7 +43,9 @@ class Popolo
       type: 'asis'
     },
     email: {
-      type: 'asis'
+      type: 'contact',
+      multivalue_separator: ';',
+      take_first: 'asis'
     },
     end_date: {
       aliases: %w(end ended until to)
@@ -50,7 +54,8 @@ class Popolo
       aliases: %w(post)
     },
     facebook: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     family_name: {
       aliases: %w(last_name surname lastname),
@@ -58,10 +63,12 @@ class Popolo
     },
     fax: {
       aliases: %w(facsimile),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     flickr: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     gender: {
       aliases: %w(sex),
@@ -93,13 +100,17 @@ class Popolo
     },
     image: {
       aliases: %w(img picture photo photograph portrait),
-      type: 'asis'
+      type: 'image',
+      multivalue_separator: ';',
+      take_first: 'asis'
     },
     instagram: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     linkedin: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     name: {
       type: 'asis',
@@ -114,7 +125,8 @@ class Popolo
     },
     phone: {
       aliases: %w(tel telephone),
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     sort_name: {
       type: 'asis'
@@ -132,17 +144,21 @@ class Popolo
       aliases: %w(legislative_period)
     },
     twitter: {
-      type: 'contact'
+      type: 'contact',
+      multivalue_separator: ';'
     },
     website: {
       type: 'link',
-      aliases: %w(homepage href url site)
+      aliases: %w(homepage href url site),
+      multivalue_separator: ';'
     },
     wikipedia: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
     youtube: {
-      type: 'link'
+      type: 'link',
+      multivalue_separator: ';'
     },
 
     other_name: {}
@@ -212,7 +228,7 @@ class Popolo
 
     def areas
       @_areas ||= @csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
-        { 
+        {
           id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
           name: r[:area] || 'unknown',
           type: 'constituency',
@@ -298,8 +314,8 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |h| 
-        MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__') 
+      handled = @raw_csv.headers.partition { |h|
+        MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__')
         # || h.to_s.start_with?('wikipedia__')
       }
 
@@ -339,30 +355,51 @@ class Popolo
       @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
-    def contact_details
-      # Standardise Twitter handles
-      if given? :twitter
-        @r[:twitter] = TwitterUsernameExtractor.extract(@r[:twitter]) rescue nil
+    def cell_values(key)
+      separator = MODEL[key][:multivalue_separator]
+      if separator
+        values = @r[key].split(separator)
+      else
+        values = [@r[key]]
       end
+      # Normalize some values depending on the column:
+      values.map(&:strip).map do |v|
+        if key == :twitter
+          TwitterUsernameExtractor.extract(v) rescue nil
+        elsif key == :facebook
+          "https://facebook.com/#{FacebookUsernameExtractor.extract(v)}" rescue nil
+        else
+          v
+        end
+      end.compact
+    end
 
-      contacts = MODEL.select { |_, v| v[:type] == 'contact' }
-                 .map    { |k, _| k }
-                 .select { |type| given? type }
-                 .map    { |type| { type: type.to_s, value: @r[type] } }
-                 .compact
+    def keys_with_values_for_type(type)
+      MODEL.select { |_, v| v[:type] == type }
+           .map    { |k, _| k }
+           .select { |key| given? key }
+    end
+
+    def contact_details
+      contacts = []
+      keys_with_values_for_type('contact').each do |key|
+        cell_values(key).each do |value|
+          contacts.push(type: key.to_s, value: value)
+        end
+      end
+      contacts.compact!
       contacts.count.zero? ? nil : contacts
     end
 
     def links
-      # Standardise Facebook addresses
-      if given? :facebook
-        @r[:facebook] = "https://facebook.com/#{FacebookUsernameExtractor.extract(@r[:facebook])}" rescue nil
+      links = []
+      keys_with_values_for_type('link').each do |key|
+        cell_values(key).each do |value|
+          links.push(note: key.to_s, url: value)
+        end
       end
-
-      links = (MODEL.select { |_, v| v[:type] == 'link' }
-              .map    { |k, _| k }
-              .select { |type| given? type }
-              .map    { |type| { url: @r[type], note: type.to_s } } + wikipedia_links + twitter_link).compact
+      links += wikipedia_links + twitter_links
+      links.compact!
       links.count.zero? ? nil : links
     end
 
@@ -376,12 +413,14 @@ class Popolo
       end
     end
 
-    def twitter_link
+    def twitter_links
       return [] unless given? :twitter
-      [{
-        url: 'https://twitter.com/' + @r[:twitter],
-        note: 'twitter'
-      }]
+      cell_values(:twitter).map do |t|
+        {
+          url: 'https://twitter.com/' + t,
+          note: 'twitter'
+        }
+      end
     end
 
     # Can't know up front what these might be; take anything in the form
@@ -422,6 +461,11 @@ class Popolo
         popolo[sym] = @r[sym] if given? sym
       end
 
+      take_first_as_is = MODEL.select { |_, v| v[:take_first] == 'asis' }.map{ |k, _| k }
+      take_first_as_is.each do |sym|
+        popolo[sym] = cell_values(sym)[0] if given? sym
+      end
+
       popolo[:identifiers] = identifiers
 
       popolo[:other_names] = per_language_names + alternate_names
@@ -429,7 +473,9 @@ class Popolo
 
       popolo[:contact_details] = contact_details
       popolo[:links] = links
-      popolo[:images] = [{ url: @r[:image] }] unless @r[:image].to_s.empty?
+      if given? :image
+        popolo[:images] = cell_values(:image).map { |i| {url: i} }
+      end
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.reject { |_, v| v.nil? || v.empty? }
