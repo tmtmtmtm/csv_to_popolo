@@ -1,3 +1,6 @@
+0.21.0  2016-03-21
+  - Allow for multi-value fields (thanks @mhl)
+
 0.20.0  2016-03-15
   - Make the 'facebook' column have a consistent format
 
