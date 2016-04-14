@@ -108,6 +108,9 @@ class Popolo
       type: 'link',
       multivalue_separator: ';'
     },
+    legislative_membership_type: {
+      type: 'memtype',
+    },
     linkedin: {
       type: 'link',
       multivalue_separator: ';'
@@ -180,6 +183,7 @@ class Popolo
     }
 
     def _idify(str)
+      return if str.to_s.empty?
       str.downcase.gsub(/\s+/, '_')
     end
 
@@ -197,6 +201,7 @@ class Popolo
         persons:       persons,
         organizations: organizations,
         memberships:   memberships,
+        posts:         posts,
         events:        terms,
         areas:         areas,
         warnings:      warnings
@@ -257,6 +262,16 @@ class Popolo
       end
     end
 
+    def posts
+      @_posts ||= @csv.select { |r| r.key? :legislative_membership_type }.uniq { |r| r[:legislative_membership_type] }.map do |r|
+        {
+          id: _idify(r[:legislative_membership_type]),
+          label: r[:legislative_membership_type],
+          organization_id: 'legislature',
+        }
+      end
+    end
+
     def terms
       @_terms ||= @csv.select { |r| r.key? :term }.uniq { |r| r[:term] }.map do |r|
         {
@@ -290,6 +305,7 @@ class Popolo
         mem = {
           person_id:          r[:id],
           organization_id:    find_chamber_id(r[:chamber]) || 'legislature',
+          post_id:            _idify(r[:legislative_membership_type]),
           role:               'member',
           on_behalf_of_id:    r[:group_id] || find_party_id(r[:group]),
           area_id:            !r[:area_id].to_s.empty? ? r[:area_id] : !r[:area].to_s.empty? ? "area/#{_idify(r[:area])}" : nil,

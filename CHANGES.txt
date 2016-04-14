@@ -1,3 +1,6 @@
+0.22.0  2016-04-11
+  - Create Posts when given a legislative_membership_type
+
 0.21.0  2016-03-21
   - Allow for multi-value fields (thanks @mhl)
 
