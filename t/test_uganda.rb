@@ -14,18 +14,22 @@ describe 'monaco' do
 
   it 'should have no Post for a normal membership' do
     alero = memberships('mp_277').first
-    alero.key?(:post_id).must_equal false
+    alero[:post_id].must_be_nil
+    alero[:area_id].must_equal 'area/west_moyo'
   end
 
   it 'should have a Woman Representative post with an Area' do
     ameede = memberships('mp_292').first
     ameede[:post_id].must_equal 'woman_representative'
+    ameede[:area_id].must_equal 'area/pallisa'
   end
 
   it 'should have a PWD post with no Area' do
     ndeezi = memberships('mp_419').first
     ndeezi[:post_id].must_equal 'pwd'
+    ndeezi[:area_id].must_be_nil
   end
+
 
   it 'should have two Posts' do
     posts = subject.data[:posts].sort_by { |p| p[:id] }
