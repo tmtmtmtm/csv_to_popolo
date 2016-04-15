@@ -371,8 +371,8 @@ class Popolo
       @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
-    def cell_values(key)
-      separator = MODEL[key][:multivalue_separator]
+    def cell_values(key, separator=nil)
+      separator ||= MODEL[key][:multivalue_separator]
       if separator
         values = @r[key].split(separator)
       else
@@ -452,12 +452,14 @@ class Popolo
 
     def per_language_names
       @r.keys.find_all { |k| k.to_s.start_with? 'name__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
-        {
-          name: @r.delete(k),
-          lang: k.to_s.sub('name__', '').tr('_','-'),
-          note: "multilingual",
-        }
-      end
+        cell_values(k, ';').map do |n| 
+          {
+            name: n,
+            lang: k.to_s.sub('name__', '').tr('_','-'),
+            note: "multilingual",
+          }
+        end
+      end.flatten(1)
     end
 
     def alternate_names
