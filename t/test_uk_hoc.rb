@@ -52,6 +52,14 @@ describe 'UK' do
     it 'should standardise facebook links' do
       da[:links].find { |l| l[:note] == 'facebook' }[:url].must_equal 'https://facebook.com/Dianeabbott'
     end
+
+    it 'should pick up multiple multi-lingual names' do
+      eo_names = da[:other_names].find_all { |n| n[:lang] == 'eo' }
+      eo_names.count.must_equal 2
+      eo_names.first[:name].must_equal 'Diane Abbott'
+      eo_names.last[:name].must_equal 'Abbott, Diane'
+    end
+
   end
 
 end
