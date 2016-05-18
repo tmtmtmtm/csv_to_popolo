@@ -387,7 +387,7 @@ class Popolo
         else
           v
         end
-      end.compact
+      end.compact.uniq(&:downcase)
     end
 
     def keys_with_values_for_type(type)
