@@ -179,24 +179,30 @@ class Popolo
     end
 
     def initialize(file)
-      @csv_data = File.read(file)
+      @csv_file = file
     end
 
-    def raw_csv
-      headers = Rcsv.raw_parse(StringIO.new(@csv_data.each_line.first)).first.compact
-      rcsv_columns = Hash[headers.map do |header|
-        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
-        [header, { alias: KEY_MAP.fetch(h, h).to_sym }]
-      end]
-      @raw_csv = Rcsv.parse(@csv_data, row_as_hash: true, columns: rcsv_columns)
+    def csv_data
+      @csv_data ||= File.read(@csv_file)
     end
 
     def headers
-      @headers ||= Rcsv.raw_parse(StringIO.new(@csv_data.each_line.first)).first
+      @headers ||= Rcsv.raw_parse(StringIO.new(csv_data.each_line.first)).first
+    end
+
+    def rcsv_columns
+      @rcsv_columns ||= Hash[headers.compact.map do |header|
+        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+        [header, { alias: KEY_MAP.fetch(h, h).to_sym }]
+      end]
+    end
+
+    def raw_csv
+      @raw_csv ||= Rcsv.parse(csv_data, row_as_hash: true, columns: rcsv_columns)
     end
 
     def raw_headers
-      @raw_headers = headers.map do |header|
+      @raw_headers ||= headers.map do |header|
         next unless header
         h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
         KEY_MAP.fetch(h, h).to_sym
