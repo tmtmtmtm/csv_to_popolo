@@ -190,9 +190,13 @@ class Popolo
       @headers ||= Rcsv.raw_parse(StringIO.new(csv_data.each_line.first)).first
     end
 
+    def process_header(header)
+      header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+    end
+
     def rcsv_columns
       @rcsv_columns ||= Hash[headers.compact.map do |header|
-        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+        h = process_header(header)
         [header, { alias: KEY_MAP.fetch(h, h).to_sym }]
       end]
     end
@@ -204,7 +208,7 @@ class Popolo
     def raw_headers
       @raw_headers ||= headers.map do |header|
         next unless header
-        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+        h = process_header(header)
         KEY_MAP.fetch(h, h).to_sym
       end
     end
