@@ -1,3 +1,6 @@
+0.25.0  2016-05-20
+  - Switch to Rcsv (which is bindings to libcsv) to make parsing CSVs faster.
+
 0.24.0  2016-05-18
   - Ensure multi-value fields don't contain duplicate values
 
