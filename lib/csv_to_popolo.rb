@@ -189,7 +189,10 @@ class Popolo
 
     def initialize(file)
       @raw_csv = ::CSV.read(file, OPTS)
-      @raw_headers = @raw_csv.headers
+    end
+
+    def raw_headers
+      @raw_headers ||= @raw_csv.headers
     end
 
     def csv
@@ -334,14 +337,14 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_headers.partition { |h|
+      handled = raw_headers.partition { |h|
         MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__')
         # || h.to_s.start_with?('wikipedia__')
       }
 
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
-      blank = @raw_headers.count    { |h| h.nil? || h.empty? }
-      dupes = @raw_headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
+      blank = raw_headers.count    { |h| h.nil? || h.empty? }
+      dupes = raw_headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
 
       warnings = {
         skipped: handled.last,
