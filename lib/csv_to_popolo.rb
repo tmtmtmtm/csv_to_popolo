@@ -189,6 +189,7 @@ class Popolo
 
     def initialize(file)
       @raw_csv = ::CSV.read(file, OPTS)
+      @raw_headers = @raw_csv.headers
       @csv = @raw_csv.map do |r|
         r[:id] ||= "#{_idify(r[:name] || raise('creating ID without a name'))}"
         r[:group] = 'unknown' if r[:group].to_s.empty?
@@ -330,14 +331,14 @@ class Popolo
     end
 
     def warnings
-      handled = @raw_csv.headers.partition { |h|
+      handled = @raw_headers.partition { |h|
         MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__')
         # || h.to_s.start_with?('wikipedia__')
       }
 
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
-      blank = @raw_csv.headers.count    { |h| h.nil? || h.empty? }
-      dupes = @raw_csv.headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
+      blank = @raw_headers.count    { |h| h.nil? || h.empty? }
+      dupes = @raw_headers.group_by { |h| h }.select { |_, hs| hs.size > 1 }
 
       warnings = {
         skipped: handled.last,
