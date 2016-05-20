@@ -188,15 +188,19 @@ class Popolo
     end
 
     def initialize(file)
-      @raw_csv = ::CSV.read(file, OPTS)
+      @csv_file = file
+    end
+
+    def raw_csv
+      @raw_csv ||= ::CSV.read(@csv_file, OPTS)
     end
 
     def raw_headers
-      @raw_headers ||= @raw_csv.headers
+      @raw_headers ||= raw_csv.headers
     end
 
     def csv
-      @csv ||= @raw_csv.map do |r|
+      @csv ||= raw_csv.map do |r|
         r[:id] ||= "#{_idify(r[:name] || raise('creating ID without a name'))}"
         r[:group] = 'unknown' if r[:group].to_s.empty?
         r.to_hash.select { |_, v| !v.nil? }
