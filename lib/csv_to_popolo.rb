@@ -1,5 +1,5 @@
 require 'csv_to_popolo/version'
-require 'csv'
+require 'rcsv'
 require 'twitter_username_extractor'
 require 'facebook_username_extractor'
 
@@ -170,17 +170,8 @@ class Popolo
   class CSV
     KEY_MAP = MODEL
               .select { |_, v| v.key? :aliases }
-              .map { |k, v| v[:aliases].map { |iv| { iv => k } } }
+              .map { |k, v| v[:aliases].map { |iv| { iv => { alias: k } } } }
               .flatten.reduce({}, :update)
-
-    OPTS = {
-      headers: true,
-      header_converters: lambda do |h|
-        # = HeaderConverters.symbol + remapping
-        hc = h.to_s.encode(::CSV::ConverterEncoding).downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
-        (KEY_MAP[hc] || hc).to_sym
-      end
-    }
 
     def _idify(str)
       return if str.to_s.empty?
@@ -188,15 +179,17 @@ class Popolo
     end
 
     def initialize(file)
-      @csv_file = file
+      @csv_data = File.read(file)
     end
 
     def raw_csv
-      @raw_csv ||= ::CSV.read(@csv_file, OPTS)
+      headers = @csv_data.each_line.first.chomp.split(',')
+      rcsv_columns = Hash[headers.map { |header| [header, { alias: header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '').to_sym }] }].merge(KEY_MAP)
+      @raw_csv ||= Rcsv.parse(@csv_data, row_as_hash: true, columns: rcsv_columns)
     end
 
     def raw_headers
-      @raw_headers ||= raw_csv.headers
+      @raw_headers ||= raw_csv.first.keys
     end
 
     def csv
