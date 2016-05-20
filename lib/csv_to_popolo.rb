@@ -190,7 +190,10 @@ class Popolo
     def initialize(file)
       @raw_csv = ::CSV.read(file, OPTS)
       @raw_headers = @raw_csv.headers
-      @csv = @raw_csv.map do |r|
+    end
+
+    def csv
+      @csv ||= @raw_csv.map do |r|
         r[:id] ||= "#{_idify(r[:name] || raise('creating ID without a name'))}"
         r[:group] = 'unknown' if r[:group].to_s.empty?
         r.to_hash.select { |_, v| !v.nil? }
@@ -221,7 +224,7 @@ class Popolo
     end
 
     def persons
-      @csv.map { |r| find_person(r) }.group_by { |r| r.to_hash[:id] }.map { |i, rs| rs.last.as_popolo }
+      csv.map { |r| find_person(r) }.group_by { |r| r.to_hash[:id] }.map { |i, rs| rs.last.as_popolo }
     end
 
     def organizations
@@ -233,7 +236,7 @@ class Popolo
     end
 
     def areas
-      @_areas ||= @csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
+      @_areas ||= csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
         {
           id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
           name: r[:area] || 'unknown',
@@ -243,7 +246,7 @@ class Popolo
     end
 
     def parties
-      @_parties ||= @csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group] }.map do |r|
+      @_parties ||= csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group] }.map do |r|
         {
           id: r[:group_id] || "party/#{_idify(r[:group])}",
           name: r[:group],
@@ -254,7 +257,7 @@ class Popolo
 
     def chambers
       # TODO: the chambers should be members of the Legislature
-      @_chambers ||= @csv.select { |r| r.key? :chamber }.uniq { |r| r[:chamber] }.map do |r|
+      @_chambers ||= csv.select { |r| r.key? :chamber }.uniq { |r| r[:chamber] }.map do |r|
         {
           id: r[:chamber_id] || "chamber/#{_idify(r[:chamber])}",
           name: r[:chamber],
@@ -264,7 +267,7 @@ class Popolo
     end
 
     def posts
-      @_posts ||= @csv.select { |r| r.key? :legislative_membership_type }.uniq { |r| r[:legislative_membership_type] }.map do |r|
+      @_posts ||= csv.select { |r| r.key? :legislative_membership_type }.uniq { |r| r[:legislative_membership_type] }.map do |r|
         {
           id: _idify(r[:legislative_membership_type]),
           label: r[:legislative_membership_type],
@@ -274,7 +277,7 @@ class Popolo
     end
 
     def terms
-      @_terms ||= @csv.select { |r| r.key? :term }.uniq { |r| r[:term] }.map do |r|
+      @_terms ||= csv.select { |r| r.key? :term }.uniq { |r| r[:term] }.map do |r|
         {
           id: r[:term_id] || "term/#{_idify(r[:term])}",
           name: r[:term],
@@ -302,7 +305,7 @@ class Popolo
     end
 
     def legislative_memberships
-      @_lmems ||= @csv.map do |r|
+      @_lmems ||= csv.map do |r|
         mem = {
           person_id:          r[:id],
           organization_id:    find_chamber_id(r[:chamber]) || 'legislature',
@@ -319,7 +322,7 @@ class Popolo
     end
 
     def executive_memberships
-      @_emems ||= @csv.select { |r| r.key?(:executive) && !r[:executive].to_s.empty? }.map do |r|
+      @_emems ||= csv.select { |r| r.key?(:executive) && !r[:executive].to_s.empty? }.map do |r|
         mem = {
           person_id:          r[:id],
           organization_id:    'executive',
