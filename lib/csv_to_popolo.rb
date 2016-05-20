@@ -191,8 +191,16 @@ class Popolo
       @raw_csv = Rcsv.parse(@csv_data, row_as_hash: true, columns: rcsv_columns)
     end
 
+    def headers
+      @headers ||= Rcsv.raw_parse(StringIO.new(@csv_data.each_line.first)).first
+    end
+
     def raw_headers
-      @raw_headers ||= raw_csv.first.keys
+      @raw_headers = headers.map do |header|
+        next unless header
+        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+        KEY_MAP.fetch(h, h).to_sym
+      end
     end
 
     def csv
