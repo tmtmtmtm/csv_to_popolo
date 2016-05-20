@@ -170,7 +170,7 @@ class Popolo
   class CSV
     KEY_MAP = MODEL
               .select { |_, v| v.key? :aliases }
-              .map { |k, v| v[:aliases].map { |iv| { iv => { alias: k } } } }
+              .map { |k, v| v[:aliases].map { |iv| { iv => k } } }
               .flatten.reduce({}, :update)
 
     def _idify(str)
@@ -183,9 +183,12 @@ class Popolo
     end
 
     def raw_csv
-      headers = @csv_data.each_line.first.chomp.split(',')
-      rcsv_columns = Hash[headers.map { |header| [header, { alias: header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '').to_sym }] }].merge(KEY_MAP)
-      @raw_csv ||= Rcsv.parse(@csv_data, row_as_hash: true, columns: rcsv_columns)
+      headers = Rcsv.raw_parse(StringIO.new(@csv_data.each_line.first)).first.compact
+      rcsv_columns = Hash[headers.map do |header|
+        h = header.downcase.gsub(/\s+/, '_').gsub(/\W+/, '')
+        [header, { alias: KEY_MAP.fetch(h, h).to_sym }]
+      end]
+      @raw_csv = Rcsv.parse(@csv_data, row_as_hash: true, columns: rcsv_columns)
     end
 
     def raw_headers
