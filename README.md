@@ -38,6 +38,8 @@ It currently handles data from the following columns:
 (none of these are required — it will simply extract data from any
 suitably-named columns)
 
+On the event that an email address is prefixed with `mailto:` (example: `mailto:username@example.com`), the script will remove this prefix (example result: `username@example.com`).
+
 ## Party/Faction Membership
 
 Popolo allows for very complex modelling of roles and posts. Here,
