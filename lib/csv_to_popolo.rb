@@ -406,6 +406,8 @@ class Popolo
           TwitterUsernameExtractor.extract(v) rescue nil
         elsif key == :facebook
           "https://facebook.com/#{FacebookUsernameExtractor.extract(v)}" rescue nil
+        elsif key == :email
+          v = v.gsub('mailto:','')
         else
           v
         end
