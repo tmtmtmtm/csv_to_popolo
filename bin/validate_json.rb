@@ -3,7 +3,7 @@
 require 'json'
 require 'json-schema'
 
-file = ARGV[0] or fail "Usage: #{$PROGRAM_NAME} <json-file>"
+(file = ARGV[0]) || fail("Usage: #{$PROGRAM_NAME} <json-file>")
 json = JSON.parse(File.read(file))
 
 %w(person organization membership).each do |type|
