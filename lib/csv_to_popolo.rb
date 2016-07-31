@@ -6,167 +6,166 @@ require 'csv_to_popolo/core_ext'
 
 class Popolo
   MODEL = {
-    additional_name: {
-      type: 'asis'
+    additional_name:             {
+      type: 'asis',
     },
-    alternate_names: {
-      aliases: %w(other_names alternative_names)
+    alternate_names:             {
+      aliases: %w(other_names alternative_names),
     },
-    area: {
-      aliases: %w(constituency region district place)
+    area:                        {
+      aliases: %w(constituency region district place),
     },
-    area_id: {
-      aliases: %w(constituency_id region_id district_id place_id)
+    area_id:                     {
+      aliases: %w(constituency_id region_id district_id place_id),
     },
-    biography: {
+    biography:                   {
       aliases: %w(bio blurb),
-      type: 'asis'
+      type:    'asis',
     },
-    birth_date: {
+    birth_date:                  {
       aliases: %w(dob date_of_birth),
-      type: 'asis'
+      type:    'asis',
     },
-    blog: {
-      aliases: %w(weblog),
-      type: 'link',
-      multivalue_separator: ';'
-    },
-    cell: {
-      aliases: %w(mob mobile cellphone),
-      type: 'contact',
-      multivalue_separator: ';'
-    },
-    chamber: {
-      aliases: %w(house)
-    },
-    death_date: {
-      aliases: %w(dod date_of_death),
-      type: 'asis'
-    },
-    email: {
-      type: 'contact',
+    blog:                        {
+      aliases:              %w(weblog),
+      type:                 'link',
       multivalue_separator: ';',
-      take_first: 'asis'
     },
-    end_date: {
-      aliases: %w(end ended until to)
+    cell:                        {
+      aliases:              %w(mob mobile cellphone),
+      type:                 'contact',
+      multivalue_separator: ';',
     },
-    executive: {
-      aliases: %w(post)
+    chamber:                     {
+      aliases: %w(house),
     },
-    facebook: {
-      type: 'link',
-      multivalue_separator: ';'
+    death_date:                  {
+      aliases: %w(dod date_of_death),
+      type:    'asis',
     },
-    family_name: {
+    email:                       {
+      type:                 'contact',
+      multivalue_separator: ';',
+      take_first:           'asis',
+    },
+    end_date:                    {
+      aliases: %w(end ended until to),
+    },
+    executive:                   {
+      aliases: %w(post),
+    },
+    facebook:                    {
+      type:                 'link',
+      multivalue_separator: ';',
+    },
+    family_name:                 {
       aliases: %w(last_name surname lastname),
-      type: 'asis'
+      type:    'asis',
     },
-    fax: {
-      aliases: %w(facsimile),
-      type: 'contact',
-      multivalue_separator: ';'
+    fax:                         {
+      aliases:              %w(facsimile),
+      type:                 'contact',
+      multivalue_separator: ';',
     },
-    flickr: {
-      type: 'link',
-      multivalue_separator: ';'
+    flickr:                      {
+      type:                 'link',
+      multivalue_separator: ';',
     },
-    gender: {
+    gender:                      {
       aliases: %w(sex),
-      type: 'asis'
+      type:    'asis',
     },
-    given_name: {
+    given_name:                  {
       aliases: %w(first_name forename),
-      type: 'asis'
+      type:    'asis',
     },
-    group: {
-      aliases: %w(party party_name faction faktion bloc block org organization organisation)
+    group:                       {
+      aliases: %w(party party_name faction faktion bloc block org organization organisation),
     },
-    group_id: {
+    group_id:                    {
       # TODO: default
       aliases: %w(
         party_id faction_id faktion_id bloc_id block_id org_id
         organization_id organisation_id
-      )
+      ),
     },
-    honorific_prefix: {
-      type: 'asis'
+    honorific_prefix:            {
+      type: 'asis',
     },
-    honorific_suffix: {
-      type: 'asis'
+    honorific_suffix:            {
+      type: 'asis',
     },
-    id: {
+    id:                          {
       # TODO: default
-      type: 'asis'
+      type: 'asis',
     },
-    image: {
-      aliases: %w(img picture photo photograph portrait),
-      type: 'image',
+    image:                       {
+      aliases:              %w(img picture photo photograph portrait),
+      type:                 'image',
       multivalue_separator: ';',
-      take_first: 'asis'
+      take_first:           'asis',
     },
-    instagram: {
-      type: 'link',
-      multivalue_separator: ';'
+    instagram:                   {
+      type:                 'link',
+      multivalue_separator: ';',
     },
     legislative_membership_type: {
       type: 'memtype',
     },
-    linkedin: {
-      type: 'link',
-      multivalue_separator: ';'
+    linkedin:                    {
+      type:                 'link',
+      multivalue_separator: ';',
     },
-    name: {
+    name:                        {
+      type:    'asis',
+      aliases: %w(name_en),
+    },
+    national_identity:           {
       type: 'asis',
-      aliases: %w(name_en)
     },
-    national_identity: {
-      type: 'asis'
-    },
-    patronymic_name: {
+    patronymic_name:             {
       aliases: %w(patronym patronymic),
-      type: 'asis'
+      type:    'asis',
     },
-    phone: {
-      aliases: %w(tel telephone),
-      type: 'contact',
-      multivalue_separator: ';'
+    phone:                       {
+      aliases:              %w(tel telephone),
+      type:                 'contact',
+      multivalue_separator: ';',
     },
-    sort_name: {
-      type: 'asis'
+    sort_name:                   {
+      type: 'asis',
     },
-    source: {
-      aliases: %w(src)
+    source:                      {
+      aliases: %w(src),
     },
-    start_date: {
-      aliases: %w(start started from since)
+    start_date:                  {
+      aliases: %w(start started from since),
     },
-    summary: {
-      type: 'asis'
+    summary:                     {
+      type: 'asis',
     },
-    term: {
-      aliases: %w(legislative_period)
+    term:                        {
+      aliases: %w(legislative_period),
     },
-    twitter: {
-      type: 'contact',
-      multivalue_separator: ';'
+    twitter:                     {
+      type:                 'contact',
+      multivalue_separator: ';',
     },
-    website: {
-      type: 'link',
-      aliases: %w(homepage href url site),
-      multivalue_separator: ';'
+    website:                     {
+      type:                 'link',
+      aliases:              %w(homepage href url site),
+      multivalue_separator: ';',
     },
-    wikipedia: {
-      type: 'link',
-      multivalue_separator: ';'
+    wikipedia:                   {
+      type:                 'link',
+      multivalue_separator: ';',
     },
-    youtube: {
-      type: 'link',
-      multivalue_separator: ';'
+    youtube:                     {
+      type:                 'link',
+      multivalue_separator: ';',
     },
-
-    other_name: {}
-  }
+    other_name:                  {},
+  }.freeze
 
   class CSV
     KEY_MAP = MODEL
@@ -212,7 +211,7 @@ class Popolo
 
     def csv
       @csv ||= raw_csv.map do |r|
-        r[:id] ||= "#{_idify(r[:name] || raise('creating ID without a name'))}"
+        r[:id] ||= _idify(r[:name] || raise('creating ID without a name')).to_s
         r[:group] = 'unknown' if r[:group].to_s.empty?
         r.to_hash.select { |_, v| !v.nil? }
       end
@@ -226,23 +225,23 @@ class Popolo
         posts:         posts,
         events:        terms,
         areas:         areas,
-        warnings:      warnings
+        warnings:      warnings,
       }.select { |_, v| !v.nil? }
     end
 
     def find_person(p)
       if (@_people ||= {}).key? p[:id]
         # combine multiple person records additively. TODO: allow for multiple values
-        existing = @_people[ p[:id] ]
+        existing = @_people[p[:id]]
         merged = p.merge(existing.to_hash)
-        return @_people[ p[:id] ] = Person.new(merged)
+        return @_people[p[:id]] = Person.new(merged)
       else
-        return @_people[ p[:id] ] = Person.new(p)
+        return @_people[p[:id]] = Person.new(p)
       end
     end
 
     def persons
-      csv.map { |r| find_person(r) }.group_by { |r| r.to_hash[:id] }.map { |i, rs| rs.last.as_popolo }
+      csv.map { |r| find_person(r) }.group_by { |r| r.to_hash[:id] }.map { |_, rs| rs.last.as_popolo }
     end
 
     def organizations
@@ -254,21 +253,21 @@ class Popolo
     end
 
     def areas
-      @_areas ||= csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map { |r|
+      @_areas ||= csv.select { |r| (r.key?(:area) && !r[:area].to_s.empty?) || (r.key?(:area_id) && !r[:area_id].to_s.empty?) }.map do |r|
         {
-          id: r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
+          id:   r[:area_id].to_s.empty? ? "area/#{_idify(r[:area])}" : r[:area_id],
           name: r[:area] || 'unknown',
           type: 'constituency',
         }
-      }.compact.uniq { |a| a[:id] }
+      end.compact.uniq { |a| a[:id] }
     end
 
     def parties
       @_parties ||= csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group] }.map do |r|
         {
-          id: r[:group_id] || "party/#{_idify(r[:group])}",
-          name: r[:group],
-          classification: 'party'
+          id:             r[:group_id] || "party/#{_idify(r[:group])}",
+          name:           r[:group],
+          classification: 'party',
         }
       end
     end
@@ -277,9 +276,9 @@ class Popolo
       # TODO: the chambers should be members of the Legislature
       @_chambers ||= csv.select { |r| r.key? :chamber }.uniq { |r| r[:chamber] }.map do |r|
         {
-          id: r[:chamber_id] || "chamber/#{_idify(r[:chamber])}",
-          name: r[:chamber],
-          classification: 'chamber'
+          id:             r[:chamber_id] || "chamber/#{_idify(r[:chamber])}",
+          name:           r[:chamber],
+          classification: 'chamber',
         }
       end
     end
@@ -287,8 +286,8 @@ class Popolo
     def posts
       @_posts ||= csv.select { |r| r.key? :legislative_membership_type }.uniq { |r| r[:legislative_membership_type] }.map do |r|
         {
-          id: _idify(r[:legislative_membership_type]),
-          label: r[:legislative_membership_type],
+          id:              _idify(r[:legislative_membership_type]),
+          label:           r[:legislative_membership_type],
           organization_id: 'legislature',
         }
       end
@@ -297,9 +296,9 @@ class Popolo
     def terms
       @_terms ||= csv.select { |r| r.key? :term }.uniq { |r| r[:term] }.map do |r|
         {
-          id: r[:term_id] || "term/#{_idify(r[:term])}",
-          name: r[:term],
-          classification: 'legislative period'
+          id:             r[:term_id] || "term/#{_idify(r[:term])}",
+          name:           r[:term],
+          classification: 'legislative period',
         }
       end
     end
@@ -307,32 +306,32 @@ class Popolo
     def legislatures
       legislative_memberships.count.zero? ? [] : [
         {
-          id: 'legislature',
-          name: 'Legislature',
+          id:             'legislature',
+          name:           'Legislature',
           classification: 'legislature',
-        }.select { |_, v| !v.nil? }
+        }.select { |_, v| !v.nil? },
       ]
     end
 
     def executive
       executive_memberships.count.zero? ? [] : [{
-        id: 'executive',
-        name: 'Executive',
-        classification: 'executive'
-      }]
+        id:             'executive',
+        name:           'Executive',
+        classification: 'executive',
+      },]
     end
 
     def legislative_memberships
       @_lmems ||= csv.map do |r|
         mem = {
-          person_id:          r[:id],
-          organization_id:    find_chamber_id(r[:chamber]) || 'legislature',
-          post_id:            _idify(r[:legislative_membership_type]),
-          role:               'member',
-          on_behalf_of_id:    r[:group_id] || find_party_id(r[:group]),
-          area_id:            !r[:area_id].to_s.empty? ? r[:area_id] : !r[:area].to_s.empty? ? "area/#{_idify(r[:area])}" : nil,
-          start_date:         r[:start_date],
-          end_date:           r[:end_date]
+          person_id:       r[:id],
+          organization_id: find_chamber_id(r[:chamber]) || 'legislature',
+          post_id:         _idify(r[:legislative_membership_type]),
+          role:            'member',
+          on_behalf_of_id: r[:group_id] || find_party_id(r[:group]),
+          area_id:         !r[:area_id].to_s.empty? ? r[:area_id] : !r[:area].to_s.empty? ? "area/#{_idify(r[:area])}" : nil,
+          start_date:      r[:start_date],
+          end_date:        r[:end_date],
         }.select { |_, v| !v.nil? }
         mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
@@ -342,9 +341,9 @@ class Popolo
     def executive_memberships
       @_emems ||= csv.select { |r| r.key?(:executive) && !r[:executive].to_s.empty? }.map do |r|
         mem = {
-          person_id:          r[:id],
-          organization_id:    'executive',
-          role:               r[:executive]
+          person_id:       r[:id],
+          organization_id: 'executive',
+          role:            r[:executive],
         }
         mem[:legislative_period] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
@@ -352,10 +351,10 @@ class Popolo
     end
 
     def warnings
-      handled = raw_headers.partition { |h|
+      handled = raw_headers.partition do |h|
         MODEL.key?(h) || h.to_s.start_with?('identifier__') || h.to_s.start_with?('name__')
         # || h.to_s.start_with?('wikipedia__')
-      }
+      end
 
       # Ruby 2.1+ seems to return nil for empty headers; 2.0- returns ""
       blank = raw_headers.count    { |h| h.nil? || h.empty? }
@@ -363,7 +362,7 @@ class Popolo
 
       warnings = {
         skipped: handled.last,
-        dupes: dupes.map { |h, _| h }
+        dupes:   dupes.map { |h, _| h },
       }.reject { |_, v| v.nil? || v.empty? }
       warnings[:blank] = blank unless blank.zero?
       warnings.empty? ? nil : warnings
@@ -393,13 +392,9 @@ class Popolo
       @r.key?(key) && !@r[key].nil? && !@r[key].empty?
     end
 
-    def cell_values(key, separator=nil)
+    def cell_values(key, separator = nil)
       separator ||= MODEL[key][:multivalue_separator]
-      if separator
-        values = @r[key].split(separator)
-      else
-        values = [@r[key]]
-      end
+      values = separator ? @r[key].split(separator) : [@r[key]]
       # Normalize some values depending on the column:
       values.map(&:strip).map do |v|
         if key == :twitter
@@ -407,7 +402,7 @@ class Popolo
         elsif key == :facebook
           "https://facebook.com/#{FacebookUsernameExtractor.extract(v)}" rescue nil
         elsif key == :email
-          v.gsub('mailto:','')
+          v.gsub('mailto:', '')
         else
           v
         end
@@ -444,10 +439,10 @@ class Popolo
     end
 
     def wikipedia_links
-      @r.keys.find_all { |k| k.to_s.start_with? 'wikipedia__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
+      @r.keys.select { |k| k.to_s.start_with? 'wikipedia__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
         _, lang = k.to_s.split(/__/, 2)
         {
-          url: 'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ','_')],
+          url:  'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ', '_')],
           note: "Wikipedia (#{lang})",
         }
       end
@@ -457,8 +452,8 @@ class Popolo
       return [] unless given? :twitter
       cell_values(:twitter).map do |t|
         {
-          url: 'https://twitter.com/' + t,
-          note: 'twitter'
+          url:  'https://twitter.com/' + t,
+          note: 'twitter',
         }
       end
     end
@@ -466,24 +461,24 @@ class Popolo
     # Can't know up front what these might be; take anything in the form
     #   identifier__xxx
     def identifiers
-      @r.keys.find_all { |k| k.to_s.start_with? 'identifier__' }.map do |k|
+      @r.keys.select { |k| k.to_s.start_with? 'identifier__' }.map do |k|
         {
-          scheme: k.to_s.sub('identifier__', ''),
+          scheme:     k.to_s.sub('identifier__', ''),
           identifier: @r.delete(k),
         }
       end
     end
 
     def per_language_names
-      @r.keys.find_all { |k| k.to_s.start_with? 'name__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
-        cell_values(k, ';').map do |n| 
+      @r.keys.select { |k| k.to_s.start_with? 'name__' }.reject { |k| @r[k].to_s.empty? }.flat_map do |k|
+        cell_values(k, ';').map do |n|
           {
             name: n,
-            lang: k.to_s.sub('name__', '').tr('_','-'),
-            note: "multilingual",
+            lang: k.to_s.sub('name__', '').tr('_', '-'),
+            note: 'multilingual',
           }
         end
-      end.flatten(1)
+      end
     end
 
     def alternate_names
@@ -491,7 +486,7 @@ class Popolo
       @r[:alternate_names].split(/\s?;\s?/).map do |n|
         {
           name: n,
-          note: "alternate",
+          note: 'alternate',
         }
       end
     end
@@ -503,7 +498,7 @@ class Popolo
         popolo[sym] = @r[sym] if given? sym
       end
 
-      take_first_as_is = MODEL.select { |_, v| v[:take_first] == 'asis' }.map{ |k, _| k }
+      take_first_as_is = MODEL.select { |_, v| v[:take_first] == 'asis' }.map { |k, _| k }
       take_first_as_is.each do |sym|
         popolo[sym] = cell_values(sym)[0] if given? sym
       end
@@ -516,7 +511,7 @@ class Popolo
       popolo[:contact_details] = contact_details
       popolo[:links] = links
       if given? :image
-        popolo[:images] = cell_values(:image).map { |i| {url: i} }
+        popolo[:images] = cell_values(:image).map { |i| { url: i } }
       end
       popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
