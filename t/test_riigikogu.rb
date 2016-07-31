@@ -6,7 +6,7 @@ require 'json'
 describe 'riigikogu' do
   subject { Popolo::CSV.new('t/data/riigikogu-members.csv') }
 
-  let(:orgs)  { subject.data[:organizations] }
+  let(:orgs) { subject.data[:organizations] }
 
   describe 'arto' do
     let(:arto)  { subject.data[:persons].find { |i| i[:name] == 'Arto Aas' } }

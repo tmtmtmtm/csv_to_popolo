@@ -57,5 +57,4 @@ describe 'multivalue_separator' do
     doe[:images][0][:url].must_equal 'http://example.org/a.jpg'
     doe[:images][1][:url].must_equal 'http://example.org/b.png'
   end
-
 end

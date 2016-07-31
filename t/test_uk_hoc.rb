@@ -7,7 +7,6 @@ describe 'UK' do
   subject { Popolo::CSV.new('t/data/uk-hoc.csv') }
 
   describe 'Iain Duncan Smith' do
-
     let(:ids)   { subject.data[:persons].find { |i| i[:id] == 'Q302486' } }
     let(:names) { Hash[ids[:other_names].select { |n| n[:note] == 'multilingual' }.map { |n| [n[:lang], n[:name]] }] }
 
@@ -16,11 +15,11 @@ describe 'UK' do
     end
 
     it 'should have no blank names' do
-      ids[:other_names].find_all { |n| n[:name].to_s.empty? }.count.must_equal 0
+      ids[:other_names].select { |n| n[:name].to_s.empty? }.count.must_equal 0
     end
 
     it 'should be set in Ukrainian' do
-      names['uk'].must_equal 'Іан Данкан Сміт' 
+      names['uk'].must_equal 'Іан Данкан Сміт'
     end
 
     it 'should also have several Wikipedia links' do
@@ -54,12 +53,10 @@ describe 'UK' do
     end
 
     it 'should pick up multiple multi-lingual names' do
-      eo_names = da[:other_names].find_all { |n| n[:lang] == 'eo' }
+      eo_names = da[:other_names].select { |n| n[:lang] == 'eo' }
       eo_names.count.must_equal 2
       eo_names.first[:name].must_equal 'Diane Abbott'
       eo_names.last[:name].must_equal 'Abbott, Diane'
     end
-
   end
-
 end
