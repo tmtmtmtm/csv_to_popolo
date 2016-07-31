@@ -45,8 +45,8 @@ Metrics/AbcSize:
 Metrics/CyclomaticComplexity:
   Max: 7
 
-# Offense count: 1
 Metrics/PerceivedComplexity:
   Max: 8
 
-    
+# Get rid of these ones over time
+inherit_from: .rubocop_todo.yml
