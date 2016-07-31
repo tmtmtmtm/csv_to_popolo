@@ -4,12 +4,11 @@ require 'minitest/autorun'
 require 'pry'
 require 'json'
 
-
 describe 'monaco' do
   subject { Popolo::CSV.new('t/data/uganda.csv') }
 
-  def memberships(id) 
-    subject.data[:memberships].find_all { |m| m[:person_id] == id } 
+  def memberships(id)
+    subject.data[:memberships].select { |m| m[:person_id] == id }
   end
 
   it 'should have no Post for a normal membership' do
@@ -29,7 +28,6 @@ describe 'monaco' do
     ndeezi[:post_id].must_equal 'pwd'
     ndeezi[:area_id].must_be_nil
   end
-
 
   it 'should have two Posts' do
     posts = subject.data[:posts].sort_by { |p| p[:id] }

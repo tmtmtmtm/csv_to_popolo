@@ -8,7 +8,7 @@ describe 'email: value' do
   let(:person1) { persons[2] }
 
   it 'should not be prefixed with mailto:' do
-    person1[:email].wont_include "mailto:"
+    person1[:email].wont_include 'mailto:'
   end
 end
 
@@ -18,6 +18,6 @@ describe ':contact_details email value' do
   let(:person1) { persons[2] }
 
   it 'should not be prefixed with mailto:' do
-    person1[:contact_details][0][:value].wont_include "mailto:"
+    person1[:contact_details][0][:value].wont_include 'mailto:'
   end
 end

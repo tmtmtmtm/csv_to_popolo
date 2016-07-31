@@ -1,18 +1,52 @@
+Style/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Style/ClassAndModuleCamelCase:
+  Enabled: false
+
 Style/CollectionMethods:
   Enabled: true
 
 Style/Documentation:
   Enabled: false
 
-Metrics/LineLength:
-  Max: 99
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/RescueModifier:
+  Enabled: false
+
+Style/SignalException:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: true
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
 
 Metrics/ClassLength:
-  Max: 150
+  Max: 250
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
+
+Metrics/LineLength:
+  Max: 150
 
 Metrics/AbcSize:
-  Max: 25
-    
+  Max: 50
+
+Metrics/CyclomaticComplexity:
+  Max: 7
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+# Get rid of these ones over time
+inherit_from: .rubocop_todo.yml

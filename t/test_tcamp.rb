@@ -47,14 +47,14 @@ describe 'tcamp' do
 
     it 'should have identifiers' do
       steiny[:identifiers].find { |l| l[:scheme] == 'tcampid' }[:identifier].must_equal '14'
-      steiny[:identifiers].select { |l| l[:scheme] == 'efp' and l[:identifier] == 'a40' }.count.must_equal 1
+      steiny[:identifiers].select { |l| l[:scheme] == 'efp' && l[:identifier] == 'a40' }.count.must_equal 1
       # TODO: later, when we combine Person records separately...
-      steiny[:identifiers].select { |l| l[:scheme] == 'efp' and l[:identifier] == 'a50' }.count.must_equal 0
+      steiny[:identifiers].select { |l| l[:scheme] == 'efp' && l[:identifier] == 'a50' }.count.must_equal 0
     end
   end
 
   describe 'ellen' do
-    let(:ellen)  { subject.data[:persons][1] }
+    let(:ellen) { subject.data[:persons][1] }
 
     it 'should standardise the twitter handle' do
       ellen[:contact_details].find { |c| c[:type] == 'twitter' }[:value].must_equal 'EllnMllr'

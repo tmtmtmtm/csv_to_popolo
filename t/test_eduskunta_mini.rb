@@ -19,13 +19,13 @@ describe 'eduskunta' do
   end
 
   it 'should have alternate names' do
-    alts = aho[:other_names].find_all { |n| n[:note] == 'alternate' }
+    alts = aho[:other_names].select { |n| n[:note] == 'alternate' }
     alts.count.must_equal 1
     alts.first[:name].must_equal 'Esko Aho'
   end
 
   it 'should be able to have multiple alternates' do
-    alts = ahde[:other_names].find_all { |n| n[:note] == 'alternate' }
+    alts = ahde[:other_names].select { |n| n[:note] == 'alternate' }
     alts.count.must_equal 2
     alts.sort_by { |n| n[:name] }.first[:name].must_equal 'Matti Ahde'
     alts.sort_by { |n| n[:name] }.last[:name].must_equal 'Matti Allan Ahde'
