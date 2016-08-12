@@ -284,7 +284,10 @@ class Popolo
     end
 
     def posts
-      @_posts ||= csv.select { |r| r.key? :legislative_membership_type }.uniq { |r| r[:legislative_membership_type] }.map do |r|
+      @_posts ||= csv.select { |r| r.key? :legislative_membership_type }
+                     .uniq   { |r| r[:legislative_membership_type] }
+                     .reject { |r| r[:legislative_membership_type].to_s.empty? }
+                     .map do |r|
         {
           id:              _idify(r[:legislative_membership_type]),
           label:           r[:legislative_membership_type],
