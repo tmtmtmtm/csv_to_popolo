@@ -1,3 +1,6 @@
+0.26.1 2016-08-12
+  - Don't create blank Posts
+
 0.26.0 2016-07-26
   - Remove 'mailto:' from beginning of email addresses
 
