@@ -65,6 +65,7 @@ describe 'multivalue_separator' do
   it 'should not split URL into multiple entries when separator is legitimate character in URL' do
     member = australia.data[:persons].find { |p| p[:name] == 'Joanna Gash' }
     links = member[:links].select { |l| l[:note] == 'website' }
+    links.first[:url].must_equal 'http://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query%3DId%3A%22handbook%2Fallmps%2FAK6%22'
     links.count.must_equal 1
   end
 end
