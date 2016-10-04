@@ -1,3 +1,6 @@
+0.27.0 2016-10-04
+  - Split URL only if separator is followed by 'http'
+
 0.26.1 2016-08-12
   - Don't create blank Posts
 
