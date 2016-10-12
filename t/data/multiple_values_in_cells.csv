@@ -1,3 +1,4 @@
 name,email,cell,mobile,twitter,facebook,homepage,image
 John Doe,foo@example.org,555;666,777 ; 888 ,,,,http://example.org/a.jpg;http://example.org/b.png
 David Cameron,camerond@parliament.uk;info@davidcameron.com,,,https://twitter.com/David_Cameron;@Number10gov;@david_cameron,https://www.facebook.com/DavidCameronOfficial/;https://en-gb.facebook.com/SomeOtherDavidCameron/ ; UnqualifiedDavidCameron,http://cameron.example.org;https://www.conservatives.com/OurTeam/David_Cameron,
+Duncan Clarke,clarked@parliament.uk;info@duncanclarke.com,,,https://twitter.com/Duncan_Clarke;@Number10gov;@duncan_clarke,https://www.facebook.com/DuncanClarkeOfficial/ ; https://en-gb.facebook.com/SomeOtherDuncanClarke/;UnqualifiedDuncanClarke,http://clarke.example.org ; https://www.conservatives.com/OurTeam/Duncan_Clarke,
