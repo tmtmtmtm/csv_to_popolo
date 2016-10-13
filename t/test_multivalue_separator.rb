@@ -71,9 +71,8 @@ describe 'multivalue_separator' do
   end
 
   it 'should split URLs when there is space around the separator' do
-    url1 = { note: 'website', url: 'http://clarke.example.org' }
-    url2 = { note: 'website', url: 'https://www.conservatives.com/OurTeam/Duncan_Clarke' }
-    clarke[:links].must_include url1
-    clarke[:links].must_include url2
+    urls = clarke[:links].select { |l| l[:note] == 'website' }.map { |l| l[:url] }
+    urls.first.must_equal 'http://clarke.example.org'
+    urls.last.must_equal 'https://www.conservatives.com/OurTeam/Duncan_Clarke'
   end
 end
