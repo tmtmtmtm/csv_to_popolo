@@ -154,7 +154,7 @@ class Popolo
     website:                     {
       type:                 'link',
       aliases:              %w(homepage href url site),
-      multivalue_separator: /;(?=http)/,
+      multivalue_separator: /\s*;\s*(?=http)/,
     },
     wikipedia:                   {
       type:                 'link',

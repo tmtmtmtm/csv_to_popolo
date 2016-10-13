@@ -6,6 +6,7 @@ describe 'multivalue_separator' do
 
   let(:pers) { subject.data[:persons] }
   let(:cameron) { pers.find { |p| p[:name] == 'David Cameron' } }
+  let(:clarke) { pers.find { |p| p[:name] == 'Duncan Clarke' } }
   let(:doe) { pers.find { |p| p[:name] == 'John Doe' } }
 
   let(:australia) do
@@ -67,5 +68,11 @@ describe 'multivalue_separator' do
     links = member[:links].select { |l| l[:note] == 'website' }
     links.first[:url].must_equal 'http://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query%3DId%3A%22handbook%2Fallmps%2FAK6%22'
     links.count.must_equal 1
+  end
+
+  it 'should split URLs when there is space around the separator' do
+    urls = clarke[:links].select { |l| l[:note] == 'website' }.map { |l| l[:url] }
+    urls.first.must_equal 'http://clarke.example.org'
+    urls.last.must_equal 'https://www.conservatives.com/OurTeam/Duncan_Clarke'
   end
 end
