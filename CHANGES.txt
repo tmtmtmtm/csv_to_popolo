@@ -1,3 +1,6 @@
+0.27.1 2016-10-13
+  - Bug fix to handle whitespace around URL separator.
+
 0.27.0 2016-10-04
   - Split URL only if separator is followed by 'http'
 
