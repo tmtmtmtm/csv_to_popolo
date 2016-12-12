@@ -33,8 +33,11 @@ describe 'riigikogu' do
       arto[:id].must_equal 'fe748f4d-3f50-4af8-8069-92a460978d2b'
     end
 
-    it 'should have two legislative memberships' do
+    it 'should have legislative memberships with different sources' do
       amms.count.must_equal 2
+      sm = Hash[amms.map { |m| [m[:legislative_period_id], m[:sources].first[:url]] }]
+      sm['term/riigikogu_xii'].must_equal 'https://et.wikipedia.org/wiki/XII_Riigikogu'
+      sm['term/riigikogu_xiii'].must_equal 'https://et.wikipedia.org/wiki/XIII_Riigikogu'
     end
 
     it 'should have been in Riigikogu XII' do
@@ -62,6 +65,10 @@ describe 'riigikogu' do
 
     it 'should have been in Riigikogu XII' do
       amms.first[:legislative_period_id].must_equal 'term/riigikogu_xii'
+    end
+
+    it 'should cope with having no source' do
+      amms.first[:sources].must_be_nil
     end
 
     it 'should have start_date' do

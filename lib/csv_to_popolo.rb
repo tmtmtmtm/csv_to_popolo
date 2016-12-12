@@ -335,7 +335,8 @@ class Popolo
           area_id:         !r[:area_id].to_s.empty? ? r[:area_id] : !r[:area].to_s.empty? ? "area/#{_idify(r[:area])}" : nil,
           start_date:      r[:start_date],
           end_date:        r[:end_date],
-        }.select { |_, v| !v.nil? }
+          sources:         sources_for(r),
+        }.reject { |_, v| v.nil? || v.empty? }
         mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
@@ -379,6 +380,12 @@ class Popolo
 
     def find_chamber_id(name)
       (chambers.find { |p| p[:name] == name } || return)[:id]
+    end
+
+    # TODO: move this into a Row class
+    def sources_for(r)
+      return if r[:source].to_s.empty?
+      [{ url: r[:source] }]
     end
   end
 
@@ -516,7 +523,6 @@ class Popolo
       if given? :image
         popolo[:images] = cell_values(:image).map { |i| { url: i } }
       end
-      popolo[:sources] = [{ url: @r[:source] }] if given? :source
 
       popolo.reject { |_, v| v.nil? || v.empty? }
     end

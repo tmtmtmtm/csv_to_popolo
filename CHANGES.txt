@@ -1,3 +1,6 @@
+0.28.0 2016-12-12
+  - The "source" column now creates Membership data, not Person data.
+
 0.27.1 2016-10-13
   - Bug fix to handle whitespace around URL separator.
 

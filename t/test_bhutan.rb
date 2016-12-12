@@ -19,9 +19,19 @@ describe 'Bhutan' do
       mems.count { |m| m[:person_id] == pm[:id] }.must_equal 2
     end
 
-    it 'should have a source' do
-      pm[:sources].count.must_equal 1
-      pm[:sources].first[:url].must_include 'www.nab.gov.bt'
+    it 'should have Legislative Membership sources' do
+      lm = mems.find { |m| m[:person_id] == pm[:id] && m[:organization_id] == 'legislature' }
+      lm[:sources].count.must_equal 1
+      lm[:sources].first[:url].must_include 'www.nab.gov.bt'
+    end
+
+    it 'should not have Executive Membership sources' do
+      em = mems.find { |m| m[:person_id] == pm[:id] && m[:organization_id] == 'executive' }
+      em[:sources].must_be_nil
+    end
+
+    it 'should have no Person source' do
+      pm[:sources].must_be_nil
     end
   end
 
