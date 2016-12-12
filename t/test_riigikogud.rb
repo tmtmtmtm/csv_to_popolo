@@ -67,6 +67,10 @@ describe 'riigikogu' do
       amms.first[:legislative_period_id].must_equal 'term/riigikogu_xii'
     end
 
+    it 'should cope with having no source' do
+      amms.first[:sources].must_be_nil
+    end
+
     it 'should have start_date' do
       amms.count.must_equal 1
       amms.first[:start_date].must_equal '2011-04-02'
