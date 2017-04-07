@@ -1,3 +1,6 @@
+0.28.1 2017-04-07
+  - Bug fix to handle mixed-case party names with no IDs.
+
 0.28.0 2016-12-12
   - The "source" column now creates Membership data, not Person data.
 
