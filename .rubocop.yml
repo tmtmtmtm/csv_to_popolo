@@ -29,6 +29,8 @@ Style/SymbolArray:
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
+Performance/Casecmp:
+  Enabled: false
 
 Metrics/ClassLength:
   Max: 250
