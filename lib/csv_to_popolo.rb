@@ -263,7 +263,7 @@ class Popolo
     end
 
     def parties
-      @_parties ||= csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group] }.map do |r|
+      @_parties ||= csv.select { |r| r.key? :group }.uniq { |r| r.key?(:group_id) ? r[:group_id] : r[:group].to_s.downcase }.map do |r|
         {
           id:             r[:group_id] || "party/#{_idify(r[:group])}",
           name:           r[:group],
@@ -375,7 +375,7 @@ class Popolo
     private
 
     def find_party_id(name)
-      (parties.find { |p| p[:name] == name } || return)[:id]
+      (parties.find { |p| p[:name].to_s.downcase == name.to_s.downcase } || return)[:id]
     end
 
     def find_chamber_id(name)

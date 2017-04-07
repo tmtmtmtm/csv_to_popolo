@@ -25,6 +25,16 @@ describe 'monaco' do
     pc.select { |m| m[:on_behalf_of_id] == 'party/unknown' }.size.must_equal 1
   end
 
+  it 'combines parties case-insensitively' do
+    orgs.select { |o| o[:id] == 'party/hm_horizon_monaco' }.count.must_equal 1
+  end
+
+  it 'knows the correct party for Daniel Boeri' do
+    db = mems.select { |m| m[:person_id] == 'Daniel-BOERI' }
+    db.count.must_equal 1
+    db.first[:on_behalf_of_id].must_equal 'party/hm_horizon_monaco'
+  end
+
   it 'should have no warnings' do
     subject.data[:warnings].must_be_nil
   end
