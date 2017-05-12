@@ -147,6 +147,11 @@ class Popolo
     term:                        {
       aliases: %w(legislative_period),
     },
+    tty:                         {
+      aliases:              %w(tdd),
+      type:                 'contact',
+      multivalue_separator: ';',
+    },
     twitter:                     {
       type:                 'contact',
       multivalue_separator: ';',
