@@ -1,5 +1,5 @@
 0.29.0 2017-05-12
-  - Accept 'tty' columns
+  - Accept 'tty' (and 'tdd' as an alias of 'tty') columns.
 
 0.28.1 2017-04-07
   - Bug fix to handle mixed-case party names with no IDs.
