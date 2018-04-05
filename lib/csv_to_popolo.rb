@@ -527,11 +527,9 @@ end
 
 class Wikimedia
   class Link
-    def initialize(site, string)
-      # TODO: extract this logic
-      _, lang = site.to_s.split(/__/, 2)
-      @lang = lang
-      @string = string
+    def initialize(site, page)
+      @site = site.to_s
+      @page = page
     end
 
     def to_h
@@ -543,14 +541,32 @@ class Wikimedia
 
     private
 
-    attr_reader :lang, :string
+    attr_reader :site, :page
+
+    def wikipage
+      page.tr(' ', '_')
+    end
 
     def url
-      'https://%s.wikipedia.org/wiki/%s' % [lang, string.tr(' ', '_')]
+      return "https://commons.wikimedia.org/wiki/#{wikipage}" if rawlang == 'commons'
+      return "https://#{lang}.wikiquote.org/wiki/#{wikipage}" if rawlang.include? 'wikiquote'
+      return "https://#{lang}.wikinews.org/wiki/#{wikipage}" if rawlang.include? 'wikinews'
+      "https://#{lang}.wikipedia.org/wiki/#{wikipage}"
     end
 
     def note
-      'Wikipedia (%s)' % lang
+      return 'Wikimedia Commons' if rawlang == 'commons'
+      return "Wikiquote (#{lang})" if rawlang.include? 'wikiquote'
+      return "Wikinews (#{lang})" if rawlang.include? 'wikinews'
+      "Wikipedia (#{lang})"
+    end
+
+    def lang
+      rawlang.gsub(/wiki(quote|news)$/, '')
+    end
+
+    def rawlang
+      site.to_s.split(/__/, 2).last
     end
   end
 end
