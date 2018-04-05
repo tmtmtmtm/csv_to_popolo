@@ -450,11 +450,7 @@ class Popolo
 
     def wikipedia_links
       @r.keys.select { |k| k.to_s.start_with? 'wikipedia__' }.reject { |k| @r[k].to_s.empty? }.map do |k|
-        _, lang = k.to_s.split(/__/, 2)
-        {
-          url:  'https://%s.wikipedia.org/wiki/%s' % [lang, @r.delete(k).tr(' ', '_')],
-          note: "Wikipedia (#{lang})",
-        }
+        Wikimedia::Link.new(k, @r.delete(k)).to_h
       end
     end
 
@@ -525,6 +521,36 @@ class Popolo
       end
 
       popolo.reject { |_, v| v.nil? || v.empty? }
+    end
+  end
+end
+
+class Wikimedia
+  class Link
+    def initialize(site, string)
+      # TODO: extract this logic
+      _, lang = site.to_s.split(/__/, 2)
+      @lang = lang
+      @string = string
+    end
+
+    def to_h
+      {
+        url:  url,
+        note: note,
+      }
+    end
+
+    private
+
+    attr_reader :lang, :string
+
+    def url
+      'https://%s.wikipedia.org/wiki/%s' % [lang, string.tr(' ', '_')]
+    end
+
+    def note
+      'Wikipedia (%s)' % lang
     end
   end
 end
