@@ -1,3 +1,7 @@
+0.31.0 2019-04-09
+  - Positions acros multiple distinct chambers/houses of the legislature are no
+    longer supported. We now assume that those will be separate Popolo files.
+
 0.30.0 2019-04-09
   - Positions outside the legislature (i.e. in a separate Executive org)
     are no longer supported.
