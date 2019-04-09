@@ -36,9 +36,6 @@ class Popolo
       type:                 'contact',
       multivalue_separator: ';',
     },
-    chamber:                     {
-      aliases: %w(house),
-    },
     death_date:                  {
       aliases: %w(dod date_of_death),
       type:    'asis',
@@ -242,7 +239,7 @@ class Popolo
     end
 
     def organizations
-      parties + chambers + legislatures
+      parties + legislatures
     end
 
     def areas
@@ -261,17 +258,6 @@ class Popolo
           id:             r[:group_id] || "party/#{_idify(r[:group])}",
           name:           r[:group],
           classification: 'party',
-        }
-      end
-    end
-
-    def chambers
-      # TODO: the chambers should be members of the Legislature
-      @_chambers ||= csv.select { |r| r.key? :chamber }.uniq { |r| r[:chamber] }.map do |r|
-        {
-          id:             r[:chamber_id] || "chamber/#{_idify(r[:chamber])}",
-          name:           r[:chamber],
-          classification: 'chamber',
         }
       end
     end
@@ -313,7 +299,7 @@ class Popolo
       @_lmems ||= csv.map do |r|
         mem = {
           person_id:       r[:id],
-          organization_id: find_chamber_id(r[:chamber]) || 'legislature',
+          organization_id: 'legislature',
           post_id:         _idify(r[:legislative_membership_type]),
           role:            'member',
           on_behalf_of_id: r[:group_id] || find_party_id(r[:group]),
@@ -349,10 +335,6 @@ class Popolo
 
     def find_party_id(name)
       (parties.find { |p| p[:name].to_s.downcase == name.to_s.downcase } || return)[:id]
-    end
-
-    def find_chamber_id(name)
-      (chambers.find { |p| p[:name] == name } || return)[:id]
     end
 
     # TODO: move this into a Row class
