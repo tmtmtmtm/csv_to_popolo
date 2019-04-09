@@ -1,3 +1,3 @@
 module Popolo_CSV
-  VERSION = '0.29.0'.freeze
+  VERSION = '0.30.0'.freeze
 end

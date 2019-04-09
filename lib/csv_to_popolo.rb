@@ -51,9 +51,6 @@ class Popolo
     end_date:                    {
       aliases: %w(end ended until to),
     },
-    executive:                   {
-      aliases: %w(post),
-    },
     facebook:                    {
       type:                 'link',
       multivalue_separator: ';',
@@ -245,11 +242,7 @@ class Popolo
     end
 
     def organizations
-      parties + chambers + legislatures + executive
-    end
-
-    def memberships
-      legislative_memberships + executive_memberships
+      parties + chambers + legislatures
     end
 
     def areas
@@ -307,7 +300,7 @@ class Popolo
     end
 
     def legislatures
-      legislative_memberships.count.zero? ? [] : [
+      memberships.count.zero? ? [] : [
         {
           id:             'legislature',
           name:           'Legislature',
@@ -316,15 +309,7 @@ class Popolo
       ]
     end
 
-    def executive
-      executive_memberships.count.zero? ? [] : [{
-        id:             'executive',
-        name:           'Executive',
-        classification: 'executive',
-      },]
-    end
-
-    def legislative_memberships
+    def memberships
       @_lmems ||= csv.map do |r|
         mem = {
           person_id:       r[:id],
@@ -338,18 +323,6 @@ class Popolo
           sources:         sources_for(r),
         }.reject { |_, v| v.nil? || v.empty? }
         mem[:legislative_period_id] = "term/#{_idify(r[:term])}" if r.key? :term
-        mem
-      end
-    end
-
-    def executive_memberships
-      @_emems ||= csv.select { |r| r.key?(:executive) && !r[:executive].to_s.empty? }.map do |r|
-        mem = {
-          person_id:       r[:id],
-          organization_id: 'executive',
-          role:            r[:executive],
-        }
-        mem[:legislative_period] = "term/#{_idify(r[:term])}" if r.key? :term
         mem
       end
     end

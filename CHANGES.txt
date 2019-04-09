@@ -1,3 +1,7 @@
+0.30.0 2019-04-09
+  - Positions outside the legislature (i.e. in a separate Executive org)
+    are no longer supported.
+
 0.29.0 2018-04-05
   - Better handling of Wikimedia links to sites other than Wikipedia.
 
