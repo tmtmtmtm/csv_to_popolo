@@ -60,22 +60,23 @@ describe 'welsh assembly' do
   end
 
   describe 'First Minister' do
-    let(:executive) { orgs.find { |o| o[:id] == 'executive' } }
     let(:fmin) { pers.find   { |p| p[:id] == '102' } }
     let(:fmem) { mems.select { |m| m[:person_id] == fmin[:id] } }
 
-    it 'should have two memberships' do
-      fmem.count.must_equal 2
+    it 'has a single membership' do
+      fmem.count.must_equal 1
     end
 
-    it 'should have Assembly membership' do
+    it 'has the Assembly membership' do
       fmem.find { |m| m[:role] == 'member' }[:area_id].must_equal 'area/bridgend'
     end
 
-    it 'should have Executive membership' do
-      execm = fmem.select { |m| m[:organization_id] == executive[:id] }
-      execm.count.must_equal 1
-      execm.first[:role].must_equal 'The First Minister'
+    it 'has no Executive org' do
+      orgs.find { |o| o[:id] == 'executive' }.must_be_nil
+    end
+
+    it 'has no Executive memberships' do
+      fmem.find { |m| m[:organization_id] != 'legislature' }.must_be_nil
     end
   end
 

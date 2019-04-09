@@ -15,19 +15,18 @@ describe 'Bhutan' do
   let(:mp) { ppl.find { |i| i[:id] == '20' } }
 
   describe 'The Prime Minster' do
-    it 'should have two memberships' do
-      mems.count { |m| m[:person_id] == pm[:id] }.must_equal 2
+    it 'has a single membership' do
+      mems.count { |m| m[:person_id] == pm[:id] }.must_equal 1
     end
 
-    it 'should have Legislative Membership sources' do
+    it 'has a Legislative Membership with a source' do
       lm = mems.find { |m| m[:person_id] == pm[:id] && m[:organization_id] == 'legislature' }
       lm[:sources].count.must_equal 1
       lm[:sources].first[:url].must_include 'www.nab.gov.bt'
     end
 
-    it 'should not have Executive Membership sources' do
-      em = mems.find { |m| m[:person_id] == pm[:id] && m[:organization_id] == 'executive' }
-      em[:sources].must_be_nil
+    it 'has no Executive Memberships' do
+      mems.find { |m| m[:person_id] == pm[:id] && m[:organization_id] == 'executive' }.must_be_nil
     end
 
     it 'should have no Person source' do
@@ -36,11 +35,11 @@ describe 'Bhutan' do
   end
 
   describe 'A Plain MP' do
-    it 'should have only one membership' do
+    it 'has one membership' do
       mems.count { |m| m[:person_id] == mp[:id] }.must_equal 1
     end
 
-    it 'should have a legislative membership' do
+    it 'has a legislative membership' do
       legm.find { |m| m[:person_id] == mp[:id] }[:organization_id].must_equal 'legislature'
     end
   end
@@ -55,8 +54,8 @@ describe 'Bhutan' do
   end
 
   describe 'validation' do
-    it 'should have no warnings' do
-      subject.data[:warnings].must_be_nil
+    it 'warns about the executive column' do
+      subject.data[:warnings][:skipped].must_equal [:executive]
     end
   end
 end
