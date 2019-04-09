@@ -35,10 +35,9 @@ describe 'parlamento' do
       subject.data[:areas].find { |a| a[:id] == leg_mem[:area_id] }[:name].must_equal 'Lazio'
     end
 
-    it 'should be in correct chamber' do
+    it 'is in the legislature' do
       leg_mem = pmems.find { |m| m[:role] == 'member' }
-      chamber = orgs.find { |o| o[:id] == leg_mem[:organization_id] }
-      chamber[:name].must_equal 'Senate'
+      leg_mem[:organization_id].must_equal 'legislature'
     end
   end
 
@@ -66,16 +65,15 @@ describe 'parlamento' do
       subject.data[:areas].find { |a| a[:id] == leg_mem[:area_id] }[:name].must_equal 'Sicilia 2'
     end
 
-    it 'should be in correct chamber' do
+    it 'is in the legislature' do
       leg_mem = pmems.find { |m| m[:role] == 'member' }
-      chamber = orgs.find { |o| o[:id] == leg_mem[:organization_id] }
-      chamber[:name].must_equal 'Chamber of Deputies'
+      leg_mem[:organization_id].must_equal 'legislature'
     end
   end
 
   describe 'validation' do
-    it 'should have no warnings' do
-      subject.data[:warnings].must_be_nil
+    it 'should skip the house column' do
+      subject.data[:warnings][:skipped].must_include :house
     end
   end
 end
